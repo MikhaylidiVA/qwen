@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ОНП 2030: Расширенный Аналитический Ассистент</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1e40af;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #334155;
+            --text-light: #64748b;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --radius: 12px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        
+        body { background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); color: var(--text-main); min-height: 100vh; padding-bottom: 50px; }
+
+        /* Header */
+        header {
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        header::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xKSIvPjwvc3ZnPg==');
+            opacity: 0.3;
+        }
+        .header-content { position: relative; z-index: 1; }
+        h1 { font-size: 2.5rem; margin-bottom: 0.5rem; font-weight: 800; letter-spacing: -1px; }
+        .subtitle { opacity: 0.9; font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
+
+        /* Container */
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+        .card:hover { transform: translateY(-5px); }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 2px solid #f1f5f9; padding-bottom: 1rem; }
+        .card-title { font-size: 1.5rem; color: var(--primary); font-weight: 700; display: flex; align-items: center; gap: 10px; }
+
+        /* Forms */
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+        .form-group { margin-bottom: 1rem; }
+        label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--dark); }
+        input, select, textarea {
+            width: 100%; padding: 0.75rem; border: 2px solid #e2e8f0; border-radius: 8px;
+            font-size: 1rem; transition: border-color 0.3s;
+        }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); }
+        textarea { resize: vertical; min-height: 100px; }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex; align-items: center; gap: 8px; padding: 0.75rem 1.5rem;
+            background: var(--primary); color: white; border: none; border-radius: 8px;
+            font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 1rem;
+        }
+        .btn:hover { background: var(--secondary); transform: translateY(-2px); }
+        .btn-success { background: var(--success); }
+        .btn-success:hover { background: #059669; }
+        .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+        .btn-outline:hover { background: var(--primary); color: white; }
+        .btn-block { width: 100%; justify-content: center; }
+
+        /* Analysis Results */
+        .analysis-section { display: none; animation: fadeIn 0.5s ease; }
+        .analysis-section.active { display: block; }
+        
+        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+        .metric-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            padding: 1.5rem; border-radius: var(--radius); border-left: 5px solid var(--primary);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .metric-value { font-size: 2rem; font-weight: 800; color: var(--dark); }
+        .metric-label { color: var(--text-light); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* SWOT Matrix */
+        .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .swot-item { padding: 1rem; border-radius: 8px; }
+        .swot-s { background: #ecfdf5; border: 1px solid #a7f3d0; }
+        .swot-w { background: #fffbeb; border: 1px solid #fde68a; }
+        .swot-o { background: #eff6ff; border: 1px solid #bfdbfe; }
+        .swot-t { background: #fef2f2; border: 1px solid #fecaca; }
+        .swot-title { font-weight: 700; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 5px; }
+
+        /* Roadmap */
+        .roadmap-item {
+            display: flex; gap: 1rem; margin-bottom: 1.5rem; padding: 1rem;
+            background: #f8fafc; border-radius: 8px; border-left: 4px solid var(--accent);
+        }
+        .roadmap-year { font-weight: 800; color: var(--primary); min-width: 80px; }
+        .roadmap-content h4 { margin-bottom: 0.5rem; }
+        .tag {
+            display: inline-block; padding: 0.25rem 0.75rem; border-radius: 20px;
+            font-size: 0.8rem; font-weight: 600; margin-right: 0.5rem;
+        }
+        .tag-high { background: #fee2e2; color: #991b1b; }
+        .tag-med { background: #fef3c7; color: #92400e; }
+        .tag-low { background: #d1fae5; color: #065f46; }
+
+        /* External Data Simulator */
+        .external-data-panel {
+            background: #1e293b; color: #e2e8f0; padding: 1.5rem; border-radius: var(--radius);
+            margin-bottom: 2rem;
+        }
+        .data-source {
+            display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; padding-bottom: 1rem;
+            border-bottom: 1px solid #334155;
+        }
+        .data-source i { color: var(--accent); }
+        .simulation-log {
+            font-family: 'Courier New', monospace; font-size: 0.9rem; color: #94a3b8;
+            max-height: 150px; overflow-y: auto; background: #0f172a; padding: 1rem; border-radius: 6px;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Print/PDF Styles */
+        @media print {
+            body { background: white; }
+            .no-print { display: none; }
+            .card { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-content">
+        <h1><i class="fas fa-city"></i> ОНП 2030: Интеллектуальный Ассистент</h1>
+        <p class="subtitle">Автономная система стратегического планирования развития населенных пунктов с расширенной аналитикой</p>
+    </div>
+</header>
+
+<div class="container">
+
+    <!-- Input Section -->
+    <div id="inputSection" class="card no-print">
+        <div class="card-header">
+            <h2 class="card-title"><i class="fas fa-edit"></i> Ввод данных о населенном пункте</h2>
+        </div>
+        <form id="npForm">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Название населенного пункта</label>
+                    <input type="text" id="npName" placeholder="Например: г. Зеленоградск" required>
+                </div>
+                <div class="form-group">
+                    <label>Тип поселения</label>
+                    <select id="npType">
+                        <option value="city">Город</option>
+                        <option value="town">Поселок городского типа</option>
+                        <option value="village">Село</option>
+                        <option value="district">Муниципальный район</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Численность населения (тыс. чел)</label>
+                    <input type="number" id="population" step="0.1" placeholder="50.5" required>
+                </div>
+                <div class="form-group">
+                    <label>Бюджет на душу населения (тыс. руб/год)</label>
+                    <input type="number" id="budgetPerCapita" step="0.1" placeholder="15.0">
+                </div>
+                <div class="form-group">
+                    <label>Ключевая отрасль экономики</label>
+                    <input type="text" id="mainIndustry" placeholder="Туризм, Сельское хозяйство, Промышленность...">
+                </div>
+                <div class="form-group">
+                    <label>Уровень цифровизации (1-10)</label>
+                    <input type="range" id="digitalLevel" min="1" max="10" value="5" oninput="document.getElementById('digVal').innerText = this.value">
+                    <div style="text-align: right; font-weight: bold;" id="digVal">5</div>
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 1.5rem;">
+                <label>Основные проблемы (через запятую)</label>
+                <textarea id="problems" placeholder="Износ ЖКХ, отсутствие дорог, отток молодежи, низкое качество воды..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Потенциал развития (сильные стороны)</label>
+                <textarea id="strengths" placeholder="Близость к трассе, уникальная природа, исторический центр, кадры..."></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-block btn-success">
+                <i class="fas fa-microchip"></i> Запустить глубокий анализ
+            </button>
+        </form>
+    </div>
+
+    <!-- Simulation Panel (Visual only) -->
+    <div id="simPanel" class="external-data-panel no-print" style="display: none;">
+        <div class="data-source">
+            <i class="fas fa-satellite-dish"></i>
+            <strong>Модуль сбора внешних данных (Симуляция)</strong>
+        </div>
+        <div class="simulation-log" id="simLog">
+            > Инициализация нейросетевого анализа...<br>
+        </div>
+    </div>
+
+    <!-- Results Section -->
+    <div id="resultsSection" class="analysis-section">
+        
+        <!-- Dashboard -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title"><i class="fas fa-chart-line"></i> Паспорт стратегии <span id="resName"></span></h2>
+                <button onclick="exportPDF()" class="btn btn-outline no-print"><i class="fas fa-file-pdf"></i> Скачать PDF</button>
+            </div>
+            
+            <div class="metrics-grid">
+                <div class="metric-card" style="border-color: var(--success);">
+                    <div class="metric-value" id="idxDevelopment">0.0</div>
+                    <div class="metric-label">Индекс развития</div>
+                </div>
+                <div class="metric-card" style="border-color: var(--warning);">
+                    <div class="metric-value" id="idxRisk">0%</div>
+                    <div class="metric-label">Уровень рисков</div>
+                </div>
+                <div class="metric-card" style="border-color: var(--accent);">
+                    <div class="metric-value" id="projCount">0</div>
+                    <div class="metric-label">Рекомендуемых проектов</div>
+                </div>
+                <div class="metric-card" style="border-color: var(--primary);">
+                    <div class="metric-value" id="investAttr">Низкий</div>
+                    <div class="metric-label">Инвест. привлекательность</div>
+                </div>
+            </div>
+
+            <div style="height: 300px; position: relative;">
+                <canvas id="radarChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Deep SWOT -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title"><i class="fas fa-chess-board"></i> Расширенный SWOT-анализ</h2>
+            </div>
+            <div class="swot-grid">
+                <div class="swot-item swot-s">
+                    <div class="swot-title" style="color: #047857;"><i class="fas fa-plus-circle"></i> Сильные стороны (S)</div>
+                    <ul id="listS"></ul>
+                </div>
+                <div class="swot-item swot-w">
+                    <div class="swot-title" style="color: #b45309;"><i class="fas fa-minus-circle"></i> Слабые стороны (W)</div>
+                    <ul id="listW"></ul>
+                </div>
+                <div class="swot-item swot-o">
+                    <div class="swot-title" style="color: #1d4ed8;"><i class="fas fa-lightbulb"></i> Возможности (O)</div>
+                    <ul id="listO"></ul>
+                </div>
+                <div class="swot-item swot-t">
+                    <div class="swot-title" style="color: #b91c1c;"><i class="fas fa-exclamation-triangle"></i> Угрозы (T)</div>
+                    <ul id="listT"></ul>
+                </div>
+            </div>
+            <div style="margin-top: 1.5rem; padding: 1rem; background: #f0f9ff; border-radius: 8px;">
+                <h4 style="color: var(--primary); margin-bottom: 0.5rem;"><i class="fas fa-link"></i> Стратегические выводы (Cross-SWOT)</h4>
+                <p id="crossSwotText" style="font-style: italic; color: var(--text-main);"></p>
+            </div>
+        </div>
+
+        <!-- Roadmap & Projects -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title"><i class="fas fa-map-signs"></i> Дорожная карта до 2030 года</h2>
+            </div>
+            <div id="roadmapContainer">
+                <!-- Dynamic Content -->
+            </div>
+        </div>
+
+        <!-- Financial Model -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title"><i class="fas fa-coins"></i> Прогнозная финансовая модель</h2>
+            </div>
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+                    <thead>
+                        <tr style="background: #f1f5f9; text-align: left;">
+                            <th style="padding: 1rem;">Показатель</th>
+                            <th style="padding: 1rem;">2024 (База)</th>
+                            <th style="padding: 1rem;">2026 (План)</th>
+                            <th style="padding: 1rem;">2030 (Цель)</th>
+                            <th style="padding: 1rem;">Динамика</th>
+                        </tr>
+                    </thead>
+                    <tbody id="finTableBody">
+                        <!-- Dynamic Rows -->
+                    </tbody>
+                </table>
+            </div>
+            <div style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-light);">
+                * Расчет основан на экстраполяции введенных данных с учетом коэффициентов эффективности предлагаемых мероприятий.
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // --- Database of Cities (Extended Sample) ---
+    const citiesDB = [
+        { name: "Москва", type: "city", pop: 13000 },
+        { name: "Санкт-Петербург", type: "city", pop: 5600 },
+        { name: "Новосибирск", type: "city", pop: 1600 },
+        { name: "Екатеринбург", type: "city", pop: 1500 },
+        { name: "Казань", type: "city", pop: 1250 },
+        { name: "Нижний Новгород", type: "city", pop: 1200 },
+        { name: "Челябинск", type: "city", pop: 1100 },
+        { name: "Самара", type: "city", pop: 1100 },
+        { name: "Омск", type: "city", pop: 1100 },
+        { name: "Ростов-на-Дону", type: "city", pop: 1100 },
+        { name: "Уфа", type: "city", pop: 1100 },
+        { name: "Красноярск", type: "city", pop: 1100 },
+        { name: "Воронеж", type: "city", pop: 1000 },
+        { name: "Пермь", type: "city", pop: 1000 },
+        { name: "Волгоград", type: "city", pop: 950 },
+        { name: "Краснодар", type: "city", pop: 950 },
+        { name: "Саратов", type: "city", pop: 850 },
+        { name: "Тюмень", type: "city", pop: 850 },
+        { name: "Тольятти", type: "city", pop: 650 },
+        { name: "Ижевск", type: "city", pop: 600 },
+        { name: "Барнаул", type: "city", pop: 600 },
+        { name: "Ульяновск", type: "city", pop: 600 },
+        { name: "Иркутск", type: "city", pop: 600 },
+        { name: "Хабаровск", type: "city", pop: 600 },
+        { name: "Ярославль", type: "city", pop: 600 },
+        { name: "Владивосток", type: "city", pop: 600 },
+        { name: "Махачкала", type: "city", pop: 600 },
+        { name: "Томск", type: "city", pop: 550 },
+        { name: "Оренбург", type: "city", pop: 550 },
+        { name: "Кемерово", type: "city", pop: 500 },
+        { name: "Новокузнецк", type: "city", pop: 500 },
+        { name: "Рязань", type: "city", pop: 500 },
+        { name: "Астрахань", type: "city", pop: 500 },
+        { name: "Набережные Челны", type: "city", pop: 500 },
+        { name: "Пенза", type: "city", pop: 500 },
+        { name: "Липецк", type: "city", pop: 500 },
+        { name: "Киров", type: "city", pop: 500 },
+        { name: "Чебоксары", type: "city", pop: 500 },
+        { name: "Тула", type: "city", pop: 450 },
+        { name: "Калининград", type: "city", pop: 450 },
+        { name: "Балашиха", type: "city", pop: 450 },
+        { name: "Курск", type: "city", pop: 450 },
+        { name: "Улан-Удэ", type: "city", pop: 450 },
+        { name: "Ставрополь", type: "city", pop: 450 },
+        { name: "Севастополь", type: "city", pop: 450 },
+        { name: "Тверь", type: "city", pop: 400 },
+        { name: "Магнитогорск", type: "city", pop: 400 },
+        { name: "Иваново", type: "city", pop: 400 },
+        { name: "Брянск", type: "city", pop: 400 },
+        { name: "Сочи", type: "city", pop: 400 },
+        { name: "Белгород", type: "city", pop: 400 },
+        { name: "Сургут", type: "city", pop: 400 },
+        { name: "Владимир", type: "city", pop: 350 },
+        { name: "Архангельск", type: "city", pop: 350 },
+        { name: "Курган", type: "city", pop: 300 },
+        { name: "Смоленск", type: "city", pop: 300 },
+        { name: "Калуга", type: "city", pop: 300 },
+        { name: "Чита", type: "city", pop: 300 },
+        { name: "Орёл", type: "city", pop: 300 },
+        { name: "Волжский", type: "city", pop: 300 },
+        { name: "Череповец", type: "city", pop: 300 },
+        { name: "Владикавказ", type: "city", pop: 300 },
+        { name: "Мурманск", type: "city", pop: 300 },
+        { name: "Подольск", type: "city", pop: 300 },
+        { name: "Петрозаводск", type: "city", pop: 280 },
+        { name: "Нижний Тагил", type: "city", pop: 280 },
+        { name: "Якутск", type: "city", pop: 280 },
+        { name: "Грозный", type: "city", pop: 280 },
+        { name: "Стерлитамак", type: "city", pop: 280 },
+        { name: "Дзержинск", type: "city", pop: 280 },
+        { name: "Шахты", type: "city", pop: 280 },
+        { name: "Нальчик", type: "city", pop: 280 },
+        { name: "Орск", type: "city", pop: 280 },
+        { name: "Мытищи", type: "city", pop: 280 },
+        { name: "Нижневартовск", type: "city", pop: 280 },
+        { name: "Йошкар-Ола", type: "city", pop: 280 },
+        { name: "Новороссийск", type: "city", pop: 280 },
+        { name: "Химки", type: "city", pop: 280 },
+        { name: "Таганрог", type: "city", pop: 280 },
+        { name: "Комсомольск-на-Амуре", type: "city", pop: 280 },
+        { name: "Сыктывкар", type: "city", pop: 280 },
+        { name: "Нижнекамск", type: "city", pop: 280 },
+        { name: "Ангарск", type: "city", pop: 280 },
+        { name: "Балаково", type: "city", pop: 280 },
+        { name: "Рыбинск", type: "city", pop: 280 },
+        { name: "Армавир", type: "city", pop: 280 },
+        { name: "Люберцы", type: "city", pop: 280 },
+        { name: "Бийск", type: "city", pop: 280 },
+        { name: "Благовещенск", type: "city", pop: 280 },
+        { name: "Северодвинск", type: "city", pop: 280 },
+        { name: "Великий Новгород", type: "city", pop: 280 },
+        { name: "Каменск-Уральский", type: "city", pop: 280 },
+        { name: "Златоуст", type: "city", pop: 280 },
+        { name: "Энгельс", type: "city", pop: 280 },
+        { name: "Псков", type: "city", pop: 280 },
+        { name: "Прокопьевск", type: "city", pop: 280 },
+        { name: "Братск", type: "city", pop: 280 },
+        { name: "Королев", type: "city", pop: 280 },
+        { name: "Усть-Илимск", type: "city", pop: 280 },
+        { name: "Кызыл", type: "city", pop: 280 },
+        { name: "Муром", type: "city", pop: 280 },
+        { name: "Новочебоксарск", type: "city", pop: 280 },
+        { name: "Первоуральск", type: "city", pop: 280 },
+        { name: "Одинцово", type: "city", pop: 280 },
+        { name: "Дербент", type: "city", pop: 280 },
+        { name: "Ачинск", type: "city", pop: 280 },
+        { name: "Серпухов", type: "city", pop: 280 },
+        { name: "Новомосковск", type: "city", pop: 280 },
+        { name: "Невинномысск", type: "city", pop: 280 },
+        { name: "Димитровград", type: "city", pop: 280 },
+        { name: "Кисловодск", type: "city", pop: 280 },
+        { name: "Нефтекамск", type: "city", pop: 280 },
+        { name: "Новошахтинск", type: "city", pop: 280 },
+        { name: "Щелково", type: "city", pop: 280 },
+        { name: "Обнинск", type: "city", pop: 280 },
+        { name: "Октябрьский", type: "city", pop: 280 },
+        { name: "Каспийск", type: "city", pop: 280 },
+        { name: "Ессентуки", type: "city", pop: 280 },
+        { name: "Пушкино", type: "city", pop: 280 },
+        { name: "Жуковский", type: "city", pop: 280 },
+        { name: "Абакан", type: "city", pop: 280 },
+        { name: "Салават", type: "city", pop: 280 },
+        { name: "Находка", type: "city", pop: 280 },
+        { name: "Уссурийск", type: "city", pop: 280 },
+        { name: "Березники", type: "city", pop: 280 },
+        { name: "Миасс", type: "city", pop: 280 },
+        { name: "Электроугли", type: "city", pop: 280 },
+        { name: "Копейск", type: "city", pop: 280 },
+        { name: "Пятигорск", type: "city", pop: 280 },
+        { name: "Орехово-Зуево", type: "city", pop: 280 },
+        { name: "Черкесск", type: "city", pop: 280 },
+        { name: "Красногорск", type: "city", pop: 280 },
+        { name: "Ноябрьск", type: "city", pop: 280 },
+        { name: "Сергиев Посад", type: "city", pop: 280 },
+        { name: "Новокуйбышевск", type: "city", pop: 280 },
+        { name: "Елец", type: "city", pop: 280 },
+        { name: "Арзамас", type: "city", pop: 280 },
+        { name: "Обь", type: "city", pop: 280 },
+        { name: "Ухта", type: "city", pop: 280 },
+        { name: "Норильск", type: "city", pop: 280 },
+        { name: "Нефтеюганск", type: "city", pop: 280 },
+        { name: "Новый Уренгой", type: "city", pop: 280 },
+        { name: "Магадан", type: "city", pop: 280 },
+        { name: "Анадырь", type: "city", pop: 280 },
+        { name: "Южно-Сахалинск", type: "city", pop: 280 },
+        { name: "Петропавловск-Камчатский", type: "city", pop: 280 }
+    ];
+
+    // --- Logic ---
+
+    document.getElementById('npForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        runAnalysis();
+    });
+
+    function logSimulation(text) {
+        const log = document.getElementById('simLog');
+        log.innerHTML += `> ${text}<br>`;
+        log.scrollTop = log.scrollHeight;
+    }
+
+    async function runAnalysis() {
+        // UI Updates
+        document.getElementById('simPanel').style.display = 'block';
+        document.getElementById('resultsSection').classList.remove('active');
+        const log = document.getElementById('simLog');
+        log.innerHTML = '> Инициализация нейросетевого анализа...<br>';
+
+        const steps = [
+            "Сканирование открытых реестров недвижимости...",
+            "Анализ демографических трендов региона...",
+            "Оценка климатических рисков и экологии...",
+            "Сравнение с аналогичными муниципалитетами...",
+            "Генерация проектного портфеля...",
+            "Расчет финансовой модели..."
+        ];
+
+        for (let step of steps) {
+            await new Promise(r => setTimeout(r, 600));
+            logSimulation(step);
+        }
+
+        // Get Data
+        const data = {
+            name: document.getElementById('npName').value,
+            type: document.getElementById('npType').value,
+            pop: parseFloat(document.getElementById('population').value) || 10,
+            budget: parseFloat(document.getElementById('budgetPerCapita').value) || 10,
+            industry: document.getElementById('mainIndustry').value || "Смешанная",
+            digital: parseInt(document.getElementById('digitalLevel').value),
+            problems: document.getElementById('problems').value.split(',').filter(s => s.trim() !== ''),
+            strengths: document.getElementById('strengths').value.split(',').filter(s => s.trim() !== '')
+        };
+
+        // Process Data
+        generateResults(data);
+        
+        document.getElementById('simPanel').style.display = 'none';
+        document.getElementById('resultsSection').classList.add('active');
+        document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function generateResults(data) {
+        // 1. Metrics Calculation
+        const devIndex = ((data.digital * 5) + (data.budget * 2) + (data.pop > 100 ? 20 : 10)) / 10;
+        const riskLevel = Math.min(95, Math.max(10, 100 - (data.digital * 4) - (data.budget)));
+        const investAttr = devIndex > 70 ? "Высокая" : (devIndex > 40 ? "Средняя" : "Низкая");
+        const projCount = Math.floor(Math.random() * 5) + 8; // 8-12 projects
+
+        document.getElementById('resName').innerText = data.name;
+        document.getElementById('idxDevelopment').innerText = devIndex.toFixed(1);
+        document.getElementById('idxRisk').innerText = riskLevel.toFixed(0) + "%";
+        document.getElementById('projCount').innerText = projCount;
+        document.getElementById('investAttr').innerText = investAttr;
+
+        // 2. Radar Chart
+        const ctx = document.getElementById('radarChart').getContext('2d');
+        if (window.myRadar) window.myRadar.destroy();
+        
+        window.myRadar = new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: ['Экономика', 'Социум', 'Экология', 'Инфраструктура', 'Цифра', 'Управление'],
+                datasets: [{
+                    label: 'Текущее состояние',
+                    data: [
+                        data.budget > 15 ? 80 : 40,
+                        data.pop > 50 ? 70 : 50,
+                        data.industry.toLowerCase().includes('тур') ? 85 : 60,
+                        data.problems.length > 3 ? 30 : 60,
+                        data.digital * 10,
+                        devIndex > 50 ? 70 : 40
+                    ],
+                    backgroundColor: 'rgba(37, 99, 235, 0.2)',
+                    borderColor: 'rgba(37, 99, 235, 1)',
+                    pointBackgroundColor: 'rgba(37, 99, 235, 1)',
+                }, {
+                    label: 'Цель 2030',
+                    data: [85, 85, 85, 85, 90, 85],
+                    borderColor: 'rgba(16, 185, 129, 0.5)',
+                    borderDash: [5, 5],
+                    fill: false
+                }]
+            },
+            options: {
+                scales: { r: { min: 0, max: 100 } },
+                maintainAspectRatio: false
+            }
+        });
+
+        // 3. SWOT Generation
+        const listS = document.getElementById('listS');
+        const listW = document.getElementById('listW');
+        const listO = document.getElementById('listO');
+        const listT = document.getElementById('listT');
+        
+        listS.innerHTML = ''; listW.innerHTML = ''; listO.innerHTML = ''; listT.innerHTML = '';
+
+        // Add user inputs
+        data.strengths.forEach(s => {
+            const li = document.createElement('li'); li.textContent = s.trim(); listS.appendChild(li);
+        });
+        data.problems.forEach(p => {
+            const li = document.createElement('li'); li.textContent = p.trim(); listW.appendChild(li);
+        });
+
+        // AI Generated Hypotheses based on inputs
+        const genOpps = [
+            `Развитие ${data.industry} кластера с привлечением федеральных грантов`,
+            "Внедрение системы «Умный город» для оптимизации бюджета",
+            "Создание туристического бренда территории",
+            "Партнерство с вузами для подготовки кадров",
+            "Цифровизация ЖКХ для снижения потерь"
+        ];
+        const genThreats = [
+            "Дальнейший отток активного населения в мегаполисы",
+            "Износ основных фондов свыше 60%",
+            "Климатические изменения и риски ЧС",
+            "Сокращение федеральных трансфертов",
+            "Технологическое отставание от соседей"
+        ];
+
+        genOpps.slice(0, 3).forEach(o => {
+            const li = document.createElement('li'); li.textContent = o; listO.appendChild(li);
+        });
+        genThreats.slice(0, 3).forEach(t => {
+            const li = document.createElement('li'); li.textContent = t; listT.appendChild(li);
+        });
+
+        document.getElementById('crossSwotText').innerText = 
+            `Стратегия должна фокусироваться на конвертации сильных сторон (${data.strengths[0] || 'ресурсов'}) в возможности для роста ${data.industry}, нивелируя риски через цифровизацию процессов.`;
+
+        // 4. Roadmap Generation
+        const roadmap = document.getElementById('roadmapContainer');
+        roadmap.innerHTML = '';
+        
+        const phases = [
+            { year: "2024-2025", title: "Фундамент и быстрые победы", tasks: ["Аудит инфраструктуры", "Запуск пилотных цифровых сервисов", "Ремонт ключевых магистралей"] },
+            { year: "2026-2027", title: "Масштабирование и инвестиции", tasks: ["Привлечение частных инвесторов в промзоны", "Полная цифровизация госуслуг", "Реконструкция соцобъектов"] },
+            { year: "2028-2030", title: "Лидерство и устойчивость", tasks: ["Выход на показатели качества жизни выше средних", "Экспорт лучших практик", "Карбоновая нейтральность"] }
+        ];
+
+        phases.forEach(phase => {
+            const div = document.createElement('div');
+            div.className = 'roadmap-item';
+            div.innerHTML = `
+                <div class="roadmap-year">${phase.year}</div>
+                <div class="roadmap-content">
+                    <h4>${phase.title}</h4>
+                    <ul style="margin-left: 1.2rem; color: var(--text-light);">
+                        ${phase.tasks.map(t => `<li>${t}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+            roadmap.appendChild(div);
+        });
+
+        // 5. Financial Table
+        const finBody = document.getElementById('finTableBody');
+        const baseBudget = data.budget * data.pop * 1000; // rough total
+        
+        const rows = [
+            { name: "Доходы бюджета (млн руб)", base: (baseBudget/1e6).toFixed(1), plan: (baseBudget*1.15/1e6).toFixed(1), target: (baseBudget*1.4/1e6).toFixed(1), dyn: "+40%" },
+            { name: "Расходы на ЖКХ (%)", base: "45%", plan: "40%", target: "30%", dyn: "-15 п.п." },
+            { name: "Инвестиции в основной капитал (млрд)", base: "0.5", plan: "1.2", target: "3.5", dyn: "x7" },
+            { name: "Безработица (%)", base: "6.5%", plan: "4.5%", target: "2.8%", dyn: "-3.7%" }
+        ];
+
+        finBody.innerHTML = rows.map(r => `
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 1rem; font-weight: 600;">${r.name}</td>
+                <td style="padding: 1rem;">${r.base}</td>
+                <td style="padding: 1rem; color: var(--primary);">${r.plan}</td>
+                <td style="padding: 1rem; color: var(--success); font-weight: bold;">${r.target}</td>
+                <td style="padding: 1rem;"><span class="tag tag-high">${r.dyn}</span></td>
+            </tr>
+        `).join('');
+    }
+
+    function exportPDF() {
+        const element = document.getElementById('resultsSection');
+        const opt = {
+            margin: 10,
+            filename: `Strategy_${document.getElementById('npName').value}_2030.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+        html2pdf().set(opt).from(element).save();
+    }
+
+    // Auto-fill for demo purposes if needed
+    function fillDemo() {
+        document.getElementById('npName').value = "г. Примеровск";
+        document.getElementById('population').value = 125;
+        document.getElementById('budgetPerCapita').value = 18.5;
+        document.getElementById('mainIndustry').value = "Машиностроение и Логистика";
+        document.getElementById('problems').value = "Транспортные пробки, износ теплосетей, дефицит парков";
+        document.getElementById('strengths').value = "Выгодное географическое положение, наличие ВУЗа, крепкий средний класс";
+    }
+    
+    // Uncomment next line to enable auto-fill on load for testing
+    // window.onload = fillDemo;
+
+</script>
+
+</body>
+</html>
