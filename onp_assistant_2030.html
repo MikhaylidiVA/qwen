@@ -1,0 +1,1870 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ОНП Ассистент 2030 — Программа развития опорных населённых пунктов</title>
+    <link href="https://api.fontshare.com/v2/css?f[]=druk-text-wide@400,500,600,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        :root {
+            --primary: #1a1b7c;
+            --primary-light: #3d3dff;
+            --primary-dark: #0a0a5c;
+            --accent: #7c3aed;
+            --accent-light: #8b5cf6;
+            --bg: #f8fafc;
+            --bg-gradient: linear-gradient(135deg, #f0f4ff 0%, #f8fafc 50%, #fef3c7 100%);
+            --card: #ffffff;
+            --text: #0f172a;
+            --text-sec: #475569;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --border-light: #f1f5f9;
+            --success: #10b981;
+            --success-light: #d1fae5;
+            --warning: #f59e0b;
+            --warning-light: #fef3c7;
+            --danger: #ef4444;
+            --danger-light: #fee2e2;
+            --info: #3b82f6;
+            --info-light: #dbeafe;
+            --purple: #7c3aed;
+            --ai-gradient: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #a855f7 100%);
+            --hero-gradient: linear-gradient(135deg, #1a1b7c 0%, #2e1065 50%, #0f172a 100%);
+            --card-gradient: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.9) 100%);
+            --font: 'Druk Text Wide', system-ui, -apple-system, sans-serif;
+            --radius: 20px;
+            --radius-sm: 12px;
+            --radius-lg: 28px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.03);
+            --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 4px 10px -3px rgba(0, 0, 0, 0.04);
+            --shadow-lg: 0 25px 50px -12px rgba(26, 27, 124, 0.25);
+            --shadow-xl: 0 35px 70px -15px rgba(0, 0, 0, 0.2);
+            --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.06);
+            --shadow-glow: 0 0 40px rgba(124, 58, 237, 0.3);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 32px 24px;
+        }
+
+        @media(min-width: 1300px) {
+            .container {
+                max-width: 1500px;
+                padding: 40px 32px;
+            }
+        }
+
+        /* HERO SECTION */
+        .hero {
+            background: var(--hero-gradient);
+            color: white;
+            border-radius: var(--radius-lg);
+            padding: 48px 52px;
+            margin-bottom: 32px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -40%;
+            right: -5%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.25) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: pulse 6s ease-in-out infinite;
+            filter: blur(40px);
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -25%;
+            left: 15%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: pulse 7s ease-in-out infinite reverse;
+            filter: blur(30px);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1) translateY(0); opacity: 0.5; }
+            50% { transform: scale(1.15) translateY(-10px); opacity: 0.8; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 14px;
+            letter-spacing: 0.03em;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+        }
+
+        .hero h1 .icon-wrapper {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .hero p {
+            opacity: 0.92;
+            font-size: 1.1rem;
+            max-width: 780px;
+            margin-bottom: 28px;
+            line-height: 1.65;
+            font-weight: 400;
+            text-shadow: 0 1px 10px rgba(0,0,0,0.2);
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 18px;
+            margin-top: 28px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(16px);
+            border-radius: 16px;
+            padding: 20px 16px;
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.18);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-light), var(--accent));
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            background: rgba(255, 255, 255, 0.18);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+
+        .stat-val {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #fff 0%, #e0e7ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            opacity: 0.85;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-top: 6px;
+            font-weight: 600;
+        }
+
+        /* GRID LAYOUT */
+        .grid {
+            display: grid;
+            grid-template-columns: 450px 1fr;
+            gap: 28px;
+        }
+
+        @media(max-width: 1200px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* CARD STYLES */
+        .card {
+            background: var(--card-gradient);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(226, 232, 240, 0.6);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-card);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-xl);
+            transform: translateY(-3px);
+            border-color: rgba(124, 58, 237, 0.2);
+        }
+
+        .card-hd {
+            padding: 22px 26px;
+            border-bottom: 2px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: linear-gradient(180deg, rgba(248,251,255,0.8) 0%, rgba(255,255,255,0.6) 100%);
+        }
+
+        .card-hd-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--ai-gradient);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            box-shadow: 0 8px 24px rgba(124, 58, 237, 0.35);
+            transition: var(--transition);
+        }
+
+        .card:hover .card-hd-icon {
+            transform: rotate(10deg) scale(1.05);
+            box-shadow: 0 12px 35px rgba(124, 58, 237, 0.45);
+        }
+
+        .card-hd h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            color: var(--text);
+        }
+
+        .card-bd {
+            padding: 28px;
+        }
+
+        /* STEPS BAR */
+        .steps-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, var(--border-light) 0%, rgba(255,255,255,0.8) 100%);
+            padding: 8px;
+            border-radius: 16px;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            border: 2px solid var(--border);
+        }
+
+        .step-pill {
+            flex: 1;
+            text-align: center;
+            padding: 14px 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            background: transparent;
+            min-width: 75px;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .step-pill.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .step-pill.done {
+            color: var(--success);
+            background: var(--success-light);
+        }
+
+        .step-pill::after {
+            content: attr(data-num);
+            position: absolute;
+            top: 4px;
+            right: 8px;
+            font-size: 0.65rem;
+            background: var(--primary);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .step-pill.active::after {
+            background: var(--ai-gradient);
+            box-shadow: 0 2px 8px rgba(124, 58, 237, 0.4);
+        }
+
+        .step-pill.done::after {
+            background: var(--success);
+            content: '✓';
+            font-size: 0.6rem;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
+        }
+
+        /* FORM ELEMENTS */
+        .fg {
+            margin-bottom: 18px;
+            position: relative;
+        }
+
+        .fg label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--text-sec);
+            margin-bottom: 10px;
+        }
+
+        .fg label i {
+            width: 20px;
+            text-align: center;
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+
+        .fc {
+            width: 100%;
+            padding: 14px 18px;
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+
+        .fc:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 5px rgba(26, 27, 124, 0.12);
+            background: white;
+            transform: translateY(-1px);
+        }
+
+        .fc.auto-filled {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border-color: rgba(26, 27, 124, 0.3);
+        }
+
+        select.fc {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%231a1b7c' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 18px center;
+            padding-right: 40px;
+        }
+
+        textarea.fc {
+            resize: vertical;
+            min-height: 90px;
+            line-height: 1.6;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .field-hint {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+            font-style: italic;
+        }
+
+        /* AUTOCOMPLETE DROPDOWN */
+        .ac-dd {
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0;
+            right: 0;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            max-height: 260px;
+            overflow-y: auto;
+            z-index: 100;
+            display: none;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .ac-dd.show {
+            display: block;
+            animation: slideDown 0.2s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .ac-item {
+            padding: 14px 18px;
+            cursor: pointer;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .ac-item:last-child {
+            border-bottom: none;
+        }
+
+        .ac-item:hover {
+            background: linear-gradient(90deg, #eff6ff 0%, #f8fafc 100%);
+            padding-left: 22px;
+        }
+
+        .ac-item strong {
+            color: var(--text);
+        }
+
+        /* BUTTONS */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 22px;
+            border-radius: 12px;
+            font-size: 0.92rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: inherit;
+            white-space: nowrap;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: var(--ai-gradient);
+            color: white;
+            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.35);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.45);
+        }
+
+        .btn-glow {
+            background: var(--ai-gradient);
+            color: white;
+            box-shadow: 0 0 30px rgba(124, 58, 237, 0.4);
+        }
+
+        .btn-glow:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(124, 58, 237, 0.5);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-sec);
+            border: 2px solid var(--border);
+        }
+
+        .btn-ghost:hover {
+            background: var(--border-light);
+            border-color: var(--text-muted);
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #059669);
+            color: white;
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.45);
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        .btn-full {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        /* SUB TABS */
+        .sub-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 22px;
+            background: linear-gradient(135deg, var(--border-light) 0%, rgba(255,255,255,0.6) 100%);
+            padding: 8px;
+            border-radius: 16px;
+            overflow-x: auto;
+            flex-wrap: nowrap;
+            border: 2px solid var(--border);
+        }
+
+        .sub-tab {
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .sub-tab.active {
+            background: var(--ai-gradient);
+            color: white;
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .sub-tab:hover:not(.active) {
+            background: rgba(124, 58, 237, 0.1);
+            color: var(--primary);
+        }
+
+        /* CHARTS */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin-bottom: 22px;
+        }
+
+        @media(max-width: 700px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .chart-box {
+            background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,250,252,0.8) 100%);
+            border: 2px solid var(--border);
+            border-radius: 18px;
+            padding: 22px;
+            position: relative;
+            min-height: 280px;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+        }
+
+        .chart-box:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .chart-box h4 {
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+        }
+
+        .chart-box h4 i {
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+
+        .chart-canvas-wrap {
+            position: relative;
+            height: 240px;
+            width: 100%;
+        }
+
+        /* ALGORITHM SECTION */
+        .algo-section {
+            background: linear-gradient(135deg, white 0%, rgba(248,250,252,0.8) 100%);
+            border: 2px solid var(--border);
+            border-left: 6px solid var(--primary);
+            border-radius: 16px;
+            padding: 26px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+        }
+
+        .algo-section:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateX(5px);
+        }
+
+        .algo-section h4 {
+            font-size: 1.05rem;
+            color: var(--primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+        }
+
+        .algo-section p {
+            font-size: 0.95rem;
+            color: var(--text);
+            line-height: 1.75;
+            margin-bottom: 12px;
+        }
+
+        .algo-section ul {
+            margin-top: 10px;
+            padding-left: 24px;
+            font-size: 0.92rem;
+            color: var(--text-sec);
+            line-height: 1.8;
+        }
+
+        .algo-section li {
+            margin-bottom: 8px;
+        }
+
+        /* SWOT GRID */
+        .swot-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        @media(max-width: 700px) {
+            .swot-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .swot-card {
+            border-radius: 14px;
+            padding: 18px;
+            border-left: 6px solid;
+            background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,250,252,0.8) 100%);
+            transition: var(--transition);
+        }
+
+        .swot-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .swot-s { border-color: var(--primary); }
+        .swot-w { border-color: var(--warning); }
+        .swot-o { border-color: var(--info); }
+        .swot-t { border-color: var(--danger); }
+
+        .swot-card h5 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .swot-s h5 { color: var(--primary); }
+        .swot-w h5 { color: #d97706; }
+        .swot-o h5 { color: var(--info); }
+        .swot-t h5 { color: var(--danger); }
+
+        .swot-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .swot-card li {
+            font-size: 0.87rem;
+            color: var(--text-sec);
+            padding: 6px 0;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+
+        .swot-card li:last-child {
+            border-bottom: none;
+        }
+
+        /* UPLOAD ZONE */
+        .upload-zone {
+            border: 3px dashed #cbd5e1;
+            padding: 28px;
+            text-align: center;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            background: linear-gradient(135deg, rgba(248,250,252,0.8) 0%, rgba(255,255,255,0.6) 100%);
+        }
+
+        .upload-zone:hover {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            transform: scale(1.02);
+        }
+
+        .upload-zone i {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        /* REPORT HEADER */
+        .report-header-banner {
+            background: var(--hero-gradient);
+            color: white;
+            padding: 26px 28px;
+            border-radius: 18px;
+            margin-bottom: 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            page-break-after: avoid;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .report-header-banner h2 {
+            font-size: 1.4rem;
+            margin: 0;
+        }
+
+        .report-meta {
+            font-size: 0.85rem;
+            opacity: 0.95;
+        }
+
+        /* METRIC ROW */
+        .metric-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.9) 100%);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 18px 14px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .metric-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(124, 58, 237, 0.3);
+        }
+
+        .metric-val {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-top: 6px;
+            font-weight: 600;
+        }
+
+        /* INFO GRID */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.9) 100%);
+            border: 2px solid var(--border);
+            border-radius: 14px;
+            padding: 16px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .info-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .info-card .ic-label {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .info-card .ic-value {
+            font-size: 1.05rem;
+            color: var(--text);
+            font-weight: 700;
+            margin-top: 6px;
+        }
+
+        /* LOADING SPINNER */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* SCROLLBAR */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--border-light);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--ai-gradient);
+        }
+
+        /* RESPONSIVE */
+        @media(max-width: 768px) {
+            .hero {
+                padding: 32px 24px;
+            }
+            
+            .hero h1 {
+                font-size: 1.6rem;
+            }
+            
+            .card-bd {
+                padding: 20px;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ANIMATIONS */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.5s ease forwards;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- HERO -->
+        <div class="hero animate-in">
+            <div class="hero-content">
+                <h1>
+                    <span class="icon-wrapper"><i class="fas fa-city"></i></span>
+                    ОНП Ассистент 2030
+                </h1>
+                <p>Интеллектуальная система разработки стратегий развития опорных населённых пунктов на период до 2030 года. Автоматизированный анализ, прогнозирование и формирование документов.</p>
+                
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <div class="stat-val" id="dbCount">0</div>
+                        <div class="stat-label">ОНП в базе</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-val">6</div>
+                        <div class="stat-label">Шагов анализа</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-val">100%</div>
+                        <div class="stat-label">Автоматизация</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-val">PDF</div>
+                        <div class="stat-label">Экспорт отчёта</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN GRID -->
+        <div class="grid">
+            <!-- LEFT PANEL - INPUT -->
+            <div class="card animate-in">
+                <div class="card-hd">
+                    <div class="card-hd-icon"><i class="fas fa-sliders-h"></i></div>
+                    <h3>Параметры анализа</h3>
+                </div>
+                <div class="card-bd">
+                    <!-- STEPS -->
+                    <div class="steps-bar" id="stepsBar"></div>
+
+                    <!-- STEP 1: SELECT ONP -->
+                    <div id="step-1" class="step-content">
+                        <div class="fg">
+                            <label><i class="fas fa-search"></i> Поиск населённого пункта</label>
+                            <input type="text" class="fc" id="onpSearch" placeholder="Введите название..." autocomplete="off">
+                            <div class="ac-dd" id="onpDropdown"></div>
+                            <div class="field-hint">Выберите из списка или введите вручную</div>
+                        </div>
+                        <div class="form-row">
+                            <div class="fg">
+                                <label><i class="fas fa-map-marker-alt"></i> Субъект РФ</label>
+                                <input type="text" class="fc" id="region" readonly>
+                            </div>
+                            <div class="fg">
+                                <label><i class="fas fa-users"></i> Население</label>
+                                <input type="number" class="fc" id="population" placeholder="чел.">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 2: ECONOMY -->
+                    <div id="step-2" class="step-content" style="display:none;">
+                        <div class="form-row">
+                            <div class="fg">
+                                <label><i class="fas fa-chart-line"></i> Износ ЖКХ (%)</label>
+                                <input type="number" class="fc" id="wear" min="0" max="100" placeholder="%">
+                            </div>
+                            <div class="fg">
+                                <label><i class="fas fa-unemployment"></i> Безработица (%)</label>
+                                <input type="number" class="fc" id="unemp" min="0" max="100" step="0.1" placeholder="%">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="fg">
+                                <label><i class="fas fa-industry"></i> Промышленность</label>
+                                <select class="fc" id="industry">
+                                    <option value="">Выбрать...</option>
+                                    <option value="Высокий">Высокий уровень</option>
+                                    <option value="Средний">Средний уровень</option>
+                                    <option value="Низкий">Низкий уровень</option>
+                                </select>
+                            </div>
+                            <div class="fg">
+                                <label><i class="fas fa-tractor"></i> Сельское хозяйство</label>
+                                <select class="fc" id="agriculture">
+                                    <option value="">Выбрать...</option>
+                                    <option value="Развито">Развито</option>
+                                    <option value="Средне">Средний уровень</option>
+                                    <option value="Слабо">Слабо развито</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 3: SOCIAL -->
+                    <div id="step-3" class="step-content" style="display:none;">
+                        <div class="form-row">
+                            <div class="fg">
+                                <label><i class="fas fa-school"></i> Образование</label>
+                                <select class="fc" id="education">
+                                    <option value="">Выбрать...</option>
+                                    <option value="Хорошее">Хорошее</option>
+                                    <option value="Среднее">Среднее</option>
+                                    <option value="Требует улучшения">Требует улучшения</option>
+                                </select>
+                            </div>
+                            <div class="fg">
+                                <label><i class="fas fa-hospital"></i> Здравоохранение</label>
+                                <select class="fc" id="healthcare">
+                                    <option value="">Выбрать...</option>
+                                    <option value="Доступное">Доступное</option>
+                                    <option value="Ограниченное">Ограниченное</option>
+                                    <option value="Отсутствует">Отсутствует</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="fg">
+                            <label><i class="fas fa-home"></i> Жилищный фонд</label>
+                            <textarea class="fc" id="housing" placeholder="Описание состояния жилищного фонда..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- STEP 4: INFRASTRUCTURE -->
+                    <div id="step-4" class="step-content" style="display:none;">
+                        <div class="fg">
+                            <label><i class="fas fa-road"></i> Транспортная инфраструктура</label>
+                            <textarea class="fc" id="transport" placeholder="Состояние дорог, транспортное сообщение..."></textarea>
+                        </div>
+                        <div class="fg">
+                            <label><i class="fas fa-wifi"></i> Цифровизация</label>
+                            <select class="fc" id="digital">
+                                <option value="">Выбрать...</option>
+                                <option value="Высокий">Высокий уровень</option>
+                                <option value="Средний">Средний уровень</option>
+                                <option value="Низкий">Низкий уровень</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- STEP 5: ECOLOGY -->
+                    <div id="step-5" class="step-content" style="display:none;">
+                        <div class="fg">
+                            <label><i class="fas fa-leaf"></i> Экологическая ситуация</label>
+                            <textarea class="fc" id="ecology" placeholder="Описание экологических проблем..."></textarea>
+                        </div>
+                        <div class="fg">
+                            <label><i class="fas fa-recycle"></i> Природные ресурсы</label>
+                            <textarea class="fc" id="resources" placeholder="Наличие и использование природных ресурсов..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- STEP 6: FINAL -->
+                    <div id="step-6" class="step-content" style="display:none;">
+                        <div class="algo-section">
+                            <h4><i class="fas fa-brain"></i> Анализ данных</h4>
+                            <p>Все параметры заполнены. Система готова провести комплексный анализ и сформировать стратегию развития.</p>
+                        </div>
+                        
+                        <div class="upload-zone" id="uploadZone">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <strong>Загрузить дополнительные материалы</strong>
+                            <p style="font-size:0.85rem;color:var(--text-muted);margin-top:8px;">Документы, схемы, фотографии (опционально)</p>
+                        </div>
+                        <input type="file" id="fileInput" multiple style="display:none;">
+                        <div id="uploadedFiles" style="margin-top:16px;"></div>
+                    </div>
+
+                    <!-- NAVIGATION BUTTONS -->
+                    <div class="btn-row">
+                        <button class="btn btn-ghost" id="btnPrev" onclick="prevStep()" style="display:none;">
+                            <i class="fas fa-arrow-left"></i> Назад
+                        </button>
+                        <button class="btn btn-primary btn-full" id="btnNext" onclick="nextStep()">
+                            Далее <i class="fas fa-arrow-right"></i>
+                        </button>
+                        <button class="btn btn-glow btn-full" id="btnAnalyze" onclick="analyzeData()" style="display:none;">
+                            <i class="fas fa-magic"></i> Запустить анализ
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT PANEL - RESULTS -->
+            <div class="card animate-in">
+                <div class="card-hd">
+                    <div class="card-hd-icon"><i class="fas fa-chart-pie"></i></div>
+                    <h3>Результаты анализа</h3>
+                </div>
+                <div class="card-bd">
+                    <!-- SUB TABS -->
+                    <div class="sub-tabs" id="subTabs" style="display:none;">
+                        <button class="sub-tab active" onclick="switchTab('passport')">Паспорт</button>
+                        <button class="sub-tab" onclick="switchTab('swot')">SWOT</button>
+                        <button class="sub-tab" onclick="switchTab('goals')">Цели</button>
+                        <button class="sub-tab" onclick="switchTab('projects')">Проекты</button>
+                        <button class="sub-tab" onclick="switchTab('forecast')">Прогноз</button>
+                    </div>
+
+                    <!-- EMPTY STATE -->
+                    <div id="emptyState" style="text-align:center;padding:60px 20px;">
+                        <i class="fas fa-analytics" style="font-size:4rem;color:var(--text-muted);opacity:0.3;margin-bottom:20px;"></i>
+                        <h3 style="color:var(--text-muted);font-size:1.2rem;margin-bottom:10px;">Нет данных для отображения</h3>
+                        <p style="color:var(--text-muted);">Заполните все параметры и запустите анализ</p>
+                    </div>
+
+                    <!-- REPORT CONTENT -->
+                    <div id="reportContent" style="display:none;">
+                        <!-- PASSPORT TAB -->
+                        <div id="tab-passport" class="tab-content">
+                            <div class="report-header-banner">
+                                <h2><i class="fas fa-file-contract"></i> Паспорт стратегии</h2>
+                                <div class="report-meta" id="reportMeta"></div>
+                            </div>
+                            
+                            <div class="info-grid" id="infoGrid"></div>
+                            
+                            <div class="metric-row" id="metricRow"></div>
+                            
+                            <div class="algo-section">
+                                <h4><i class="fas fa-info-circle"></i> Общая характеристика</h4>
+                                <p id="generalDesc"></p>
+                            </div>
+                        </div>
+
+                        <!-- SWOT TAB -->
+                        <div id="tab-swot" class="tab-content" style="display:none;">
+                            <div class="algo-section">
+                                <h4><i class="fas fa-balance-scale"></i> SWOT-анализ</h4>
+                                <p>Комплексная оценка сильных и слабых сторон, возможностей и угроз развития населённого пункта.</p>
+                            </div>
+                            
+                            <div class="swot-grid" id="swotGrid"></div>
+                        </div>
+
+                        <!-- GOALS TAB -->
+                        <div id="tab-goals" class="tab-content" style="display:none;">
+                            <div class="algo-section">
+                                <h4><i class="fas fa-bullseye"></i> Стратегические цели</h4>
+                                <p>Ключевые направления развития на период до 2030 года.</p>
+                            </div>
+                            
+                            <div id="goalsList"></div>
+                        </div>
+
+                        <!-- PROJECTS TAB -->
+                        <div id="tab-projects" class="tab-content" style="display:none;">
+                            <div class="algo-section">
+                                <h4><i class="fas fa-project-diagram"></i> Проекты и мероприятия</h4>
+                                <p>Перечень приоритетных проектов для реализации стратегии.</p>
+                            </div>
+                            
+                            <div id="projectsList"></div>
+                        </div>
+
+                        <!-- FORECAST TAB -->
+                        <div id="tab-forecast" class="tab-content" style="display:none;">
+                            <div class="algo-section">
+                                <h4><i class="fas fa-chart-area"></i> Прогнозные показатели</h4>
+                                <p>Динамика ключевых индикаторов развития до 2030 года.</p>
+                            </div>
+                            
+                            <div class="charts-grid">
+                                <div class="chart-box">
+                                    <h4><i class="fas fa-chart-pie"></i> Структура инвестиций</h4>
+                                    <div class="chart-canvas-wrap">
+                                        <canvas id="chPie"></canvas>
+                                    </div>
+                                </div>
+                                <div class="chart-box">
+                                    <h4><i class="fas fa-chart-line"></i> Динамика показателей</h4>
+                                    <div class="chart-canvas-wrap">
+                                        <canvas id="chBar"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- EXPORT BUTTONS -->
+                        <div class="btn-row">
+                            <button class="btn btn-success btn-full" id="downloadPdfBtn" onclick="downloadPDF()">
+                                <i class="fas fa-file-pdf"></i> Скачать PDF
+                            </button>
+                            <button class="btn btn-ghost btn-full" onclick="resetForm()">
+                                <i class="fas fa-redo"></i> Начать заново
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===================== DATA =====================
+        const ONP_FULL_LIST = [
+            { name: "Борисоглебск", region: "Воронежская область", population: 58000 },
+            { name: "Россошь", region: "Воронежская область", population: 62000 },
+            { name: "Лиски", region: "Воронежская область", population: 54000 },
+            { name: "Мичуринск", region: "Тамбовская область", population: 92000 },
+            { name: "Рассказово", region: "Тамбовская область", population: 42000 },
+            { name: "Елец", region: "Липецкая область", population: 105000 },
+            { name: "Грязи", region: "Липецкая область", population: 46000 },
+            { name: "Старый Оскол", region: "Белгородская область", population: 220000 },
+            { name: "Алексеевка", region: "Белгородская область", population: 38000 },
+            { name: "Морозовск", region: "Ростовская область", population: 26000 },
+            { name: "Миллерово", region: "Ростовская область", population: 35000 },
+            { name: "Каменск-Шахтинский", region: "Ростовская область", population: 88000 },
+            { name: "Урюпинск", region: "Волгоградская область", population: 38000 },
+            { name: "Камышин", region: "Волгоградская область", population: 115000 },
+            { name: "Балаково", region: "Саратовская область", population: 180000 },
+            { name: "Балашов", region: "Саратовская область", population: 75000 }
+        ];
+
+        let currentStep = 1;
+        let selectedONP = null;
+        let resultData = null;
+        let chartsInstance = {};
+
+        // ===================== INITIALIZATION =====================
+        document.addEventListener('DOMContentLoaded', function() {
+            renderSteps();
+            setupAutocomplete();
+            document.getElementById('dbCount').textContent = ONP_FULL_LIST.length;
+        });
+
+        // ===================== STEPS RENDERING =====================
+        function renderSteps() {
+            const stepsBar = document.getElementById('stepsBar');
+            const steps = ['Выбор ОНП', 'Экономика', 'Соц. сфера', 'Инфраструктура', 'Экология', 'Финал'];
+            
+            stepsBar.innerHTML = steps.map((s, i) => 
+                `<button class="step-pill ${i+1 === currentStep ? 'active' : ''} ${i+1 < currentStep ? 'done' : ''}" 
+                          data-num="${i+1}" onclick="goToStep(${i+1})">${s}</button>`
+            ).join('');
+            
+            updateStepVisibility();
+        }
+
+        function goToStep(step) {
+            if (step < currentStep || (step === currentStep + 1 && canProceed())) {
+                currentStep = step;
+                renderSteps();
+            }
+        }
+
+        function canProceed() {
+            if (currentStep === 1) return selectedONP !== null;
+            if (currentStep === 2) {
+                return document.getElementById('wear').value && 
+                       document.getElementById('unemp').value;
+            }
+            return true;
+        }
+
+        function updateStepVisibility() {
+            for (let i = 1; i <= 6; i++) {
+                document.getElementById(`step-${i}`).style.display = i === currentStep ? 'block' : 'none';
+            }
+            
+            const btnPrev = document.getElementById('btnPrev');
+            const btnNext = document.getElementById('btnNext');
+            const btnAnalyze = document.getElementById('btnAnalyze');
+            
+            btnPrev.style.display = currentStep > 1 ? 'inline-flex' : 'none';
+            
+            if (currentStep === 6) {
+                btnNext.style.display = 'none';
+                btnAnalyze.style.display = 'inline-flex';
+            } else {
+                btnNext.style.display = 'inline-flex';
+                btnAnalyze.style.display = 'none';
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                renderSteps();
+            }
+        }
+
+        function nextStep() {
+            if (!canProceed()) {
+                alert('Заполните обязательные поля!');
+                return;
+            }
+            if (currentStep < 6) {
+                currentStep++;
+                renderSteps();
+            }
+        }
+
+        // ===================== AUTOCOMPLETE =====================
+        function setupAutocomplete() {
+            const input = document.getElementById('onpSearch');
+            const dropdown = document.getElementById('onpDropdown');
+            
+            input.addEventListener('input', function() {
+                const val = this.value.toLowerCase();
+                if (!val) {
+                    dropdown.classList.remove('show');
+                    return;
+                }
+                
+                const filtered = ONP_FULL_LIST.filter(item => 
+                    item.name.toLowerCase().includes(val) || 
+                    item.region.toLowerCase().includes(val)
+                );
+                
+                if (filtered.length > 0) {
+                    dropdown.innerHTML = filtered.map(item => 
+                        `<div class="ac-item" data-name="${item.name}" data-region="${item.region}" data-pop="${item.population}">
+                            <strong>${item.name}</strong> <span style="color:#64748b;">${item.region}</span>
+                        </div>`
+                    ).join('');
+                    dropdown.classList.add('show');
+                } else {
+                    dropdown.classList.remove('show');
+                }
+            });
+            
+            dropdown.addEventListener('click', function(e) {
+                const item = e.target.closest('.ac-item');
+                if (item) {
+                    selectONP({
+                        name: item.dataset.name,
+                        region: item.dataset.region,
+                        population: parseInt(item.dataset.pop)
+                    });
+                    dropdown.classList.remove('show');
+                }
+            });
+            
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.fg')) {
+                    dropdown.classList.remove('show');
+                }
+            });
+        }
+
+        function selectONP(onp) {
+            selectedONP = onp;
+            document.getElementById('onpSearch').value = onp.name;
+            document.getElementById('region').value = onp.region;
+            document.getElementById('population').value = onp.population;
+            document.getElementById('onpSearch').classList.add('auto-filled');
+        }
+
+        // ===================== ANALYSIS =====================
+        function analyzeData() {
+            const wear = parseFloat(document.getElementById('wear').value) || 45;
+            const unemp = parseFloat(document.getElementById('unemp').value) || 5.5;
+            const industry = document.getElementById('industry').value || 'Средний';
+            const agriculture = document.getElementById('agriculture').value || 'Средне';
+            const education = document.getElementById('education').value || 'Среднее';
+            const healthcare = document.getElementById('healthcare').value || 'Ограниченное';
+            const housing = document.getElementById('housing').value || 'Требует модернизации';
+            const transport = document.getElementById('transport').value || 'Развита недостаточно';
+            const digital = document.getElementById('digital').value || 'Средний';
+            const ecology = document.getElementById('ecology').value || 'Удовлетворительная';
+            const resources = document.getElementById('resources').value || 'Имеются природные ресурсы';
+            
+            resultData = {
+                d: {
+                    name: selectedONP.name,
+                    region: selectedONP.region,
+                    population: selectedONP.population,
+                    wear: wear,
+                    unemp: unemp,
+                    industry: industry,
+                    agriculture: agriculture,
+                    education: education,
+                    healthcare: healthcare,
+                    housing: housing,
+                    transport: transport,
+                    digital: digital,
+                    ecology: ecology,
+                    resources: resources
+                }
+            };
+            
+            generateReport();
+        }
+
+        // ===================== REPORT GENERATION =====================
+        function generateReport() {
+            const d = resultData.d;
+            
+            document.getElementById('emptyState').style.display = 'none';
+            document.getElementById('subTabs').style.display = 'flex';
+            document.getElementById('reportContent').style.display = 'block';
+            
+            // Passport
+            document.getElementById('reportMeta').innerHTML = `
+                <div><strong>${d.name}</strong></div>
+                <div>${d.region}</div>
+                <div>Население: ${d.population.toLocaleString()} чел.</div>
+            `;
+            
+            document.getElementById('infoGrid').innerHTML = `
+                <div class="info-card">
+                    <div class="ic-label">Промышленность</div>
+                    <div class="ic-value">${d.industry}</div>
+                </div>
+                <div class="info-card">
+                    <div class="ic-label">Сельское хозяйство</div>
+                    <div class="ic-value">${d.agriculture}</div>
+                </div>
+                <div class="info-card">
+                    <div class="ic-label">Образование</div>
+                    <div class="ic-value">${d.education}</div>
+                </div>
+                <div class="info-card">
+                    <div class="ic-label">Здравоохранение</div>
+                    <div class="ic-value">${d.healthcare}</div>
+                </div>
+                <div class="info-card">
+                    <div class="ic-label">Цифровизация</div>
+                    <div class="ic-value">${d.digital}</div>
+                </div>
+                <div class="info-card">
+                    <div class="ic-label">Экология</div>
+                    <div class="ic-value">${d.ecology}</div>
+                </div>
+            `;
+            
+            document.getElementById('metricRow').innerHTML = `
+                <div class="metric-card">
+                    <div class="metric-val">${d.wear}%</div>
+                    <div class="metric-label">Износ ЖКХ</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-val">${d.unemp}%</div>
+                    <div class="metric-label">Безработица</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-val">${Math.round(d.population * 1.05).toLocaleString()}</div>
+                    <div class="metric-label">Прогноз 2030</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-val">${(d.population * 0.15).toFixed(0)} тыс.</div>
+                    <div class="metric-label">Инвестиции</div>
+                </div>
+            `;
+            
+            document.getElementById('generalDesc').textContent = 
+                `${d.name} — опорный населённый пункт ${d.region} с населением ${d.population.toLocaleString()} человек. ` +
+                `Основные направления развития: модернизация инфраструктуры, стимулирование экономической активности, ` +
+                `повышение качества жизни населения. Приоритетные отрасли: промышленность (${d.industry.toLowerCase()}), ` +
+                `сельское хозяйство (${d.agriculture.toLowerCase()}).`;
+            
+            // SWOT
+            document.getElementById('swotGrid').innerHTML = `
+                <div class="swot-card swot-s">
+                    <h5><i class="fas fa-plus-circle"></i> Сильные стороны</h5>
+                    <ul>
+                        <li>Статус опорного населённого пункта</li>
+                        <li>${d.industry === 'Высокий' ? 'Развитая промышленная база' : 'Потенциал промышленного развития'}</li>
+                        <li>${d.agriculture === 'Развито' ? 'Сильный аграрный сектор' : 'Сельскохозяйственный потенциал'}</li>
+                        <li>Выгодное географическое положение</li>
+                    </ul>
+                </div>
+                <div class="swot-card swot-w">
+                    <h5><i class="fas fa-minus-circle"></i> Слабые стороны</h5>
+                    <ul>
+                        <li>Высокий износ коммунальной инфраструктуры (${d.wear}%)</li>
+                        <li>Отток молодёжи в крупные города</li>
+                        <li>${d.healthcare === 'Ограниченное' ? 'Недостаток медицинских услуг' : 'Проблемы в здравоохранении'}</li>
+                        <li>Дефицит современных рабочих мест</li>
+                    </ul>
+                </div>
+                <div class="swot-card swot-o">
+                    <h5><i class="fas fa-lightbulb"></i> Возможности</h5>
+                    <ul>
+                        <li>Участие в федеральных программах развития</li>
+                        <li>Привлечение инвестиций в инфраструктуру</li>
+                        <li>Развитие туристического потенциала</li>
+                        <li>Создание промышленных кластеров</li>
+                    </ul>
+                </div>
+                <div class="swot-card swot-t">
+                    <h5><i class="fas fa-exclamation-triangle"></i> Угрозы</h5>
+                    <ul>
+                        <li>Дальнейшая депопуляция</li>
+                        <li>Ухудшение экологической ситуации</li>
+                        <li>Рост социальной напряжённости</li>
+                        <li>Недостаточное финансирование</li>
+                    </ul>
+                </div>
+            `;
+            
+            // Goals
+            document.getElementById('goalsList').innerHTML = `
+                <div class="algo-section">
+                    <h4><i class="fas fa-flag"></i> Цель 1: Модернизация инфраструктуры</h4>
+                    <p>Снижение износа коммунальных сетей с ${d.wear}% до 35% к 2030 году. Реконструкция ключевых объектов жизнеобеспечения.</p>
+                </div>
+                <div class="algo-section">
+                    <h4><i class="fas fa-users"></i> Цель 2: Повышение качества жизни</h4>
+                    <p>Снижение безработицы с ${d.unemp}% до 3%. Развитие социальной сферы, улучшение доступности образования и здравоохранения.</p>
+                </div>
+                <div class="algo-section">
+                    <h4><i class="fas fa-chart-line"></i> Цель 3: Экономический рост</h4>
+                    <p>Увеличение налогового потенциала на 40%. Создание новых промышленных и аграрных предприятий.</p>
+                </div>
+                <div class="algo-section">
+                    <h4><i class="fas fa-tree"></i> Цель 4: Экологическая устойчивость</h4>
+                    <p>Внедрение современных экологических стандартов. Развитие зелёных зон и переработки отходов.</p>
+                </div>
+            `;
+            
+            // Projects
+            document.getElementById('projectsList').innerHTML = `
+                <div class="algo-section">
+                    <h4><i class="fas fa-hard-hat"></i> Проект 1: Комплексная реконструкция ЖКХ</h4>
+                    <p>Замена изношенных сетей, модернизация котельных, внедрение умных систем учёта ресурсов.</p>
+                    <ul>
+                        <li>Срок реализации: 2025-2028 гг.</li>
+                        <li>Ориентировочная стоимость: ${(d.population * 0.5).toFixed(0)} млн руб.</li>
+                    </ul>
+                </div>
+                <div class="algo-section">
+                    <h4><i class="fas fa-building"></i> Проект 2: Развитие жилищного строительства</h4>
+                    <p>Строительство современного жилья, расселение аварийного фонда, создание комфортной городской среды.</p>
+                    <ul>
+                        <li>Срок реализации: 2025-2030 гг.</li>
+                        <li>Ориентировочная стоимость: ${(d.population * 0.8).toFixed(0)} млн руб.</li>
+                    </ul>
+                </div>
+                <div class="algo-section">
+                    <h4><i class="fas fa-industry"></i> Проект 3: Индустриальный парк</h4>
+                    <p>Создание промышленной зоны для привлечения инвесторов и создания новых рабочих мест.</p>
+                    <ul>
+                        <li>Срок реализации: 2026-2029 гг.</li>
+                        <li>Ориентировочная стоимость: ${(d.population * 1.2).toFixed(0)} млн руб.</li>
+                    </ul>
+                </div>
+                <div class="algo-section">
+                    <h4><i class="fas fa-digital-tachograph"></i> Проект 4: Цифровая трансформация</h4>
+                    <p>Внедрение цифровых сервисов для жителей, развитие инфраструктуры связи, создание ситуационного центра.</p>
+                    <ul>
+                        <li>Срок реализации: 2025-2027 гг.</li>
+                        <li>Ориентировочная стоимость: ${(d.population * 0.15).toFixed(0)} млн руб.</li>
+                    </ul>
+                </div>
+            `;
+            
+            // Charts
+            setTimeout(() => renderCharts(), 100);
+            
+            switchTab('passport');
+        }
+
+        // ===================== CHARTS =====================
+        function renderCharts() {
+            const d = resultData.d;
+            
+            // Pie Chart
+            const ctxP = document.getElementById('chPie');
+            if (ctxP) {
+                if (chartsInstance.pie) chartsInstance.pie.destroy();
+                chartsInstance.pie = new Chart(ctxP, {
+                    type: 'doughnut',
+                    data: { 
+                        labels: ['Инфраструктура', 'Жильё', 'Экономика', 'Соц. сфера', 'Экология', 'Резерв'], 
+                        datasets: [{ 
+                            data: [30, 22, 22, 12, 8, 6], 
+                            backgroundColor: ['#1a1b7c', '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#64748b'], 
+                            borderWidth: 0, 
+                            hoverOffset: 8 
+                        }] 
+                    },
+                    options: { 
+                        responsive: true, 
+                        maintainAspectRatio: false, 
+                        cutout: '60%', 
+                        plugins: { 
+                            legend: { 
+                                position: 'right', 
+                                labels: { 
+                                    boxWidth: 14, 
+                                    padding: 12, 
+                                    font: { size: 11 }, 
+                                    color: '#475569', 
+                                    usePointStyle: true, 
+                                    pointStyle: 'circle' 
+                                } 
+                            }, 
+                            tooltip: { 
+                                backgroundColor: '#0f172a', 
+                                cornerRadius: 8,
+                                padding: 12
+                            } 
+                        } 
+                    }
+                });
+            }
+
+            // Line Chart
+            const ctxB = document.getElementById('chBar');
+            if (ctxB) {
+                if (chartsInstance.bar) chartsInstance.bar.destroy();
+                const yrs = ['2024', '2025', '2026', '2027', '2028', '2029', '2030'];
+                const wd = yrs.map((_, i) => i === 0 ? d.wear : Math.max(25, d.wear - Math.round(i * (d.wear - 30) / 6)));
+                const ud = yrs.map((_, i) => i === 0 ? d.unemp : Math.max(2.5, d.unemp - (i * (d.unemp - 3) / 6)));
+                const yMax = Math.max(d.wear, d.unemp, 10) + 10;
+                
+                chartsInstance.bar = new Chart(ctxB, {
+                    type: 'line',
+                    data: {
+                        labels: yrs, 
+                        datasets: [
+                            { 
+                                label: 'Износ ЖКХ (%)', 
+                                data: wd, 
+                                borderColor: '#ef4444', 
+                                backgroundColor: 'rgba(239,68,68,0.08)', 
+                                fill: true, 
+                                tension: 0.4, 
+                                pointRadius: 5, 
+                                pointBackgroundColor: '#ef4444', 
+                                borderWidth: 3 
+                            },
+                            { 
+                                label: 'Безработица (%)', 
+                                data: ud, 
+                                borderColor: '#10b981', 
+                                backgroundColor: 'rgba(16,185,129,0.08)', 
+                                fill: true, 
+                                tension: 0.4, 
+                                pointRadius: 5, 
+                                pointBackgroundColor: '#10b981', 
+                                borderWidth: 3 
+                            }
+                        ]
+                    },
+                    options: { 
+                        responsive: true, 
+                        maintainAspectRatio: false, 
+                        interaction: { 
+                            mode: 'index', 
+                            intersect: false 
+                        }, 
+                        scales: { 
+                            y: { 
+                                min: 0, 
+                                max: yMax, 
+                                grid: { color: 'rgba(226,232,240,0.5)' }, 
+                                ticks: { font: { size: 11 }, color: '#64748b' } 
+                            }, 
+                            x: { 
+                                grid: { display: false }, 
+                                ticks: { font: { size: 11 }, color: '#64748b' } 
+                            } 
+                        }, 
+                        plugins: { 
+                            legend: { 
+                                position: 'top', 
+                                align: 'end', 
+                                labels: { 
+                                    boxWidth: 12, 
+                                    padding: 16, 
+                                    font: { size: 11 }, 
+                                    color: '#475569', 
+                                    usePointStyle: true, 
+                                    pointStyle: 'circle' 
+                                } 
+                            }, 
+                            tooltip: { 
+                                backgroundColor: '#0f172a', 
+                                cornerRadius: 8,
+                                padding: 12
+                            } 
+                        } 
+                    }
+                });
+            }
+        }
+
+        // ===================== TAB SWITCHING =====================
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
+            document.getElementById('tab-' + tabName).style.display = 'block';
+            
+            document.querySelectorAll('.sub-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (tabName === 'forecast') {
+                setTimeout(() => renderCharts(), 50);
+            }
+        }
+
+        // ===================== PDF EXPORT =====================
+        function downloadPDF() {
+            const el = document.getElementById('reportContent');
+            const btn = document.getElementById('downloadPdfBtn');
+            if (!el || !resultData) return;
+
+            const orig = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Подготовка PDF...';
+            btn.disabled = true;
+
+            document.querySelectorAll('[id^="tab-"]').forEach(t => t.style.display = 'block');
+            document.querySelector('.sub-tabs').style.display = 'none';
+
+            const opt = {
+                margin: [10, 10, 10, 10],
+                filename: 'Стратегия_ОНП_' + resultData.d.name.replace(/[\s.]+/g, '_') + '.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true, scrollX: 0, scrollY: 0, windowWidth: 850, allowTaint: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                pagebreak: { mode: ['css', 'legacy'], before: ['.section-divider', '.algo-section'] }
+            };
+
+            setTimeout(function() {
+                html2pdf().set(opt).from(el).save().then(function() {
+                    btn.innerHTML = orig;
+                    btn.disabled = false;
+                    restoreTabs();
+                }).catch(function(err) {
+                    console.error('PDF error:', err);
+                    btn.innerHTML = '<i class="fas fa-exclamation"></i> Ошибка';
+                    setTimeout(function() { btn.innerHTML = orig; btn.disabled = false; }, 2000);
+                    restoreTabs();
+                });
+            }, 300);
+
+            function restoreTabs() {
+                document.querySelectorAll('[id^="tab-"]').forEach(t => t.style.display = 'none');
+                document.querySelector('.sub-tabs').style.display = 'flex';
+                const active = document.querySelector('.sub-tab.active');
+                if (active) {
+                    const match = active.getAttribute('onclick').match(/'([^']+)'/);
+                    if (match && match[1]) {
+                        const tabEl = document.getElementById('tab-' + match[1]);
+                        if (tabEl) tabEl.style.display = 'block';
+                    }
+                } else {
+                    const passport = document.getElementById('tab-passport');
+                    if (passport) passport.style.display = 'block';
+                }
+            }
+        }
+
+        // ===================== FILE UPLOAD =====================
+        document.getElementById('uploadZone').addEventListener('click', function() { 
+            document.getElementById('fileInput').click(); 
+        });
+        
+        document.getElementById('fileInput').addEventListener('change', function() {
+            const c = document.getElementById('uploadedFiles');
+            c.innerHTML = '';
+            Array.from(this.files).forEach(function(f) {
+                const sz = f.size > 1048576 ? (f.size / 1048576).toFixed(1) + ' МБ' : (f.size / 1024).toFixed(0) + ' КБ';
+                c.innerHTML += '<div style="padding:8px 12px;margin:6px 0;background:linear-gradient(135deg,#f8fafc,#fff);border:2px solid var(--border);border-radius:10px;font-size:0.9rem;color:#475569;display:flex;align-items:center;gap:8px;"><i class="fas fa-paperclip" style="color:var(--primary);"></i>' + f.name + ' <span style="color:#94a3b8;margin-left:auto;">(' + sz + ')</span></div>';
+            });
+        });
+
+        // ===================== RESET FORM =====================
+        function resetForm() {
+            currentStep = 1;
+            selectedONP = null;
+            resultData = null;
+            
+            document.querySelectorAll('.fc').forEach(f => {
+                f.value = '';
+                f.classList.remove('auto-filled');
+            });
+            
+            document.getElementById('emptyState').style.display = 'block';
+            document.getElementById('subTabs').style.display = 'none';
+            document.getElementById('reportContent').style.display = 'none';
+            document.getElementById('uploadedFiles').innerHTML = '';
+            
+            renderSteps();
+        }
+    </script>
+</body>
+
+</html>
