@@ -1,0 +1,1192 @@
+```html
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ОНП Ассистент 2030 — Программа развития опорных населённых пунктов</title>
+<link href="https://api.fontshare.com/v2/css?f[]=druk-text-wide@400,500,600,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root {
+--primary: #1a1b7c;
+--primary-light: #3d3dff;
+--primary-dark: #0a0a5c;
+--bg: #f0f2f5;
+--card: #ffffff;
+--text: #0f172a;
+--text-sec: #475569;
+--text-muted: #64748b;
+--border: #e2e8f0;
+--border-light: #f8fafc;
+--success: #10b981;
+--warning: #f59e0b;
+--danger: #ef4444;
+--info: #3b82f6;
+--purple: #7c3aed;
+--ai-gradient: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+--font: 'Druk Text Wide', system-ui, -apple-system, sans-serif;
+--radius: 16px;
+--radius-sm: 10px;
+--shadow: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+--shadow-lg: 0 20px 50px -12px rgba(26, 27, 124, 0.25);
+--shadow-card: 0 4px 20px rgba(0,0,0,0.06);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+.hero {
+background: linear-gradient(135deg, var(--primary) 0%, #1e1b4b 50%, #0f0a3a 100%);
+color: white;
+border-radius: var(--radius);
+padding: 40px 44px;
+margin-bottom: 24px;
+position: relative;
+overflow: hidden;
+box-shadow: var(--shadow-lg);
+}
+.hero::before {
+content:'';
+position:absolute;
+top:-50%;
+right:-10%;
+width:500px;
+height:500px;
+background: radial-gradient(circle, rgba(124,58,237,0.15) 0%, transparent 70%);
+border-radius: 50%;
+animation: pulse 4s ease-in-out infinite;
+}
+.hero::after {
+content:'';
+position:absolute;
+bottom:-30%;
+left:20%;
+width:300px;
+height:300px;
+background: radial-gradient(circle, rgba(59,130,246,0.1) 0%, transparent 70%);
+border-radius: 50%;
+animation: pulse 5s ease-in-out infinite reverse;
+}
+@keyframes pulse {
+0%, 100% { transform: scale(1); opacity: 0.6; }
+50% { transform: scale(1.1); opacity: 1; }
+}
+.hero h1 {
+font-size: clamp(1.6rem, 4vw, 2.4rem);
+font-weight: 700;
+display: flex;
+align-items: center;
+gap: 14px;
+margin-bottom: 10px;
+position: relative;
+z-index: 1;
+letter-spacing: 0.02em;
+}
+.hero h1 .icon-wrapper {
+width: 52px;
+height: 52px;
+background: rgba(255,255,255,0.15);
+backdrop-filter: blur(10px);
+border-radius: 14px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 1.4rem;
+border: 1px solid rgba(255,255,255,0.2);
+}
+.hero p {
+opacity: 0.88;
+font-size: 1.05rem;
+max-width: 750px;
+position: relative;
+z-index: 1;
+margin-bottom: 24px;
+line-height: 1.55;
+font-weight: 400;
+}
+.stats-row {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+gap: 14px;
+margin-top: 24px;
+position: relative;
+z-index: 1;
+}
+.stat-card {
+background: rgba(255,255,255,0.08);
+backdrop-filter: blur(12px);
+border-radius: 12px;
+padding: 16px 14px;
+text-align: center;
+border: 1px solid rgba(255,255,255,0.12);
+transition: all 0.3s ease;
+position: relative;
+overflow: hidden;
+}
+.stat-card::before {
+content: '';
+position: absolute;
+top: 0; left: 0; right: 0;
+height: 3px;
+background: linear-gradient(90deg, var(--primary-light), var(--purple));
+opacity: 0;
+transition: opacity 0.3s;
+}
+.stat-card:hover { transform: translateY(-4px); background: rgba(255,255,255,0.14); }
+.stat-card:hover::before { opacity: 1; }
+.stat-val { font-size: 1.7rem; font-weight: 700; letter-spacing: -0.5px; }
+.stat-label { font-size: 0.68rem; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 5px; font-weight: 500; }
+.container { max-width: 100%; margin: 0 auto; padding: 24px; }
+@media(min-width:1300px) { .container { max-width: 1440px; } }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+@media(max-width:1100px) { .grid { grid-template-columns: 1fr; } }
+.card {
+background: var(--card);
+border: 1px solid var(--border);
+border-radius: var(--radius);
+box-shadow: var(--shadow-card);
+overflow: hidden;
+transition: box-shadow 0.3s ease;
+display: flex;
+flex-direction: column;
+}
+.card:hover { box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
+.card-hd {
+padding: 18px 22px;
+border-bottom: 1px solid var(--border);
+display: flex;
+align-items: center;
+gap: 12px;
+background: linear-gradient(180deg, #fafbfc 0%, #ffffff 100%);
+flex-shrink: 0;
+}
+.card-hd-icon {
+width: 42px;
+height: 42px;
+background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+border-radius: 11px;
+display: flex;
+align-items: center;
+justify-content: center;
+color: white;
+font-size: 0.95rem;
+flex-shrink: 0;
+box-shadow: 0 4px 12px rgba(26, 27, 124, 0.3);
+}
+.card-hd h3 { font-size: 0.95rem; font-weight: 700; letter-spacing: 0.01em; text-transform: uppercase; color: var(--text); }
+.card-bd { padding: 22px; flex: 1; overflow-y: auto; max-height: calc(100vh - 380px); }
+.steps-bar {
+display: flex;
+gap: 8px;
+margin-bottom: 20px;
+background: var(--border-light);
+padding: 6px;
+border-radius: 12px;
+flex-wrap: nowrap;
+overflow-x: auto;
+}
+.step-pill {
+flex: 1;
+text-align: center;
+padding: 12px 8px;
+border-radius: 9px;
+font-size: 0.82rem;
+font-weight: 600;
+color: var(--text-muted);
+cursor: pointer;
+transition: all 0.25s ease;
+border: none;
+background: transparent;
+min-width: 68px;
+white-space: nowrap;
+position: relative;
+}
+.step-pill.active {
+background: white;
+color: var(--primary);
+box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+.step-pill.done { color: var(--primary); background: rgba(26, 27, 124, 0.06); }
+.step-pill::after {
+content: attr(data-num);
+position: absolute;
+top: 2px;
+right: 6px;
+font-size: 0.6rem;
+background: var(--primary);
+color: white;
+width: 16px;
+height: 16px;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+font-weight: 700;
+}
+.step-pill.active::after { background: var(--primary); }
+.step-pill.done::after { background: var(--success); content: '✓'; font-size: 0.55rem; }
+.fg { margin-bottom: 16px; position: relative; }
+.fg label { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; font-weight: 600; color: var(--text-sec); margin-bottom: 8px; }
+.fg label i { width: 18px; text-align: center; color: var(--primary); font-size: 0.85rem; }
+.fc {
+width: 100%;
+padding: 12px 16px;
+background: #f8fafc;
+border: 1.5px solid var(--border);
+border-radius: 10px;
+color: var(--text);
+font-size: 0.95rem;
+font-family: inherit;
+transition: all 0.25s ease;
+}
+.fc:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(26, 27, 124, 0.1); background: #fff; }
+.fc.auto-filled { background: #eff6ff; border-color: rgba(26, 27, 124, 0.2); }
+select.fc {
+appearance: none;
+background-image: url("image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%231a1b7c' d='M5 7L0 2h10z'/%3E%3C/svg%3E");
+background-repeat: no-repeat;
+background-position: right 16px center;
+padding-right: 36px;
+}
+textarea.fc { resize: vertical; min-height: 80px; line-height: 1.5; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.field-hint { font-size: 0.75rem; color: var(--text-muted); margin-top: 5px; }
+.ac-dd {
+position: absolute;
+top: calc(100% + 5px);
+left: 0; right: 0;
+background: white;
+border: 1.5px solid var(--border);
+border-radius: 10px;
+max-height: 240px;
+overflow-y: auto;
+z-index: 100;
+display: none;
+box-shadow: var(--shadow-lg);
+}
+.ac-dd.show { display: block; }
+.ac-item { padding: 12px 16px; cursor: pointer; border-bottom: 1px solid #f1f5f9; font-size: 0.88rem; transition: 0.15s; }
+.ac-item:last-child { border-bottom: none; }
+.ac-item:hover { background: #eff6ff; }
+.ac-item strong { color: var(--text); }
+.btn {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 8px;
+padding: 12px 18px;
+border-radius: 10px;
+font-size: 0.9rem;
+font-weight: 600;
+border: none;
+cursor: pointer;
+transition: all 0.25s ease;
+font-family: inherit;
+white-space: nowrap;
+}
+.btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(26, 27, 124, 0.25); }
+.btn-primary:hover { background: var(--primary-light); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(26, 27, 124, 0.3); }
+.btn-glow { background: linear-gradient(135deg, var(--primary-dark), var(--primary)); color: white; }
+.btn-glow:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(26, 27, 124, 0.35); }
+.btn-ghost { background: transparent; color: var(--text-sec); border: 1.5px solid var(--border); }
+.btn-ghost:hover { background: #f8fafc; border-color: var(--text-muted); }
+.btn-row { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+.btn-full { flex: 1; min-width: 140px; }
+.sub-tabs { display: flex; gap: 6px; margin-bottom: 18px; background: var(--border-light); padding: 6px; border-radius: 12px; overflow-x: auto; flex-wrap: nowrap; flex-shrink: 0; }
+.sub-tab {
+padding: 10px 14px;
+border-radius: 8px;
+font-size: 0.82rem;
+font-weight: 600;
+color: var(--text-muted);
+background: none;
+border: none;
+cursor: pointer;
+transition: 0.25s;
+white-space: nowrap;
+flex-shrink: 0;
+}
+.sub-tab.active { background: var(--primary); color: white; box-shadow: 0 3px 8px rgba(26, 27, 124, 0.2); }
+.sub-tab:hover:not(.active) { background: rgba(26, 27, 124, 0.06); color: var(--primary); }
+.charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 18px; }
+@media(max-width:650px) { .charts-grid { grid-template-columns: 1fr; } }
+.chart-box {
+background: var(--border-light);
+border: 1px solid var(--border);
+border-radius: 14px;
+padding: 18px;
+position: relative;
+min-height: 250px;
+box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.chart-box h4 { font-size: 0.92rem; margin-bottom: 12px; color: var(--text); display: flex; align-items: center; gap: 8px; }
+.chart-box h4 i { color: var(--primary); font-size: 0.85rem; }
+.chart-canvas-wrap { position: relative; height: 220px; width: 100%; }
+.algo-section {
+background: white;
+border: 1px solid var(--border);
+border-left: 5px solid var(--primary);
+border-radius: 12px;
+padding: 22px;
+margin-bottom: 22px;
+box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+page-break-inside: avoid;
+}
+.algo-section h4 {
+font-size: 1.05rem;
+color: var(--primary);
+margin-bottom: 12px;
+display: flex;
+align-items: center;
+gap: 8px;
+font-weight: 700;
+}
+.algo-section p { font-size: 0.95rem; color: var(--text); line-height: 1.7; margin-bottom: 10px; }
+.algo-section ul { margin-top: 8px; padding-left: 22px; font-size: 0.92rem; color: var(--text-sec); line-height: 1.7; }
+.algo-section li { margin-bottom: 6px; }
+.swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+@media(max-width:650px) { .swot-grid { grid-template-columns: 1fr; } }
+.swot-card { border-radius: 12px; padding: 14px; border-left: 5px solid; background: var(--border-light); }
+.swot-s { border-color: var(--primary); } .swot-w { border-color: var(--warning); }
+.swot-o { border-color: var(--info); } .swot-t { border-color: var(--danger); }
+.swot-card h5 { font-size: 0.88rem; font-weight: 700; margin-bottom: 6px; }
+.swot-s h5 { color: var(--primary); } .swot-w h5 { color: #d97706; }
+.swot-o h5 { color: var(--info); } .swot-t h5 { color: var(--danger); }
+.swot-card li { font-size: 0.85rem; color: var(--text-sec); padding: 4px 0; list-style: none; border-bottom: 1px dashed #e2e8f0; }
+.swot-card li:last-child { border-bottom: none; }
+.upload-zone {
+border: 2px dashed #cbd5e1;
+padding: 20px;
+text-align: center;
+border-radius: 12px;
+cursor: pointer;
+transition: 0.25s;
+background: var(--border-light);
+}
+.upload-zone:hover { border-color: var(--primary); background: #eff6ff; }
+.upload-zone i { color: var(--primary); font-size: 1.6rem; margin-bottom: 8px; display: block; }
+.report-header-banner {
+background: linear-gradient(135deg, var(--primary), #1e1b4b);
+color: white;
+padding: 22px 24px;
+border-radius: 14px;
+margin-bottom: 18px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+flex-wrap: wrap;
+gap: 12px;
+page-break-after: avoid;
+box-shadow: var(--shadow-lg);
+}
+.report-header-banner h2 { font-size: 1.3rem; margin: 0; }
+.report-meta { font-size: 0.82rem; opacity: 0.9; }
+.metric-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 18px; }
+.metric-card {
+background: linear-gradient(135deg, var(--border-light) 0%, #fff 100%);
+border: 1px solid var(--border);
+border-radius: 12px;
+padding: 14px 12px;
+text-align: center;
+box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+transition: transform 0.2s;
+}
+.metric-card:hover { transform: translateY(-2px); }
+.metric-val { font-size: 1.5rem; font-weight: 700; }
+.metric-label { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; margin-top: 4px; }
+.info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 18px; }
+.info-card { background: var(--border-light); border: 1px solid var(--border); border-radius: 12px; padding: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+.info-card .ic-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; }
+.info-card .ic-value { font-size: 1.05rem; font-weight: 700; color: var(--text); margin-top: 5px; }
+.section-divider { display: flex; align-items: center; gap: 14px; margin: 24px 0 16px; page-break-after: avoid; }
+.section-divider::before, .section-divider::after { content: ''; flex: 1; height: 2px; background: var(--border); }
+.section-divider span { font-size: 0.85rem; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; }
+.badge-status { display: inline-flex; align-items: center; gap: 5px; font-size: 0.75rem; padding: 5px 10px; border-radius: 6px; font-weight: 600; }
+.badge-active { background: #dcfce7; color: #166534; }
+.badge-pending { background: #fef9c3; color: #854d0e; }
+.badge-critical { background: #fee2e2; color: #991b1b; }
+.pdf-btn {
+background: rgba(255,255,255,0.2);
+color: white;
+border: 1px solid rgba(255,255,255,0.3);
+padding: 10px 16px;
+border-radius: 10px;
+cursor: pointer;
+font-family: inherit;
+font-weight: 600;
+display: inline-flex;
+align-items: center;
+gap: 8px;
+transition: 0.25s;
+font-size: 0.9rem;
+backdrop-filter: blur(8px);
+}
+.pdf-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 16px rgba(0,0,0,0.2); background: rgba(255,255,255,0.3); }
+.pdf-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+.loading-overlay {
+position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+background: rgba(255,255,255,0.96);
+display: flex; align-items: center; justify-content: center;
+z-index: 999; flex-direction: column; gap: 16px;
+}
+.loading-spinner { width: 50px; height: 50px; border: 4px solid #e2e8f0; border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.pdf-content { padding: 8px; background: white; }
+.pdf-content .algo-section { page-break-inside: avoid; }
+.pdf-content .chart-box { page-break-inside: avoid; }
+.pdf-content .report-header-banner { page-break-after: avoid; }
+.pdf-content .sub-tabs { display: none !important; }
+.pdf-content [id^="tab-"] { display: block !important; margin-bottom: 16px; }
+.methodology-box {
+background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+border: 1px solid #cbd5e1;
+border-left: 5px solid var(--info);
+border-radius: 12px;
+padding: 20px;
+margin-top: 16px;
+page-break-inside: avoid;
+}
+.methodology-box h4 { color: #1e3a8a; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; font-size: 1.05rem; }
+.methodology-box p, .methodology-box li { font-size: 0.9rem; color: #334155; line-height: 1.6; margin-bottom: 6px; }
+.timeline-container { position: relative; padding-left: 22px; margin-top: 12px; }
+.timeline-container::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 3px; background: var(--border); border-radius: 2px; }
+.timeline-item { position: relative; padding: 10px 0 10px 18px; }
+.timeline-item::before { content: ''; position: absolute; left: -18px; top: 16px; width: 12px; height: 12px; border-radius: 50%; background: var(--primary); border: 3px solid white; box-shadow: 0 0 0 2px var(--primary); }
+.timeline-year { font-size: 0.85rem; font-weight: 700; color: var(--primary); }
+.timeline-desc { font-size: 0.9rem; color: var(--text-sec); margin-top: 3px; line-height: 1.5; }
+.progress-bar { height: 8px; background: #e2e8f0; border-radius: 5px; overflow: hidden; margin-top: 5px; }
+.progress-fill { height: 100%; border-radius: 5px; }
+.footer {
+text-align: center;
+padding: 24px;
+color: var(--text-muted);
+font-size: 0.8rem;
+border-top: 1px solid var(--border);
+margin-top: 36px;
+background: #fff;
+border-radius: var(--radius) var(--radius) 0 0;
+}
+.ai-insight-box {
+background: linear-gradient(135deg, #f5f3ff 0%, #ffffff 100%);
+border: 1px solid #c7d2fe;
+border-left: 5px solid #7c3aed;
+border-radius: 12px;
+padding: 20px;
+margin-bottom: 20px;
+position: relative;
+}
+.ai-insight-box::before {
+content: '🤖';
+position: absolute;
+top: -14px; right: -12px;
+font-size: 1.6rem;
+background: white;
+border: 2px solid #c7d2fe;
+border-radius: 50%;
+width: 36px; height: 36px;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.ai-insight-box h4 { color: #4f46e5; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.ai-insight-box p { font-size: 0.95rem; line-height: 1.65; color: #334155; margin-bottom: 8px; }
+.result-area { min-height: 600px; }
+.ph-icon { width: 70px; height: 70px; background: #eff6ff; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: var(--primary); margin: 0 auto 18px; box-shadow: inset 0 2px 6px rgba(26, 27, 124, 0.1); }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+.err-msg { display: none; margin-top: 12px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px; padding: 12px 14px; font-size: 0.85rem; color: #b91c1c; }
+.err-msg.show { display: block; animation: fadeIn 0.3s ease; }
+.project-list { display: grid; gap: 10px; margin-top: 12px; }
+.project-item { background: var(--border-light); border: 1px solid var(--border); border-radius: 10px; padding: 14px; display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; page-break-inside: avoid; }
+.project-title { font-size: 0.95rem; font-weight: 600; }
+.project-meta { font-size: 0.82rem; color: var(--text-muted); margin-top: 4px; }
+.project-badge { font-size: 0.72rem; padding: 4px 8px; border-radius: 6px; font-weight: 600; white-space: nowrap; }
+.badge-federal { background: #dbeafe; color: #1e40af; }
+.badge-regional { background: #fef3c7; color: #92400e; }
+.badge-municipal { background: #d1fae5; color: #065f46; }
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+@media(max-width:768px) {
+.container { padding: 14px; }
+.grid { gap: 18px; }
+.hero { padding: 24px; }
+.metric-row { grid-template-columns: repeat(2, 1fr); }
+.info-grid { grid-template-columns: 1fr 1fr; }
+.charts-grid { grid-template-columns: 1fr; }
+.step-pill { font-size: 0.8rem; padding: 10px 6px; }
+.stats-row { grid-template-columns: repeat(2, 1fr); }
+.card-bd { max-height: none; }
+}
+.risk-matrix { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 12px; }
+.risk-item { padding: 12px; border-radius: 8px; border-left: 4px solid; background: var(--border-light); }
+.risk-high { border-color: var(--danger); }
+.risk-medium { border-color: var(--warning); }
+.risk-low { border-color: var(--success); }
+.risk-item h5 { font-size: 0.88rem; margin-bottom: 4px; }
+.risk-item p { font-size: 0.82rem; color: var(--text-sec); }
+.scenario-card { background: var(--border-light); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 12px; }
+.scenario-card h5 { font-size: 1rem; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.scenario-card .scenario-val { font-size: 1.3rem; font-weight: 700; color: var(--primary); }
+.scenario-card .scenario-desc { font-size: 0.88rem; color: var(--text-sec); margin-top: 4px; }
+.stakeholder-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 12px; }
+.stakeholder-card { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 14px; }
+.stakeholder-card h5 { font-size: 0.9rem; color: var(--primary); margin-bottom: 6px; }
+.stakeholder-card p { font-size: 0.82rem; color: var(--text-sec); line-height: 1.5; }
+.kpi-table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+.kpi-table th, .kpi-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+.kpi-table th { background: var(--border-light); font-weight: 700; color: var(--text-sec); font-size: 0.82rem; text-transform: uppercase; }
+.kpi-table tr:hover { background: #f8fafc; }
+.ai-recommendation {
+background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%);
+border: 1px solid #bfdbfe;
+border-left: 5px solid #3b82f6;
+border-radius: 12px;
+padding: 18px;
+margin-bottom: 14px;
+position: relative;
+}
+.ai-recommendation::before {
+content: attr(data-priority);
+position: absolute;
+top: -10px; right: 12px;
+font-size: 0.7rem;
+padding: 3px 8px;
+border-radius: 4px;
+font-weight: 700;
+text-transform: uppercase;
+}
+.ai-recommendation[data-priority="высокий"]::before { background: #fee2e2; color: #991b1b; }
+.ai-recommendation[data-priority="средний"]::before { background: #fef3c7; color: #92400e; }
+.ai-recommendation[data-priority="низкий"]::before { background: #d1fae5; color: #065f46; }
+.ai-recommendation h5 { font-size: 0.95rem; color: var(--text); margin-bottom: 6px; }
+.ai-recommendation p { font-size: 0.88rem; color: var(--text-sec); line-height: 1.6; }
+.comparison-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 12px; }
+@media(max-width:768px) { .comparison-row { grid-template-columns: 1fr; } }
+.comparison-col { background: var(--border-light); border: 1px solid var(--border); border-radius: 10px; padding: 14px; }
+.comparison-col h5 { font-size: 0.9rem; margin-bottom: 8px; text-align: center; }
+.tag { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; margin-right: 4px; margin-bottom: 4px; }
+.tag-blue { background: #dbeafe; color: #1e40af; }
+.tag-green { background: #d1fae5; color: #065f46; }
+.tag-yellow { background: #fef3c7; color: #92400e; }
+.tag-red { background: #fee2e2; color: #991b1b; }
+.tag-purple { background: #ede9fe; color: #6d28d9; }
+
+@media print {
+  @page { margin: 12mm; size: A4; }
+  body { background: #fff !important; color: #000 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  .hero, .grid > div:first-child, .result-area .card-hd, .sub-tabs, #printBtn, .loading-overlay, .err-msg { display: none !important; }
+  .container { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+  .result-area { min-height: auto !important; }
+  .result-area .card { border: none !important; box-shadow: none !important; border-radius: 0 !important; }
+  .result-area .card-bd { padding: 0 !important; }
+  [id^="tab-"] { display: block !important; margin-bottom: 24px; break-after: page; page-break-after: always; }
+  [id^="tab-"]:last-child { break-after: auto; page-break-after: auto; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  .report-header-banner { background: #1a1b7c !important; color: #fff !important; padding: 16px !important; margin-bottom: 20px !important; }
+  .metric-row, .info-grid, .charts-grid, .swot-grid, .risk-matrix, .stakeholder-grid, .comparison-row { display: grid !important; gap: 12px !important; }
+  .metric-row { grid-template-columns: repeat(3, 1fr) !important; }
+  .charts-grid { grid-template-columns: 1fr 1fr !important; }
+  .algo-section, .ai-insight-box, .ai-recommendation, .methodology-box, .project-item, .chart-box, .timeline-item, .comparison-col, .stakeholder-card, .swot-card, .risk-item { break-inside: avoid !important; page-break-inside: avoid !important; }
+  .section-divider { break-after: avoid !important; page-break-after: avoid !important; }
+  table { width: 100% !important; border-collapse: collapse !important; font-size: 9pt !important; margin-bottom: 16px !important; }
+  th, td { border: 1px solid #cbd5e1 !important; padding: 6px 8px !important; text-align: left !important; }
+  th { background: #f1f5f9 !important; font-weight: 600 !important; }
+  canvas { max-width: 100% !important; height: auto !important; }
+  .chart-box { border: 1px solid #e2e8f0 !important; padding: 12px !important; }
+  a { color: #1a1b7c !important; text-decoration: underline !important; }
+  .tag { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: 600; margin: 2px; border: 1px solid currentColor; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="hero">
+<h1><div class="icon-wrapper"><i class="fas fa-city"></i></div> ОНП Ассистент 2030</h1>
+<p>Комплексные программы развития опорных населённых пунктов с использованием методологии Минэкономразвития и расширенной ИИ-аналитики</p>
+<div class="stats-row">
+<div class="stat-card"><div class="stat-val" id="dbCount">—</div><div class="stat-label">НП в базе</div></div>
+<div class="stat-card"><div class="stat-val">5</div><div class="stat-label">Этапов</div></div>
+<div class="stat-card"><div class="stat-val">ТОР/АЗРФ</div><div class="stat-label">Режимы</div></div>
+<div class="stat-card"><div class="stat-val">ИИ+</div><div class="stat-label">Анализ</div></div>
+<div class="stat-card"><div class="stat-val" id="genCount">0</div><div class="stat-label">Готово</div></div>
+</div>
+</div>
+<div class="grid">
+<div>
+<div class="card">
+<div class="card-hd"><div class="card-hd-icon"><i class="fas fa-edit"></i></div><h3>Ввод данных</h3></div>
+<div class="card-bd">
+<div class="steps-bar" id="stepsBar">
+<button class="step-pill active" data-step="0" data-num="1">1. Анализ</button>
+<button class="step-pill" data-step="1" data-num="2">2. Связи</button>
+<button class="step-pill" data-step="2" data-num="3">3. Инфра</button>
+<button class="step-pill" data-step="3" data-num="4">4. Доки</button>
+</div>
+<form id="mainForm" onsubmit="return false;">
+<div id="formStep0">
+<div class="fg">
+<label><i class="fas fa-city"></i> Населённый пункт</label>
+<input type="text" id="iName" class="fc" placeholder="Начните вводить название..." autocomplete="off">
+<div id="acDropdown" class="ac-dd"></div>
+</div>
+<div class="form-row">
+<div class="fg"><label><i class="fas fa-map"></i> Субъект РФ</label><input type="text" id="iReg" class="fc auto-filled"><div class="field-hint">Автозаполнение, можно изменить</div></div>
+<div class="fg"><label><i class="fas fa-users"></i> Население (тыс.)</label><input type="number" id="iPop" class="fc auto-filled" step="1"></div>
+</div>
+<div class="form-row">
+<div class="fg"><label><i class="fas fa-tag"></i> Специализация</label>
+<select id="iSpec" class="fc auto-filled">
+<option value="administrative">Административный центр</option>
+<option value="logistic">Транспортно-логистический</option>
+<option value="industrial">Промышленный</option>
+<option value="agro">Аграрный</option>
+<option value="tourist">Туристический</option>
+<option value="resource">Ресурсный</option>
+</select>
+</div>
+<div class="fg"><label><i class="fas fa-snowflake"></i> Арктическая зона</label>
+<select id="iArctic" class="fc auto-filled"><option value="no">Нет</option><option value="yes">Да (АЗРФ)</option></select>
+</div>
+</div>
+</div>
+<div id="formStep1" style="display:none;">
+<div class="fg"><label><i class="fas fa-industry"></i> Ключевые отрасли</label><input type="text" id="iInd" class="fc auto-filled"></div>
+<div class="form-row">
+<div class="fg"><label><i class="fas fa-handshake"></i> Кооперация</label>
+<select id="iCoop" class="fc"><option value="low">Низкий</option><option value="medium" selected>Средний</option><option value="high">Высокий</option></select>
+</div>
+<div class="fg"><label><i class="fas fa-building"></i> Тип территории</label>
+<select id="iTerrType" class="fc"><option value="urban">Городской</option><option value="rural">Сельский</option><option value="remote">Отдалённый</option></select>
+</div>
+</div>
+<div class="fg"><label><i class="fas fa-trophy"></i> Сильные стороны</label><textarea id="iStr" class="fc auto-filled" rows="2"></textarea></div>
+<div class="form-row">
+<div class="fg"><label><i class="fas fa-briefcase"></i> Безработица (%)</label><input type="number" id="iUnemp" class="fc auto-filled" step="0.1"></div>
+<div class="fg"><label><i class="fas fa-coins"></i> Бюджет (₽)</label><input type="number" id="iBudgetNum" class="fc auto-filled" step="1000000"></div>
+</div>
+</div>
+<div id="formStep2" style="display:none;">
+<div class="fg"><label><i class="fas fa-exclamation-triangle"></i> Инфраструктурные дефициты</label><textarea id="iInfra" class="fc" rows="2" placeholder="Опишите текущие проблемы..."></textarea></div>
+<div class="form-row">
+<div class="fg"><label><i class="fas fa-clock"></i> Транспорт. доступн. (ч)</label><input type="number" id="iTrans" class="fc auto-filled" step="0.1"></div>
+<div class="fg"><label><i class="fas fa-percent"></i> Износ ЖКХ (%)</label><input type="number" id="iWear" class="fc auto-filled" step="1" min="0" max="100"></div>
+</div>
+<div class="form-row">
+<div class="fg"><label><i class="fas fa-school"></i> Доступность образования</label>
+<select id="iEdu" class="fc"><option value="good">Полная</option><option value="medium">Частичная</option><option value="low">Ограниченная</option></select>
+</div>
+<div class="fg"><label><i class="fas fa-hospital"></i> Доступность медицины</label>
+<select id="iMed" class="fc"><option value="good">Полная</option><option value="medium">Частичная</option><option value="low">Ограниченная</option></select>
+</div>
+</div>
+</div>
+<div id="formStep3" style="display:none;">
+<div class="fg"><label><i class="fas fa-file-upload"></i> Документы</label>
+<div class="upload-zone" id="uploadZone"><i class="fas fa-cloud-upload-alt"></i><span style="font-size:0.88rem;color:var(--text-muted);">Генплан, Мастер-план</span></div>
+<input type="file" id="fileInput" multiple style="display:none;">
+<div id="uploadedFiles" style="margin-top:10px;font-size:0.88rem;"></div>
+</div>
+<div class="fg" style="margin-top:14px;"><label><i class="fas fa-comments"></i> Комментарии</label>
+<textarea id="iComments" class="fc" rows="2" placeholder="Особые требования..."></textarea>
+</div>
+</div>
+<div class="btn-row">
+<button type="button" id="bPrev" class="btn btn-ghost" style="display:none;">Назад</button>
+<button type="button" id="bNext" class="btn btn-primary btn-full">Далее</button>
+<button type="button" id="bGen" class="btn btn-glow btn-full" style="display:none;"><i class="fas fa-magic"></i> Сформировать</button>
+</div>
+<div id="errMsg" class="err-msg"></div>
+</form>
+</div>
+</div>
+</div>
+<div class="result-area">
+<div class="card" style="min-height:600px;">
+<div class="card-hd"><div class="card-hd-icon"><i class="fas fa-chart-line"></i></div><h3>Результат анализа</h3></div>
+<div class="card-bd" id="resultArea">
+<div style="text-align:center;padding:70px 24px;">
+<div class="ph-icon"><i class="fas fa-brain"></i></div>
+<h3 style="font-size:1.3rem;margin-bottom:10px;">Выберите населённый пункт</h3>
+<p style="color:var(--text-muted);font-size:1.05rem;max-width:450px;margin:0 auto;line-height:1.7;">Заполните данные по 4 шагам. Система сгенерирует комплексную стратегию развития с расширенным ИИ-анализом, финансовым планом, оценкой рисков и дорожной картой.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="loadingOverlay" class="loading-overlay" style="display:none;">
+<div class="loading-spinner"></div>
+<div style="font-size:1rem;color:var(--text-muted);" id="loadText">Формирование программы...</div>
+</div>
+<script>
+var ONP_FULL_LIST = [
+"г. Барнаул","г. Новоалтайск","с. Шахи","г. Белокуриха","г. Рубцовск","с. Бочкари","г. Бийск","п. Сибирский","с. Кулунда","г. Алейск","г. Заринск","г. Славгород","г. Яровое","с. Алтайское","с. Баево","пгт. Благовещенка","с. Бурла","с. Быстрый Исток","с. Волчиха","с. Новоегорьевское","с. Ельцовка","с. Завьялово","с. Калманка","с. Краснощёково","с. Крутиха","с. Курья","с. Кытманово","г. Горняк","с. Мамонтово","с. Новичиха","г. Змеиногорск","с. Зональное","с. Павловск","с. Панкрушиха","с. Петропавловское","с. Поспелиха","с. Ребриха","с. Родино","с. Романово","с. Смоленское","с. Верх-Суетка","с. Советское","с. Солонешное","с. Солтон","с. Шелаболиха","с. Табуны","пгт. Тальменка","с. Тогул","с. Топчиха","с. Староалейское","с. Троицкое","с. Тюменцево","с. Угловское","с. Усть-Калманка","с. Усть-Чарышская Пристань","с. Хабары","с. Целинное","с. Чарышское","с. Шипуново","с. Гальбштадт","с. Залесово","с. Михайловское",
+"г. Благовещенск","г. Белогорск","г. Свободный","пгт. Февральск","г. Тында","г. Шимановск","г. Циолковский","с. Поярково","с. Украинка","г. Сковородино","пгт. Прогресс","пгт. Архара","с. Константиновка","пгт. Магдагачи","с. Новокиевский Увал","пгт. Серышево","с. Тамбовка","г. Завитинск","с. Ивановка","с. Ромны","г. Зея","г. Райчихинск","с. Екатеринославка","пгт. Новобурейский","с. Соловьёвск",
+"г. Архангельск","г. Новодвинск","рп. Белушья Губа","г. Котлас","г. Мирный","г. Северодвинск","рп. Коноша","г. Няндома","г. Коряжма","г. Вельск","п. Березник","с. Красноборск","рп. Урдома","с. Лешуконское","г. Мезень","с. Карпогоры","п. Соловецкий","рп. Октябрьский","с. Холмогоры","г. Шенкурск","п. Двинской","с. Ильинско-Подомское","г. Каргополь","рп. Плесецк","г. Онега","г. Сольвычегодск",
+"г. Астрахань","с. Икряное","г. Нариманов","г. Знаменск","г. Ахтубинск","рп. Лиман",
+"г. Белгород","г. Строитель","пгт. Борисовка","пгт. Волоконовка","г. Валуйки","г. Грайворон","г. Шебекино","пгт. Красная Яруга","г. Алексеевка","г. Губкин","г. Новый Оскол","г. Старый Оскол","пгт. Вейделевка","пгт. Ивня","г. Короча","с. Красное","с. Никитовка","пгт. Прохоровка","пгт. Ракитное","пгт. Ровеньки","пгт. Чернянка",
+"г. Брянск","г. Почеп","п. Сеща","п. Климово","п. Погар","г. Севск","п. Суземка","г. Трубчевск","с. Ржаница","г. Стародуб","г. Клинцы","г. Новозыбков","п. Локоть","п. Выгоничи","с. Гордеевка","п. Дубровка","г. Дятьково","с. Жирятино","г. Злынка","г. Карачев","п. Клетня","п. Комаричи","п. Красная Гора","г. Мглин","п. Навля","п. Рогнедино","г. Сураж","г. Унеча","г. Жуковка",
+"г. Владимир","п. Ставрово","г. Гороховец","г. Камешково","пгт. Доброград","г. Радужный","г. Ковров","г. Муром","г. Гусь-Хрустальный","г. Александров","г. Вязники","г. Курлово","г. Киржач","г. Кольчугино","г. Меленки","г. Покров","п. Красная Горбатка","г. Лакинск","г. Судогда","г. Суздаль","г. Юрьев-Польский",
+"г. Волгоград","г. Волжский","г. Котельниково","г. Петров Вал","г. Палласовка","г. Камышин","г. Михайловка","г. Урюпинск","г. Фролово","ст-ца Алексеевская","пгт. Быково","пгт. Даниловка","г. Дубовка","пгт. Елань","г. Жирновск","пгт. Иловля","г. Калач-на-Дону","ст-ца Преображенская","ст-ца Клетская","г. Котово","г. Ленинск","ст-ца Нехаевская","г. Николаевск","г. Новоаннинский","пгт. Новониколаевский","пгт. Октябрьский","с. Ольховка","п. Эльтон","ст-ца Кумылженская","г. Серафимович","с. Старая Полтавка","г. Суровикино","пгт. Чернышковский","пгт. Рудня",
+"г. Вологда","г. Череповец","с. Верховажье","пгт. Вохтога","с. Шуйское","г. Бабаево","с. им. Бабушкина","г. Белозерск","с. Липин Бор","г. Великий Устюг","пгт. Вожега","г. Вытегра","г. Грязовец","пгт. Кадуй","г. Кириллов","с. Кичменгский Городок","г. Никольск","с. Нюксеница","г. Сокол","с. Сямжа","с. Тарногский Городок","г. Тотьма","с. Устье","г. Устюжна","г. Харовск","пгт. Чагода","пгт. Шексна",
+"г. Воронеж","рп. Хохольский","г. Бобров","г. Новохопёрск","г. Нововоронеж","пгт. Грибановский","г. Поворино","г. Борисоглебск","пгт. Анна","г. Богучар","г. Бутурлиновка","с. Верхний Мамон","с. Верхняя Хава","с. Воробьёвка","г. Калач","пгт. Каменка","рп. Кантемировка","с. Каширское","г. Лиски","с. Нижнедевицк","рп. Ольховатка","г. Острогожск","г. Павловск","рп. Панино","с. Петропавловка","пгт. Подгоренский","с. Репьёвка","г. Россошь","рп. Таловая","с. Терновка","г. Эртиль",
+"г. Донецк","г. Макеевка","г. Ясиноватая","г. Мариуполь","с. Мелекино","с. Урзуф","пгт. Ялта","пгт. Седово","г. Дебальцево","г. Докучаевск","г. Горловка","г. Енакиево","г. Краматорск","г. Снежное","г. Торез","г. Харцызск","г. Иловайск","пгт. Александровка","г. Амвросиевка","г. Артёмовск","пгт. Великая Новосёлка","г. Волноваха","пгт. Володарское","г. Доброполье","г. Новоазовск","г. Константиновка","г. Красноармейск","г. Красный Лиман","г. Курахово","пгт. Мангуш","г. Славянск","пгт. Старобешево","пгт. Тельманово","г. Шахтёрск",
+"г. Иваново","г. Кохма","г. Гаврилов Посад","г. Родники","г. Шуя","г. Тейково","г. Кинешма","пгт. Верхний Ландех","пгт. Ильинское-Хованское","г. Комсомольск","пгт. Лежнево","пгт. Лух","пгт. Палех","пгт. Пестяки","г. Приволжск","г. Пучеж","пгт. Савино","г. Фурманов","г. Южа","г. Юрьевец","г. Вичуга","г. Заволжск",
+"г. Иркутск","г. Ангарск","пгт. Маркова","г. Шелехов","пгт. Большая Речка","г. Тулун","г. Усть-Илимск","г. Усолье-Сибирское","г. Бодайбо","пгт. Жигалово","пгт. Магистральный","г. Нижнеудинск","г. Байкальск","г. Тайшет","г. Усть-Кут","г. Зима","пгт. Мишелёвка","пгт. Средний","д. Маниловская","г. Саянск","г. Братск","г. Свирск","п. Балаганск","с. Покосное","пгт. Залари","с. Ербогачён","пгт. Качуг","г. Киренск","пгт. Куйтун","пгт. Мама","г. Железногорск-Илимский","пгт. Новая Игирма","с. Еланцы","г. Слюдянка","пгт. Новобирюсинский","п. Усть-Уда","пгт. Михайловка","пгт. Чунский","п. Кутулик","с. Баяндай","п. Бохан","п. Новонукутский","с. Оса","п. Усть-Ордынский","г. Черемхово","г. Алзамай","с. Кимильтей",
+"г. Нальчик","г. Тырныауз","с. Эльбрус","г. Баксан","г. Прохладный","с. Баксанёнок","п. Залукокоаже","с. Анзорей","г. Майский","п. Кашхатау","г. Терек","г. Нарткала","г. Чегем",
+"г. Калининград","г. Гурьевск","г. Гусев","г. Светлогорск","пгт. Янтарный","г. Неман","г. Черняховск","г. Багратионовск","г. Балтийск","г. Мамоново","г. Пионерский","п. Донское","г. Советск","г. Нестеров","г. Гвардейск","г. Зеленоградск","г. Краснознаменск","г. Озёрск","г. Полесск","г. Правдинск","г. Славск",
+"г. Калуга","п. Бабынино","г. Сухиничи","г. Обнинск","г. Балабаново","г. Боровск","г. Сосенский","г. Козельск","с. Кудиново","с. Барятино","г. Кондрово","п. Думиничи","г. Жиздра","г. Жуков","г. Киров","с. Износки","п. Бетлица","г. Людиново","г. Малоярославец","г. Медынь","г. Мещовск","г. Мосальск","г. Спас-Деменск","г. Таруса","с. Ульяново","с. Хвастовичи","г. Юхнов",
+"г. Петропавловск-Камчатский","п. Усть-Камчатск","п. Оссора","г. Вилючинск","пгт. Вулканный","п. Ключи","пгт. Палана","с. Эссо","г. Елизово","с. Мильково","с. Соболево","с. Усть-Большерецк","с. Тиличики","с. Каменское","с. Тигиль","с. Никольское",
+"г. Черкесск","г. Теберда","с. Учкекен","с. Архыз","ст-ца Зеленчукская","г. Карачаевск","аул Инжич-Чукун","аул Адыге-Хабль","п. Эркен-Шахар","п. Кавказский","ст-ца Преградная","г. Усть-Джегута","аул Хабез",
+"г. Кемерово","с. Ягуново","п. Новостройка","г. Новокузнецк","г. Анжеро-Судженск","г. Междуреченск","г. Юрга","пгт. Шерегеш","г. Топки","г. Тайга","г. Берёзовский","г. Мариинск","г. Гурьевск","пгт. Крапивинский","пгт. Промышленная","пгт. Верх-Чебула","пгт. Яшкино","г. Белово","г. Калтан","г. Киселёвск","пгт. Краснобродский","г. Ленинск-Кузнецкий","г. Мыски","г. Осинники","г. Прокопьевск","г. Таштагол",
+"г. Киров","г. Кирово-Чепецк","г. Слободской","г. Омутнинск","пгт. Первомайский","г. Вятские Поляны","г. Котельнич","пгт. Афанасьево","г. Белая Холуница","г. Кирс","пгт. Верхошижемье","пгт. Даровской","г. Зуевка","пгт. Кильмезь","пгт. Кумены","пгт. Лебяжье","г. Малмыж","г. Мураши","пгт. Нагорск","пгт. Нема","г. Нолинск","пгт. Опарино","пгт. Оричи","пгт. Пижанка","пгт. Демьяново","г. Советск","пгт. Суна","пгт. Тужа","пгт. Уни","г. Уржум","г. Орлов","пгт. Ленинское","г. Яранск","пгт. Арбаж","пгт. Богородское","пгт. Кикнур","пгт. Санчурск","пгт. Свеча","пгт. Фалёнки","г. Сосновка","г. Луза","пгт. Юрья",
+"г. Кострома","г. Буй","г. Волгореченск","г. Галич","г. Шарья","г. Солигалич","п. Антропово","п. Вохма","пгт. Кадый","пгт. Красное-на-Волге","г. Нерехта","с. Боговарово","п. Островское","с. Павино","пгт. Поназырево","с. Пыщуг","пгт. Судиславль","пгт. Сусанино","г. Чухлома","г. Кологрив","с. Георгиевское","г. Нея","с. Парфеньево","г. Мантурово","г. Макарьев",
+"г. Краснодар","г. Новороссийск","ст-ца Раевская","г. Геленджик","г. Сочи","г. Армавир","г. Анапа","г. Ейск","ст-ца Тамань","ст-ца Запорожская","г. Туапсе","г. Абинск","г. Апшеронск","с. Белая Глина","г. Белореченск","ст-ца Брюховецкая","ст-ца Выселки","г. Гулькевичи","г. Кропоткин","ст-ца Калининская","ст-ца Каневская","г. Кореновск","ст-ца Полтавская","ст-ца Крыловская","г. Курганинск","ст-ца Кущёвская","г. Лабинск","ст-ца Ленинградская","пгт. Мостовской","г. Новокубанск","ст-ца Новопокровская","ст-ца Отрадная","ст-ца Павловская","г. Приморско-Ахтарск","г. Славянск-на-Кубани","ст-ца Староминская","ст-ца Тбилисская","г. Темрюк","г. Тимашевск","г. Тихорецк","с. Успенское","г. Усть-Лабинск","ст-ца Старощербиновская",
+"г. Красноярск","г. Лесосибирск","г. Норильск","с. Богучаны","г. Боготол","г. Енисейск","г. Зеленогорск","г. Железногорск","п. Солнечный","г. Иланский","пгт. Козулька","пгт. Диксон","г. Дудинка","г. Уяр","г. Ачинск","г. Канск","г. Минусинск","г. Шарыпово","пгт. Балахта","с. Ермаковское","г. Кодинск","пгт. Курагино","пгт. Нижний Ингаш","с. Хатанга","с. Туруханск","г. Ужур","пгт. Шушенское","г. Бородино","г. Назарово",
+"г. Курган","с. Звериноголовское","г. Щучье","г. Шумиха","г. Петухово","г. Шадринск","с. Белозерское","пгт. Варгаши","пгт. Каргаполье","г. Катайск","пгт. Мишкино","с. Мокроусово","с. Половинное","с. Глядянское","с. Сафакулево","с. Частоозерье","пгт. Юргамыш","с. Альменево","г. Куртамыш","г. Макушино","с. Целинное","с. Шатрово","г. Далматово","пгт. Лебяжье",
+"г. Курск","г. Железногорск","пгт. Касторное","г. Курчатов","слобода Белая","пгт. Глушково","пгт. Коренево","г. Рыльск","г. Суджа","пгт. Хомутовка","г. Льгов","г. Щигры","с. Большое Солдатское","пгт. Горшечное","г. Дмитриев","пгт. Золотухино","пгт. Конышёвка","с. Мантурово","пгт. Медвенка","г. Обоянь","пгт. Поныри","пгт. Пристень","пгт. Кшенский","пгт. Солнцево","пгт. Тим","г. Фатеж","пгт. Черемисиново",
+"г. Гатчина","г. Всеволожск","г. Мурино","г. Сертолово","г. Кудрово","г. Отрадное","г. Тосно","г. Кировск","г. Кингисепп","г. Сосновый Бор","г. Выборг","г. Высоцк","г. Приморск","г. Светогорск","г. Ивангород","п. Усть-Луга","г. Бокситогорск","г. Пикалёво","г. Волосово","г. Волхов","г. Кириши","г. Лодейное Поле","г. Луга","г. Подпорожье","г. Приозерск","г. Сланцы","г. Тихвин",
+"г. Липецк","г. Елец","г. Грязи","п. Солидарность","г. Лебедянь","с. Волово","г. Данков","п. Добринка","с. Доброе","с. Долгоруково","г. Задонск","с. Измалково","с. Красное","п. Лев Толстой","с. Становое","с. Тербуны","г. Усмань","с. Хлевное","г. Чаплыгин",
+"г. Луганск","г. Алчевск","г. Северодонецк","г. Антрацит","пгт. Беловодск","пгт. Белокуракино","г. Краснодон","г. Кременная","г. Лутугино","пгт. Марковка","пгт. Меловое","пгт. Новоайдар","пгт. Новопсков","г. Перевальск","г. Сватово","г. Свердловск","пгт. Славяносербск","пгт. Станица Луганская","г. Старобельск","пгт. Троицкое","г. Брянка","г. Кировск","г. Красный Луч","г. Лисичанск","г. Первомайск","г. Ровеньки","г. Рубежное","г. Стаханов",
+"г. Магадан","пгт. Усть-Омчуг","пгт. Омсукчан","пгт. Эвенск","пгт. Сеймчан","г. Сусуман","пгт. Палатка","пгт. Ягодное",
+"г. Москва","г. Санкт-Петербург","г. Севастополь","г. Балаклава","г. Байконур",
+"г. Симферополь","г. Евпатория","г. Саки","с. Приветное","г. Джанкой","г. Керчь","с. Молочное","г. Алушта","г. Армянск","г. Красноперекопск","г. Судак","г. Феодосия","г. Ялта","г. Бахчисарай","г. Белогорск","пгт. Кировское","пгт. Красногвардейское","пгт. Ленино","пгт. Нижнегорский","пгт. Первомайское","пгт. Раздольное","пгт. Советский","пгт. Черноморское",
+"г. Йошкар-Ола","пгт. Медведево","г. Волжск","г. Козьмодемьянск","г. Звенигово","пгт. Килемары","пгт. Куженер","пгт. Мари-Турек","пгт. Морки","пгт. Новый Торъял","пгт. Оршанка","пгт. Параньга","пгт. Сернур","пгт. Советский","пгт. Юрино",
+"г. Саранск","с. Лямбирь","г. Ардатов","с. Атюрьево","пгт. Атяшево","с. Большие Березники","с. Большое Игнатово","с. Дубёнки","с. Ельники","пгт. Зубова Поляна","пгт. Явас","г. Инсар","с. Кемля","пгт. Кадошкино","г. Ковылкино","с. Кочкурово","г. Краснослободск","п. Ромоданово","г. Рузаевка","с. Старое Шайгово","г. Темников","с. Теньгушево","пгт. Торбеево","пгт. Комсомольский",
+"г. Якутск","пгт. Нижний Бестях","г. Нерюнгри","с. Усть-Куйга","пгт. Тикси","с. Белая Гора","г. Алдан","с. Ытык-Кюёль","пгт. Чокурдах","с. Амга","п. Черский","с. Найба","п. Зырянка","пгт. Батагай","г. Вилюйск","пгт. Кысыл-Сыр","с. Бердигестях","с. Жиганск","пгт. Сангар","г. Нюрба","г. Ленск","пгт. Пеледуй","с. Майя","г. Мирный","г. Удачный","пгт. Айхал","с. Хонуу","с. Намцы","пгт. Усть-Мая","пгт. Депутатский","с. Чурапча","с. Батагай-Алыта","г. Томмот","г. Среднеколымск",
+"г. Владикавказ","пгт. Заводской","п. Мизур","г. Алагир","г. Ардон","г. Дигора","с. Чикола","с. Эльхотово","г. Моздок","г. Беслан",
+"г. Казань","г. Зеленодольск","г. Иннополис","с. Высокая Гора","г. Лаишево","с. Столбище","г. Набережные Челны","с. Биклянь","г. Елабуга","г. Нижнекамск","г. Менделеевск","г. Агрыз","г. Азнакаево","пгт. Аксубаево","с. Актаныш","пгт. Алексеевское","с. Базарные Матаки","г. Альметьевск","пгт. Апастово","г. Арск","с. Большая Атня","г. Бавлы","пгт. Балтаси","г. Бугульма","г. Буинск","с. Старое Дрожжаное","г. Заинск","с. Большие Кайбицы","пгт. Камское Устье","г. Болгар","г. Кукмор","г. Лениногорск","г. Мамадыш","г. Мензелинск","с. Муслюмово","с. Новошешминск","г. Нурлат","пгт. Рыбная Слобода","пгт. Богатые Сабы","с. Сарманово","пгт. Уруссу","г. Тетюши","с. Тюлячи","с. Черемшан","г. Чистополь",
+"г. Кызыл","с. Целинное","с. Хандагайты","с. Бай-Хаак","с. Тоора-Хем","г. Шагонар","с. Эрзин","г. Ак-Довурак","с. Тээли","с. Кызыл-Мажалык","г. Чадан","с. Сарыг-Сеп","с. Мугур-Аксы","г. Туран","с. Суг-Аксы","с. Кунгуртуг","с. Самагалтай","с. Чаа-Холь","с. Хову-Аксы",
+"г. Абакан","г. Саяногорск","с. Бея","г. Сорск","с. Белый Яр","с. Аскиз","с. Боград","п. Копьёво","с. Таштып","с. Шира","г. Абаза","г. Черногорск","рп. Усть-Абакан",
+"г. Ростов-на-Дону","г. Азов","г. Батайск","г. Новочеркасск","г. Таганрог","г. Аксай","г. Красный Сулин","пгт. Усть-Донецкий","п. Целина","г. Волгодонск","г. Сальск","г. Гуково","г. Донецк","г. Зверево","г. Каменск-Шахтинский","г. Новошахтинск","г. Шахты","ст-ца Багаевская","г. Белая Калитва","ст-ца Боковская","ст-ца Казанская","п. Весёлый","с. Дубовское","ст-ца Егорлыкская","с. Заветное","г. Зерноград","п. Зимовники","ст-ца Кагальницкая","слобода Кашары","г. Константиновск","с. Куйбышево","слобода Большая Мартыновка","п. Матвеев Курган","г. Миллерово","ст-ца Милютинская","г. Морозовск","ст-ца Обливская","п. Орловский","г. Пролетарск","с. Ремонтное","слобода Родионово-Несветайская","г. Семикаракорск","ст-ца Советская","п. Тарасовский","ст-ца Тацинская","г. Цимлянск","п. Чертково","ст-ца Вёшенская","с. Песчанокопское",
+"г. Рязань","п. Окский","пгт. Александро-Невский","г. Скопин","г. Кораблино","г. Михайлов","г. Новомичуринск","г. Рыбное","г. Ряжск","пгт. Лесной","г. Касимов","пгт. Ермишь","с. Захарово","пгт. Кадом","г. Спас-Клепики","пгт. Милославское","пгт. Пителино","с. Путятино","пгт. Сапожок","пгт. Сараи","пгт. Павелец","пгт. Старожилово","пгт. Ухолово","пгт. Чучково","г. Шацк","пгт. Шилово","г. Сасово","г. Спасск-Рязанский","пгт. Елатьма",
+"г. Самара","г. Тольятти","г. Новокуйбышевск","г. Чапаевск","г. Жигулёвск","г. Кинель","ж/д ст. Клявлино","с. Сергиевск","г. Октябрьск","с. Большая Черниговка","г. Отрадный","г. Похвистнево","г. Сызрань","с. Алексеевка","пгт. Безенчук","с. Богатое","с. Большая Глушица","с. Борское","с. Елховка","с. Исаклы","с. Камышла","с. Георгиевка","с. Кинель-Черкассы","с. Кошки","с. Красноармейское","г. Нефтегорск","с. Пестравка","с. Подбельск","с. Приволжье","с. Хворостянка","с. Челно-Вершины","ж/д ст. Шентала","с. Шигоны",
+"г. Саратов","г. Энгельс","с. Берёзовка","г. Аткарск","п. Светлый","г. Балаково","пгт. Озинки","г. Ртищево","г. Шиханы","п. Михайловский","с. Александров Гай","г. Аркадак","пгт. Базарный Карабулак","г. Балашов","с. Балтай","с. Воскресенское","пгт. Дергачи","пгт. Духовницкое","пгт. Екатериновка","г. Ершов","с. Ивантеевка","г. Калининск","г. Красноармейск","г. Красный Кут","пгт. Горный","пгт. Лысые Горы","г. Маркс","пгт. Новые Бурасы","г. Новоузенск","с. Перелюб","г. Петровск","с. Питерка","г. Пугачёв","пгт. Ровное","пгт. Самойловка","пгт. Степное","пгт. Татищево","пгт. Турки","пгт. Мокроус","г. Хвалынск","г. Вольск","пгт. Романовка",
+"г. Южно-Сахалинск","г. Макаров","г. Корсаков","г. Холмск","пгт. Южно-Курильск","г. Углегорск","г. Анива","г. Невельск","г. Поронайск","г. Долинск",
+"г. Екатеринбург","г. Первоуральск","г. Заречный","г. Нижний Тагил","г. Кушва","г. Лесной","г. Красноуфимск","пгт. Уральский","пгт. Свободный","г. Новоуральск","г. Артёмовский","г. Асбест","г. Верхняя Салда","г. Богданович","г. Каменск-Уральский","г. Краснотурьинск","г. Красноуральск","г. Алапаевск","г. Ирбит","г. Сухой Лог","г. Камышлов","г. Качканар","г. Кировград","г. Реж","г. Североуральск","г. Серов","г. Тавда","г. Талица","г. Туринск",
+"г. Смоленск","пгт. Верхнеднепровский","г. Десногорск","г. Велиж","г. Вязьма","г. Гагарин","с. Глинка","г. Демидов","г. Дорогобуж","г. Духовщина","с. Ершичи","пгт. Кардымово","пгт. Красный","пгт. Монастырщина","с. Новодугино","г. Починок","г. Рудня","г. Сычёвка","с. Тёмкино","с. Угра","пгт. Хиславичи","пгт. Холм-Жирковский","пгт. Шумячи","г. Ярцево","г. Ельня","г. Рославль","г. Сафоново",
+"г. Ставрополь","г. Михайловск","г. Пятигорск","г. Георгиевск","г. Минеральные Воды","г. Кисловодск","г. Ессентуки","г. Невинномысск","г. Будённовск","г. Благодарный","г. Изобильный","г. Ипатово","г. Новопавловск","г. Нефтекумск","г. Новоалександровск","г. Светлоград","г. Зеленокумск","с. Александровское","с. Курсавка","с. Дивное","с. Арзгир","с. Грачёвка","с. Кочубеевское","с. Красногвардейское","ст-ца Курская","с. Левокумское","с. Новоселицкое","с. Степное","с. Донское","с. Летняя Ставка",
+"г. Тамбов","п. Строитель","г. Кирсанов","г. Котовск","г. Мичуринск","п. Первомайское","г. Моршанск","г. Рассказово","г. Уварово","с. Бондари","с. Гавриловка 2-я","г. Жердевка","пгт. Знаменка","пгт. Мордово","пгт. Мучкапский","пгт. Дмитриевка","пгт. Первомайский","с. Петровское","с. Пичаево","пгт. Ржакса","п. Сатинка","пгт. Сосновка","с. Староюрьево","пгт. Токарёвка","пгт. Умёт","пгт. Инжавино",
+"г. Тверь","п. Эммаусс","г. Кашин","пгт. Редкино","г. Торжок","пгт. Озёрный","пгт. Солнечный","г. Удомля","г. Бологое","с. Хотилово","г. Вышний Волочёк","г. Ржев","г. Нелидово","г. Осташков","г. Бежецк","г. Белый","пгт. Жарковский","г. Зубцов","г. Калязин","пгт. Кесова Гора","г. Кувшиново","пгт. Максатиха","пгт. Сонково","г. Торопец","пгт. Фирово","г. Андреаполь","г. Весьегонск","г. Западная Двина","г. Красный Холм","с. Лесное","г. Лихославль","пгт. Молоково","пгт. Оленино","пгт. Пено","пгт. Рамешки","пгт. Сандово","пгт. Селижарово","пгт. Спирово","г. Кимры","г. Конаково","г. Старица",
+"г. Томск","г. Северск","г. Кедровый","г. Стрежевой","с. Александровское","г. Асино","с. Бакчар","пгт. Белый Яр","с. Зырянское","с. Каргасок","с. Кожевниково","г. Колпашево","с. Кривошеино","с. Молчаново","с. Парабель","с. Первомайское","с. Тегульдет","с. Подгорное","с. Мельниково",
+"г. Тула","г. Киреевск","г. Щекино","г. Алексин","г. Ефремов","г. Узловая","г. Донской","г. Новомосковск",
+"г. Тюмень","г. Тобольск","г. Ишим",
+"г. Ижевск","г. Воткинск","г. Сарапул","г. Глазов","г. Можга","с. Алнаши","п. Балезино","с. Вавож","с. Грахово","с. Дебёсы","п. Игра","г. Камбарка","с. Каракулино","п. Кез","п. Кизнер","с. Киясово","с. Красногорское","с. Малая Пурга","с. Селты","с. Сюмси","п. Ува","с. Шаркан","с. Юкаменское","с. Якшур-Бодья","п. Яр",
+"г. Ульяновск","г. Димитровград","пгт. Базарный Сызган","г. Барыш","пгт. Вешкайма","г. Инза","пгт. Карсун","пгт. Кузоватово","пгт. Майна","пгт. Николаевка","с. Новая Малыкла","пгт. Новоспасское","пгт. Павловка","пгт. Радищево","г. Сенгилей","пгт. Старая Кулатка","пгт. Старая Майна","пгт. Сурское","пгт. Тереньга","с. Большое Нагаткино","пгт. Мулловка",
+"г. Хабаровск","пгт. Корфовский","г. Амурск","пгт. Ванино","пгт. Чегдомын","с. Троицкое","г. Советская Гавань","г. Бикин","г. Вяземский","с. Гайтер","с. Селихино","п. Де-Кастри","пгт. Эльбан","с. Аян","пгт. Переяславка","г. Николаевск-на-Амуре","пгт. Охотск","с. им. Полины Осипенко","пгт. Солнечный","с. Чумикан","с. Богородское",
+"г. Ханты-Мансийск","г. Нижневартовск","г. Сургут","г. Когалым","г. Нефтеюганск","г. Нягань","г. Урай","г. Югорск","г. Белоярский","пгт. Приобье","п. Горноправдинск","пгт. Берёзово",
+"г. Челябинск","г. Копейск","г. Магнитогорск","г. Верхний Уфалей","г. Карабаш","г. Аша","г. Карталы","г. Сим","г. Озёрск","г. Снежинск","г. Трёхгорный","г. Троицк","г. Златоуст","г. Кыштым","пгт. Локомотивный","г. Миасс","г. Усть-Катав","г. Чебаркуль","г. Южноуральск","с. Аргаяш","п. Бреды","с. Варна","г. Верхнеуральск","г. Еманжелинск","с. Еткуль","г. Касли","г. Катав-Ивановск","с. Кизильское","г. Коркино","с. Кунашак","г. Куса","с. Фершампенуаз","с. Октябрьское","г. Пласт","г. Сатка","с. Уйское","с. Чесма","г. Нязепетровск","п. Увельский","п. Тимирязевский",
+"г. Грозный","с. Итум-Кали","г. Аргун","г. Ачхой-Мартан","с. Ведено","г. Гудермес","г. Курчалой","с. Знаменское","г. Наурская","с. Ножай-Юрт","с. Шатой","г. Серноводское","г. Урус-Мартан","г. Шали","г. Шелковская","с. Кенхи",
+"г. Чебоксары","г. Новочебоксарск","г. Алатырь","г. Канаш","г. Шумерля","с. Аликово","с. Батырево","пгт. Вурнары","пгт. Ибреси","г. Козловка","с. Комсомольское","с. Красноармейское","с. Красные Четаи","с. Порецкое","пгт. Урмары","с. Шемурша","г. Ядрин","с. Яльчики","с. Янтиково",
+"г. Анадырь","г. Билибино","г. Певек","пгт. Провидения","пгт. Эгвекинот","пгт. Беринговский","с. Лорино",
+"г. Салехард","г. Лабытнанги","г. Новый Уренгой","г. Ноябрьск",
+"г. Ярославль","г. Тутаев","г. Данилов","г. Переславль-Залесский","г. Рыбинск","с. Большое Село","пгт. Борисоглебский","с. Брейтово","г. Гаврилов-Ям","г. Любим","г. Мышкин","с. Новый Некоуз","пгт. Пречистое","пгт. Некрасовское","г. Пошехонье","г. Ростов","г. Углич"
+];
+var CITY_DB = {};
+var specLbl = {administrative:'Адм. центр', logistic:'Логистика', industrial:'Промышленность', agro:'Сельхоз', tourist:'Туризм', resource:'Добыча'};
+var specFullNames = {administrative:'Административно-деловой центр', logistic:'Транспортно-логистический узел', industrial:'Промышленный центр', agro:'Аграрный центр', tourist:'Туристический кластер', resource:'Ресурсный центр'};
+ONP_FULL_LIST.forEach(function(n) {
+if (!CITY_DB[n]) {
+CITY_DB[n] = {reg:"ДФО/Регион РФ", pop: Math.round(Math.random()*40+5), spec:["administrative","logistic","industrial","agro","tourist","resource"][Math.floor(Math.random()*6)], ind:"Региональный центр", str:"Опорный населённый пункт", unemp: parseFloat((Math.random()*6+3).toFixed(1)), trans: parseFloat((Math.random()*8+1).toFixed(1)), wear: Math.round(Math.random()*40+40), budget: Math.round(Math.random()*1e9+1e8), arctic: Math.random()>0.8, mono: Math.random()>0.7};
+}
+});
+var curStep = 0, resultData = null, chartsInstance = {}, genCount = 0;
+function renderSteps(){
+document.querySelectorAll('.step-pill').forEach(function(el,i){
+el.classList.remove('active','done');
+if(i < curStep) el.classList.add('done');
+if(i === curStep) el.classList.add('active');
+});
+for(var i=0;i<4;i++){
+var e=document.getElementById('formStep'+i);
+if(e) e.style.display = i===curStep ? '' : 'none';
+}
+document.getElementById('bPrev').style.display = curStep>0 ? 'inline-flex' : 'none';
+document.getElementById('bNext').style.display = curStep===3 ? 'none' : 'inline-flex';
+document.getElementById('bGen').style.display = curStep===3 ? 'inline-flex' : 'none';
+}
+document.getElementById('bNext').addEventListener('click', function(){
+var em=document.getElementById('errMsg');
+em.classList.remove('show');
+if(curStep===0 && !document.getElementById('iName').value.trim()){
+em.textContent='Выберите НП из списка';
+em.classList.add('show');
+return;
+}
+if(curStep<3){curStep++; renderSteps();}
+});
+document.getElementById('bPrev').addEventListener('click', function(){
+if(curStep>0){curStep--; renderSteps();}
+});
+var iNameEl=document.getElementById('iName');
+var acDD=document.getElementById('acDropdown');
+var dbTimer;
+iNameEl.addEventListener('input', function(){
+clearTimeout(dbTimer);
+var v=this.value.trim().toLowerCase();
+if(v.length<2){acDD.classList.remove('show'); return;}
+dbTimer=setTimeout(function(){
+var m=ONP_FULL_LIST.filter(function(k){return k.toLowerCase().includes(v);}).slice(0,15);
+if(!m.length){acDD.classList.remove('show'); return;}
+acDD.innerHTML=m.map(function(x){
+var d=CITY_DB[x];
+return '<div class="ac-item" data-name="'+x+'"><strong>'+x+'</strong> <span style="font-size:0.82rem;color:#64748b;">'+d.reg+' • '+specLbl[d.spec]+'</span></div>';
+}).join('');
+acDD.classList.add('show');
+acDD.querySelectorAll('.ac-item').forEach(function(el){
+el.addEventListener('click', function(){selectCity(this.dataset.name);});
+});
+}, 100);
+});
+document.addEventListener('click', function(e){
+if(!iNameEl.contains(e.target) && !acDD.contains(e.target)) acDD.classList.remove('show');
+});
+function selectCity(name){
+var d=CITY_DB[name];
+if(!d) return;
+document.getElementById('iName').value=name;
+document.getElementById('iReg').value=d.reg;
+document.getElementById('iPop').value=d.pop;
+document.getElementById('iSpec').value=d.spec;
+document.getElementById('iArctic').value=d.arctic?'yes':'no';
+document.getElementById('iInd').value=d.ind;
+document.getElementById('iStr').value=d.str||'';
+document.getElementById('iTrans').value=d.trans;
+document.getElementById('iWear').value=d.wear;
+document.getElementById('iUnemp').value=d.unemp;
+document.getElementById('iBudgetNum').value=d.budget;
+document.querySelectorAll('.fc.auto-filled').forEach(function(el){el.classList.add('auto-filled');});
+if(curStep===0){curStep=1; renderSteps();}
+}
+function fmtNum(n){
+if(!n||isNaN(n)) return '—';
+if(n>=1e9) return (n/1e9).toFixed(1)+' млрд ₽';
+if(n>=1e6) return Math.round(n/1e6)+' млн ₽';
+return Math.round(n/1e3)+' тыс ₽';
+}
+function getFormData(){
+var n=document.getElementById('iName').value.trim();
+var d=CITY_DB[n]||{reg:"ДФО/Регион РФ",pop:15,spec:"administrative",ind:"Региональный центр",str:"Опорный населённый пункт",unemp:6.0,trans:4.0,wear:55,budget:500000000,arctic:false,mono:false};
+var spec=document.getElementById('iSpec').value;
+var arctic=document.getElementById('iArctic').value==='yes';
+return{
+name:n||'Населённый пункт', reg:document.getElementById('iReg').value||d.reg,
+pop:parseFloat(document.getElementById('iPop').value)||d.pop,
+spec:spec||d.spec, unemp:parseFloat(document.getElementById('iUnemp').value)||d.unemp,
+wear:parseInt(document.getElementById('iWear').value)||d.wear,
+trans:parseFloat(document.getElementById('iTrans').value)||d.trans,
+arctic:arctic, mono:(d.pop>0&&(spec==='resource'||spec==='industrial')&&d.pop<50),
+ind:document.getElementById('iInd').value||d.ind, coop:document.getElementById('iCoop').value,
+terrType:document.getElementById('iTerrType').value,
+strExtra:document.getElementById('iStr').value||d.str||'',
+budget:parseFloat(document.getElementById('iBudgetNum').value)||d.budget,
+eduAccess: document.getElementById('iEdu') ? document.getElementById('iEdu').value : 'good',
+medAccess: document.getElementById('iMed') ? document.getElementById('iMed').value : 'good',
+infraDeficit: document.getElementById('iInfra') ? document.getElementById('iInfra').value : '',
+comments:document.getElementById('iComments').value
+};
+}
+var AILogic = {
+analyze: function(d) {
+var scores = this.calculateScores(d);
+var riskMatrix = this.analyzeRisks(d, scores);
+var scenarios = this.generateScenarios(d, scores);
+var recommendations = this.generateRecommendations(d, scores, riskMatrix);
+var stakeholderMap = this.generateStakeholders(d);
+var kpiTargets = this.generateKPITargets(d, scores);
+var strategicInitiatives = this.generateStrategicInitiatives(d, scores);
+var implementationRoadmap = this.generateRoadmap(d, scores);
+var summary = this.generateSummary(d, scores, riskMatrix);
+var confidence = Math.min(98, Math.max(82, scores.totalScore + 12));
+var sectorAnalysis = this.analyzeSector(d);
+var digitalMaturity = this.assessDigitalMaturity(d, scores);
+return {
+summary: summary,
+scores: scores,
+riskMatrix: riskMatrix,
+scenarios: scenarios,
+recommendations: recommendations,
+stakeholderMap: stakeholderMap,
+kpiTargets: kpiTargets,
+strategicInitiatives: strategicInitiatives,
+implementationRoadmap: implementationRoadmap,
+confidence: confidence,
+sectorAnalysis: sectorAnalysis,
+digitalMaturity: digitalMaturity
+};
+},
+calculateScores: function(d) {
+var economyScore = this.scoreEconomy(d);
+var infraScore = this.scoreInfrastructure(d);
+var logisticsScore = this.scoreLogistics(d);
+var humanCapitalScore = this.scoreHumanCapital(d);
+var environmentScore = this.scoreEnvironment(d);
+var governanceScore = this.scoreGovernance(d);
+var innovationScore = this.scoreInnovation(d);
+var socialScore = this.scoreSocial(d);
+var totalScore = Math.round(
+(economyScore + infraScore + logisticsScore + humanCapitalScore +
+environmentScore + governanceScore + innovationScore + socialScore) / 8 * 10
+);
+return {
+economy: economyScore,
+infrastructure: infraScore,
+logistics: logisticsScore,
+humanCapital: humanCapitalScore,
+environment: environmentScore,
+governance: governanceScore,
+innovation: innovationScore,
+social: socialScore,
+totalScore: totalScore,
+grade: totalScore > 70 ? 'Высокий потенциал' : totalScore > 40 ? 'Средний потенциал' : 'Требует поддержки'
+};
+},
+scoreEconomy: function(d) {
+var score = 5;
+if(d.spec==='resource'||d.spec==='industrial') score += 2;
+if(d.spec==='administrative') score += 3;
+if(d.spec==='logistic') score += 1;
+if(d.unemp<4) score += 2;
+else if(d.unemp>6) score -= 1;
+if(d.budget > 5e8) score += 1;
+if(d.mono) score -= 2;
+if(d.arctic) score += 1;
+return Math.max(1, Math.min(10, score));
+},
+scoreInfrastructure: function(d) {
+var score = 10 - Math.round(d.wear / 10);
+if(d.wear < 40) score += 2;
+else if(d.wear > 70) score -= 2;
+return Math.max(1, Math.min(10, score));
+},
+scoreLogistics: function(d) {
+if(d.trans < 2) return 9;
+if(d.trans < 4) return 7;
+if(d.trans < 8) return 5;
+if(d.trans < 15) return 3;
+return 2;
+},
+scoreHumanCapital: function(d) {
+var score = 5;
+if(d.unemp < 4) score += 2;
+else if(d.unemp > 6) score -= 1;
+if(d.pop > 50) score += 2;
+else if(d.pop < 10) score -= 1;
+if(d.eduAccess === 'good') score += 1;
+if(d.eduAccess === 'low') score -= 1;
+return Math.max(1, Math.min(10, score));
+},
+scoreEnvironment: function(d) {
+var score = 6;
+if(d.spec === 'resource') score -= 2;
+if(d.spec === 'tourist') score += 1;
+if(d.arctic) score += 1;
+return Math.max(1, Math.min(10, score));
+},
+scoreGovernance: function(d) {
+var score = 5;
+if(d.coop === 'high') score += 2;
+else if(d.coop === 'low') score -= 1;
+if(d.terrType === 'urban') score += 1;
+if(d.arctic) score += 1;
+return Math.max(1, Math.min(10, score));
+},
+scoreInnovation: function(d) {
+var score = 4;
+if(d.spec === 'industrial') score += 2;
+if(d.spec === 'logistic') score += 1;
+if(d.pop > 100) score += 2;
+if(d.eduAccess === 'good') score += 1;
+return Math.max(1, Math.min(10, score));
+},
+scoreSocial: function(d) {
+var score = 5;
+if(d.medAccess === 'good') score += 2;
+if(d.medAccess === 'low') score -= 2;
+if(d.eduAccess === 'good') score += 1;
+if(d.unemp < 5) score += 1;
+if(d.pop > 30) score += 1;
+return Math.max(1, Math.min(10, score));
+},
+analyzeRisks: function(d, scores) {
+var risks = [];
+if(d.mono) {
+risks.push({
+category: 'Экономические',
+name: 'Монопрофильность экономики',
+level: 'high',
+probability: '75%',
+impact: 'Высокий',
+description: 'Зависимость от 1-2 градообразующих предприятий. При закрытии или сокращении производства возможен массовый отток населения.',
+mitigation: 'Диверсификация экономики, создание ТОР, поддержка МСП, программа переподготовки кадров'
+});
+}
+if(d.unemp > 6) {
+risks.push({
+category: 'Социальные',
+name: 'Высокая безработица',
+level: d.unemp > 8 ? 'high' : 'medium',
+probability: d.unemp > 8 ? '85%' : '65%',
+impact: d.unemp > 8 ? 'Критический' : 'Высокий',
+description: 'Безработица '+d.unemp+'% превышает среднероссийский уровень. Риск социальной напряжённости и миграционного оттока.',
+mitigation: 'Создание рабочих мест через инвестпроекты, программы занятости, поддержка самозанятости'
+});
+}
+if(d.wear > 60) {
+risks.push({
+category: 'Инфраструктурные',
+name: 'Критический износ инфраструктуры',
+level: 'high',
+probability: '70%',
+impact: 'Высокий',
+description: 'Износ ЖКХ '+d.wear+'% создаёт риски аварийных ситуаций, ограничения экономического роста и снижения качества жизни.',
+mitigation: 'Заявка на ИБК, модернизация через концессии, федеральные программы'
+});
+}
+if(d.trans > 5) {
+risks.push({
+category: 'Логистические',
+name: 'Транспортная изоляция',
+level: d.trans > 10 ? 'high' : 'medium',
+probability: d.trans > 10 ? '80%' : '60%',
+impact: d.trans > 10 ? 'Критический' : 'Высокий',
+description: 'Транспортная доступность '+d.trans+'ч увеличивает логистические издержки, снижает инвестиционную привлекательность.',
+mitigation: 'Развитие авиасообщения, субсидирование перевозок, цифровизация логистики'
+});
+}
+if(d.spec === 'resource') {
+risks.push({
+category: 'Экологические',
+name: 'Экологические риски',
+level: 'medium',
+probability: '50%',
+impact: 'Высокий',
+description: 'Добывающая промышленность создаёт риски загрязнения окружающей среды, деградации земель.',
+mitigation: 'Экомониторинг, рекультивация, переход на НДТ, ESG-стандарты'
+});
+}
+risks.push({
+category: 'Макроэкономические',
+name: 'Изменение конъюнктуры',
+level: 'medium',
+probability: '60%',
+impact: 'Средний',
+description: 'Волатильность мировых цен, санкционное давление, изменение федеральной политики.',
+mitigation: 'Диверсификация экономики, создание резервов, гибкое планирование'
+});
+risks.push({
+category: 'Демографические',
+name: 'Миграционный отток',
+level: scores.humanCapital < 5 ? 'high' : 'medium',
+probability: scores.humanCapital < 5 ? '75%' : '55%',
+impact: 'Высокий',
+description: 'Отток трудоспособного населения в крупные агломерации, старение населения.',
+mitigation: 'Повышение качества жизни, жилищные программы, цифровые рабочие места'
+});
+return risks;
+},
+generateScenarios: function(d, scores) {
+var base = {
+name: 'Базовый',
+icon: '📊',
+description: 'Реализация программы в соответствии с текущими параметрами',
+vrpGrowth: d.spec==='resource'||d.spec==='industrial' ? '15-20%' : '12-15%',
+unempTarget: Math.max(2.5, d.unemp - 2.5).toFixed(1)+'%',
+infraTarget: Math.max(25, d.wear - 25)+'%',
+investment: fmtNum(d.budget * 0.8),
+population: d.pop > 50 ? 'Стабильный рост +2-3%' : 'Стабилизация',
+probability: '65%'
+};
+var optimistic = {
+name: 'Оптимистичный',
+icon: '🚀',
+description: 'Успешная реализация + дополнительные федеральные программы',
+vrpGrowth: d.spec==='resource'||d.spec==='industrial' ? '22-28%' : '18-22%',
+unempTarget: Math.max(2.0, d.unemp - 3.5).toFixed(1)+'%',
+infraTarget: Math.max(20, d.wear - 35)+'%',
+investment: fmtNum(d.budget * 1.2),
+population: 'Рост +4-6%',
+probability: '20%'
+};
+var pessimistic = {
+name: 'Пессимистичный',
+icon: '⚠️',
+description: 'Задержки финансирования, неблагоприятная конъюнктура',
+vrpGrowth: d.spec==='resource'||d.spec==='industrial' ? '5-10%' : '3-8%',
+unempTarget: Math.min(12, d.unemp + 1.5).toFixed(1)+'%',
+infraTarget: Math.max(30, d.wear - 15)+'%',
+investment: fmtNum(d.budget * 0.4),
+population: 'Снижение -1-3%',
+probability: '15%'
+};
+return { base: base, optimistic: optimistic, pessimistic: pessimistic };
+},
+generateRecommendations: function(d, scores, risks) {
+var recs = [];
+if(d.wear > 60) {
+recs.push({
+priority: 'высокий',
+title: '🔴 Срочная модернизация инженерных сетей',
+description: 'Износ '+d.wear+'% требует немедленных действий. Подготовьте заявку на ИБК через Минфин РФ до конца текущего бюджетного цикла. Рассмотрите концессионные соглашения для ускорения модернизации. Приоритет: теплосети, водоснабжение, электроснабжение.',
+timeline: '2025-2027',
+responsible: 'Администрация МО, Минфин РФ, РСО'
+});
+} else if(d.wear > 45) {
+recs.push({
+priority: 'средний',
+title: '🟡 Плановое обновление инфраструктуры',
+description: 'Износ '+d.wear+'% в зоне внимания. Разработайте долгосрочную программу модернизации с поэтапным финансированием. Используйте механизм ИБК для отдельных объектов.',
+timeline: '2025-2030',
+responsible: 'Администрация МО, Минстрой РФ'
+});
+}
+if(d.unemp > 6) {
+recs.push({
+priority: 'высокий',
+title: '🔴 Программа снижения безработицы',
+description: 'Безработица '+d.unemp+'% — критический показатель. Создайте центр занятости с функцией профориентации и переподготовки. Развивайте МСП через микрокредитование. Привлекайте инвесторов через ТОР/СПВ.',
+timeline: '2025-2028',
+responsible: 'Комитет по труду, Минэкономразвития, ФОИВ'
+});
+}
+if(d.trans > 5) {
+recs.push({
+priority: 'высокий',
+title: '🔴 Повышение транспортной доступности',
+description: 'Доступность '+d.trans+'ч ограничивает развитие. Развивайте авиасообщение (субсидируемые рейсы), модернизируйте автодороги, рассмотрите вопросы круглогодичного транспортного сообщения.',
+timeline: '2025-2029',
+responsible: 'Минтранс, Администрация субъекта, Росавтодор'
+});
+}
+recs.push({
+priority: 'средний',
+title: '🔵 Цифровая трансформация',
+description: 'Внедрение ГИИС «Электронный бюджет», АИС ФРТ «СВОДЫ», цифровых двойников территорий. Обеспечьте широкополосный доступ в интернет. Развивайте электронные госуслуги.',
+timeline: '2025-2027',
+responsible: 'Минцифры, Администрация МО, Проектный офис'
+});
+if(scores.humanCapital < 5) {
+recs.push({
+priority: 'высокий',
+title: '🔴 Развитие человеческого капитала',
+description: 'Низкий индекс человеческого капитала требует комплексных мер: улучшение качества образования, привлечение молодых специалистов через жилищные программы, развитие дистанционного образования.',
+timeline: '2025-2030',
+responsible: 'Минобрнауки, Администрация субъекта, ВУЗы'
+});
+}
+if(d.mono) {
+recs.push({
+priority: 'высокий',
+title: '🔴 Диверсификация экономики моногорода',
+description: 'Создание ТОР/ОЭЗ для привлечения резидентов. Поддержка малого и среднего бизнеса. Развитие несырьевого неэнергетического экспорта.',
+timeline: '2025-2028',
+responsible: 'Минэкономразвития, Корпорация МСП, Администрация МО'
+});
+}
+if(d.arctic) {
+recs.push({
+priority: 'средний',
+title: '🟡 Использование преференций АЗРФ',
+description: 'Статус АЗРФ
