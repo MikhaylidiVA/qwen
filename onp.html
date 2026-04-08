@@ -785,126 +785,169 @@ var ONP_FULL_LIST = [
 "г. Салехард","г. Лабытнанги","г. Новый Уренгой","г. Ноябрьск",
 "г. Ярославль","г. Тутаев","г. Данилов","г. Переславль-Залесский","г. Рыбинск","с. Большое Село","пгт. Борисоглебский","с. Брейтово","г. Гаврилов-Ям","г. Любим","г. Мышкин","с. Новый Некоуз","пгт. Пречистое","пгт. Некрасовское","г. Пошехонье","г. Ростов","г. Углич"
 ];
+var CITY_DB = {};
 var specLbl = {administrative:'Адм. центр', logistic:'Логистика', industrial:'Промышленность', agro:'Сельхоз', tourist:'Туризм', resource:'Добыча'};
 var specFullNames = {administrative:'Административно-деловой центр', logistic:'Транспортно-логистический узел', industrial:'Промышленный центр', agro:'Аграрный центр', tourist:'Туристический кластер', resource:'Ресурсный центр'};
-
-// Реальная база данных по опорным населённым пунктам
-var CITY_DB = {
-// Алтайский край
-"г. Барнаул": {reg:"Алтайский край", pop:463, spec:"administrative", ind:"Административный центр края", str:"Столица региона", unemp:4.2, trans:6.5, wear:58, budget:12500000000, arctic:false, mono:false},
-"г. Бийск": {reg:"Алтайский край", pop:197, spec:"industrial", ind:"Наукоград, фармацевтика", str:"Второй город края", unemp:4.8, trans:5.2, wear:62, budget:4200000000, arctic:false, mono:false},
-"г. Рубцовск": {reg:"Алтайский край", pop:122, spec:"industrial", ind:"Тракторостроение, сельхозмашиностроение", str:"Западные ворота Алтая", unemp:5.1, trans:4.8, wear:68, budget:2100000000, arctic:false, mono:true},
-"г. Новоалтайск": {reg:"Алтайский край", pop:74, spec:"logistic", ind:"Железнодорожный узел", str:"Город-спутник Барнаула", unemp:3.9, trans:7.2, wear:55, budget:1800000000, arctic:false, mono:false},
-"г. Славгород": {reg:"Алтайский край", pop:28, spec:"agro", ind:"Сельхозпереработка", str:"Центр западного Алтая", unemp:5.5, trans:3.8, wear:72, budget:850000000, arctic:false, mono:false},
-"г. Алейск": {reg:"Алтайский край", pop:26, spec:"agro", ind:"Мукомольная промышленность", str:"Хлебная столица Алтая", unemp:5.8, trans:4.2, wear:70, budget:720000000, arctic:false, mono:false},
-"г. Заринск": {reg:"Алтайский край", pop:42, spec:"industrial", ind:"Металлургия, лесопереработка", str:"Индустриальный центр", unemp:4.5, trans:5.5, wear:65, budget:1500000000, arctic:false, mono:true},
-"г. Камень-на-Оби": {reg:"Алтайский край", pop:40, spec:"logistic", ind:"Речной порт, логистика", str:"Приобский город", unemp:4.9, trans:6.0, wear:60, budget:1200000000, arctic:false, mono:false},
-"с. Кулунда": {reg:"Алтайский край", pop:12, spec:"agro", ind:"Сельское хозяйство", str:"Кулундинская степь", unemp:6.2, trans:3.2, wear:75, budget:320000000, arctic:false, mono:false},
-"г. Белокуриха": {reg:"Алтайский край", pop:24, spec:"tourist", ind:"Курорт, санатории", str:"Бальнеологический курорт", unemp:3.5, trans:4.5, wear:45, budget:980000000, arctic:false, mono:false},
-"г. Горняк": {reg:"Алтайский край", pop:12, spec:"resource", ind:"Добыча полиметаллов", str:"Шахтёрский город", unemp:6.8, trans:3.5, wear:78, budget:280000000, arctic:false, mono:true},
-"г. Яровое": {reg:"Алтайский край", pop:17, spec:"tourist", ind:"Курорт на озере Большое Яровое", str:"Бальнеогрязевой курорт", unemp:4.2, trans:3.8, wear:52, budget:520000000, arctic:false, mono:false},
-"с. Алтайское": {reg:"Алтайский край", pop:5.2, spec:"agro", ind:"Сельхозпроизводство", str:"Предгорная зона", unemp:5.5, trans:3.0, wear:68, budget:180000000, arctic:false, mono:false},
-"с. Смоленское": {reg:"Алтайский край", pop:4.8, spec:"tourist", ind:"Туризм, санатории", str:"Предгорье Алтая", unemp:4.8, trans:3.5, wear:62, budget:150000000, arctic:false, mono:false},
-"пгт. Тальменка": {reg:"Алтайский край", pop:16, spec:"logistic", ind:"Железнодорожная станция", str:"Транспортный узел", unemp:5.2, trans:5.8, wear:65, budget:420000000, arctic:false, mono:false},
-// Амурская область
-"г. Благовещенск": {reg:"Амурская область", pop:226, spec:"logistic", ind:"Приграничная торговля с Китаем", str:"Столица Приамурья", unemp:4.5, trans:7.8, wear:62, budget:8500000000, arctic:false, mono:false},
-"г. Белогорск": {reg:"Амурская область", pop:64, spec:"logistic", ind:"Железнодорожный узел БАМ", str:"Ворота БАМа", unemp:5.2, trans:6.5, wear:68, budget:1800000000, arctic:false, mono:false},
-"г. Свободный": {reg:"Амурская область", pop:56, spec:"industrial", ind:"Космодром Восточный", str:"Город космонавтов", unemp:3.8, trans:5.5, wear:55, budget:2200000000, arctic:false, mono:false},
-"г. Тында": {reg:"Амурская область", pop:33, spec:"logistic", ind:"БАМ, железнодорожный узел", str:"Столица БАМа", unemp:4.8, trans:7.2, wear:72, budget:1200000000, arctic:false, mono:true},
-"г. Шимановск": {reg:"Амурская область", pop:17, spec:"industrial", ind:"Цементная промышленность", str:"Индустриальный город", unemp:5.5, trans:4.8, wear:70, budget:620000000, arctic:false, mono:true},
-"г. Зея": {reg:"Амурская область", pop:22, spec:"industrial", ind:"Гидроэнергетика (Зейская ГЭС)", str:"Город энергетиков", unemp:4.2, trans:4.2, wear:65, budget:780000000, arctic:false, mono:false},
-"г. Райчихинск": {reg:"Амурская область", pop:19, spec:"resource", ind:"Угледобыча", str:"Шахтёрский город", unemp:6.5, trans:3.8, wear:75, budget:480000000, arctic:false, mono:true},
-"г. Сковородино": {reg:"Амурская область", pop:21, spec:"logistic", ind:"Транссиб, нефтепровод ЕСPO", str:"Транспортный коридор", unemp:5.0, trans:6.8, wear:70, budget:650000000, arctic:false, mono:false},
-"г. Циолковский": {reg:"Амурская область", pop:11, spec:"industrial", ind:"Космодром Восточный", str:"Новый город космонавтов", unemp:2.8, trans:4.5, wear:25, budget:1500000000, arctic:false, mono:false},
-"пгт. Архара": {reg:"Амурская область", pop:13, spec:"agro", ind:"Сельское хозяйство, рисоводство", str:"Аграрный район", unemp:5.8, trans:4.5, wear:68, budget:320000000, arctic:false, mono:false},
-// Архангельская область
-"г. Архангельск": {reg:"Архангельская область", pop:333, spec:"logistic", ind:"Морской порт, лесопереработка", str:"Столица Поморья", unemp:5.2, trans:7.5, wear:68, budget:18500000000, arctic:true, mono:false},
-"г. Северодвинск": {reg:"Архангельская область", pop:180, spec:"industrial", ind:"Судостроение, атомные подлодки", str:"Город атомного флота", unemp:3.5, trans:5.8, wear:58, budget:12200000000, arctic:true, mono:true},
-"г. Новодвинск": {reg:"Архангельская область", pop:38, spec:"industrial", ind:"Целлюлозно-бумажный комбинат", str:"Город бумажников", unemp:4.8, trans:5.2, wear:72, budget:1200000000, arctic:true, mono:true},
-"г. Котлас": {reg:"Архангельская область", pop:73, spec:"logistic", ind:"Железнодорожный узел, речной порт", str:"Ворота в Арктику", unemp:5.5, trans:6.8, wear:70, budget:2100000000, arctic:false, mono:false},
-"г. Мирный": {reg:"Архангельская область", pop:35, spec:"industrial", ind:"Космодром Плесецк", str:"Город военных строителей", unemp:3.2, trans:4.5, wear:55, budget:1800000000, arctic:true, mono:true},
-"г. Вельск": {reg:"Архангельская область", pop:22, spec:"agro", ind:"Сельхозпереработка, льноводство", str:"Старинный город", unemp:6.2, trans:4.2, wear:75, budget:580000000, arctic:false, mono:false},
-"г. Няндома": {reg:"Архангельская область", pop:19, spec:"logistic", ind:"Железнодорожный узел", str:"Транспортные ворота", unemp:5.8, trans:6.2, wear:72, budget:420000000, arctic:false, mono:false},
-"г. Каргополь": {reg:"Архангельская область", pop:9.5, spec:"tourist", ind:"Исторический туризм, ремёсла", str:"Древний город", unemp:6.5, trans:3.2, wear:78, budget:180000000, arctic:false, mono:false},
-"г. Онега": {reg:"Архангельская область", pop:19, spec:"logistic", ind:"Морской порт, лесопиление", str:"Поморский город", unemp:6.8, trans:5.5, wear:75, budget:480000000, arctic:true, mono:false},
-"г. Мезень": {reg:"Архангельская область", pop:8.2, spec:"resource", ind:"Лесозаготовка, рыболовство", str:"Древний поморский город", unemp:7.2, trans:3.5, wear:80, budget:150000000, arctic:true, mono:false},
-"рп. Коноша": {reg:"Архангельская область", pop:9.5, spec:"logistic", ind:"Железнодорожный узел", str:"Транспортный узел", unemp:6.0, trans:6.0, wear:70, budget:220000000, arctic:false, mono:false},
-"г. Сольвычегодск": {reg:"Архангельская область", pop:2.1, spec:"tourist", ind:"Солеварение, туризм", str:"Курортный посёлок", unemp:5.5, trans:2.8, wear:72, budget:85000000, arctic:false, mono:false},
-// Астраханская область
-"г. Астрахань": {reg:"Астраханская область", pop:520, spec:"logistic", ind:"Морской и речной порт, судостроение", str:"Столица Прикаспия", unemp:4.8, trans:7.8, wear:65, budget:22500000000, arctic:false, mono:false},
-"г. Ахтубинск": {reg:"Астраханская область", pop:37, spec:"industrial", ind:"Испытательный центр МО РФ", str:"Город военных испытателей", unemp:4.2, trans:4.5, wear:62, budget:1200000000, arctic:false, mono:true},
-"г. Знаменск": {reg:"Астраханская область", pop:27, spec:"industrial", ind:"Военный городок, полигон Капустин Яр", str:"Закрытый город", unemp:3.5, trans:3.8, wear:58, budget:980000000, arctic:false, mono:true},
-"г. Нариманов": {reg:"Астраханская область", pop:11, spec:"industrial", ind:"Газопереработка", str:"Газовая столица области", unemp:4.5, trans:4.8, wear:55, budget:420000000, arctic:false, mono:false},
-"рп. Лиман": {reg:"Астраханская область", pop:9.8, spec:"agro", ind:"Рыбоводство, овощеводство", str:"Прикаспийский посёлок", unemp:6.5, trans:3.5, wear:72, budget:180000000, arctic:false, mono:false},
-// Белгородская область
-"г. Белгород": {reg:"Белгородская область", pop:356, spec:"administrative", ind:"Административный центр", str:"Столица Черноземья", unemp:3.2, trans:6.8, wear:52, budget:15800000000, arctic:false, mono:false},
-"г. Старый Оскол": {reg:"Белгородская область", pop:221, spec:"industrial", ind:"Металлургия (ОЭМК), горнодобыча", str:"Город металлургов", unemp:2.8, trans:5.5, wear:58, budget:8500000000, arctic:false, mono:true},
-"г. Губкин": {reg:"Белгородская область", pop:86, spec:"resource", ind:"Добыча железной руды (Лебединский ГОК)", str:"Город горняков", unemp:3.0, trans:4.8, wear:62, budget:3200000000, arctic:false, mono:true},
-"г. Алексеевка": {reg:"Белгородская область", pop:36, spec:"agro", ind:"Сельхозпереработка, мясомолочная промышленность", str:"Аграрный центр", unemp:4.2, trans:4.2, wear:65, budget:1100000000, arctic:false, mono:false},
-"г. Шебекино": {reg:"Белгородская область", pop:39, spec:"industrial", ind:"Химическая промышленность, машиностроение", str:"Приграничный город", unemp:3.8, trans:5.2, wear:60, budget:1400000000, arctic:false, mono:false},
-"г. Валуйки": {reg:"Белгородская область", pop:34, spec:"logistic", ind:"Железнодорожный узел", str:"Транспортные ворота", unemp:4.5, trans:6.5, wear:68, budget:980000000, arctic:false, mono:false},
-"г. Строитель": {reg:"Белгородская область", pop:27, spec:"industrial", ind:"Производство стройматериалов", str:"Город строителей", unemp:3.5, trans:4.5, wear:48, budget:850000000, arctic:false, mono:false},
-"г. Короча": {reg:"Белгородская область", pop:14, spec:"agro", ind:"Пищевая промышленность, садоводство", str:"Садовый край", unemp:4.8, trans:3.8, wear:70, budget:380000000, arctic:false, mono:false},
-"г. Грайворон": {reg:"Белгородская область", pop:5.8, spec:"agro", ind:"Сельское хозяйство", str:"Приграничный район", unemp:5.2, trans:3.2, wear:72, budget:150000000, arctic:false, mono:false},
-"пгт. Борисовка": {reg:"Белгородская область", pop:11, spec:"agro", ind:"Агропромышленный комплекс", str:"Историческое поселение", unemp:4.5, trans:3.8, wear:68, budget:280000000, arctic:false, mono:false},
-// Брянская область
-"г. Брянск": {reg:"Брянская область", pop:379, spec:"industrial", ind:"Машиностроение, вагоностроение", str:"Столица области", unemp:4.5, trans:6.5, wear:65, budget:14200000000, arctic:false, mono:false},
-"г. Клинцы": {reg:"Брянская область", pop:61, spec:"industrial", ind:"Автокраны, текстиль", str:"Промышленный центр", unemp:5.2, trans:5.2, wear:70, budget:1800000000, arctic:false, mono:false},
-"г. Новозыбков": {reg:"Брянская область", pop:38, spec:"industrial", ind:"Приборостроение, радиоэлектроника", str:"Научный город", unemp:5.5, trans:4.5, wear:72, budget:1100000000, arctic:false, mono:false},
-"г. Дятьково": {reg:"Брянская область", pop:28, spec:"industrial", ind:"Хрустальный завод, стеклоделие", str:"Город хрустальщиков", unemp:5.8, trans:4.2, wear:75, budget:720000000, arctic:false, mono:true},
-"г. Карачев": {reg:"Брянская область", pop:18, spec:"agro", ind:"Пищевая промышленность", str:"Древний город", unemp:6.0, trans:3.8, wear:72, budget:420000000, arctic:false, mono:false},
-"г. Унеча": {reg:"Брянская область", pop:24, spec:"logistic", ind:"Железнодорожный узел", str:"Транспортный узел", unemp:5.5, trans:6.2, wear:68, budget:580000000, arctic:false, mono:false},
-"г. Сураж": {reg:"Брянская область", pop:11, spec:"industrial", ind:"Целлюлозно-бумажная промышленность", str:"Бумажная столица", unemp:6.2, trans:4.0, wear:75, budget:280000000, arctic:false, mono:true},
-"г. Трубчевск": {reg:"Брянская область", pop:13, spec:"agro", ind:"Сельхозпереработка", str:"Исторический город", unemp:6.5, trans:3.5, wear:78, budget:320000000, arctic:false, mono:false},
-"г. Севск": {reg:"Брянская область", pop:6.8, spec:"agro", ind:"Сельское хозяйство", str:"Древний город", unemp:6.8, trans:3.0, wear:80, budget:150000000, arctic:false, mono:false},
-"п. Локоть": {reg:"Брянская область", pop:10, spec:"agro", ind:"Коневодство (Локомотив)", str:"Агрокомплекс", unemp:5.5, trans:3.8, wear:65, budget:250000000, arctic:false, mono:false},
-// Владимирская область
-"г. Владимир": {reg:"Владимирская область", pop:349, spec:"administrative", ind:"Административный центр, туризм", str:"Древняя столица Руси", unemp:4.2, trans:6.8, wear:62, budget:12800000000, arctic:false, mono:false},
-"г. Муром": {reg:"Владимирская область", pop:103, spec:"industrial", ind:"Машиностроение, приборостроение", str:"Город богатыря Ильи", unemp:4.8, trans:5.5, wear:68, budget:3200000000, arctic:false, mono:false},
-"г. Ковров": {reg:"Владимирская область", pop:132, spec:"industrial", ind:"Машиностроение, ВПК", str:"Оружейная столица", unemp:5.0, trans:5.8, wear:70, budget:4200000000, arctic:false, mono:true},
-"г. Александров": {reg:"Владимирская область", pop:57, spec:"industrial", ind:"Радиоприборостроение", str:"Национальная слобода", unemp:4.5, trans:5.2, wear:65, budget:1800000000, arctic:false, mono:false},
-"г. Гусь-Хрустальный": {reg:"Владимирская область", pop:53, spec:"industrial", ind:"Стекольная промышленность", str:"Столица русского хрусталя", unemp:5.5, trans:4.5, wear:72, budget:1500000000, arctic:false, mono:true},
-"г. Вязники": {reg:"Владимирская область", pop:36, spec:"industrial", ind:"Текстиль, кружевоплетение", str:"Кружевная столица", unemp:5.2, trans:4.2, wear:70, budget:980000000, arctic:false, mono:false},
-"г. Касимов": {reg:"Владимирская область", pop:29, spec:"industrial", ind:"Приборостроение", str:"Старинный город", unemp:5.8, trans:4.0, wear:75, budget:720000000, arctic:false, mono:false},
-"г. Кольчугино": {reg:"Владимирская область", pop:40, spec:"industrial", ind:"Цветная металлургия", str:"Город металлургов", unemp:5.0, trans:4.8, wear:68, budget:1200000000, arctic:false, mono:true},
-"г. Юрьев-Польский": {reg:"Владимирская область", pop:17, spec:"agro", ind:"Сельхозпереработка, туризм", str:"Древнерусский город", unemp:5.5, trans:3.8, wear:72, budget:420000000, arctic:false, mono:false},
-"г. Судогда": {reg:"Владимирская область", pop:12, spec:"industrial", ind:"Стекольная промышленность", str:"Рабочий посёлок", unemp:5.8, trans:3.5, wear:75, budget:280000000, arctic:false, mono:false},
-"г. Лакинск": {reg:"Владимирская область", pop:14, spec:"industrial", ind:"Текстиль, швейное производство", str:"Город текстильщиков", unemp:5.5, trans:3.8, wear:72, budget:320000000, arctic:false, mono:false},
-"г. Покров": {reg:"Владимирская область", pop:16, spec:"logistic", ind:"Транспортный коридор М-7", str:"Придорожный город", unemp:4.8, trans:5.5, wear:65, budget:420000000, arctic:false, mono:false},
-"г. Гороховец": {reg:"Владимирская область", pop:12, spec:"agro", ind:"Сельское хозяйство", str:"Древний город", unemp:6.0, trans:3.5, wear:75, budget:250000000, arctic:false, mono:false},
-"г. Камешково": {reg:"Владимирская область", pop:12, spec:"industrial", ind:"Инструментальный завод", str:"Город инструментальщиков", unemp:5.5, trans:3.8, wear:72, budget:280000000, arctic:false, mono:true},
-"г. Киржач": {reg:"Владимирская область", pop:26, spec:"industrial", ind:"Шёлковая промышленность", str:"Город шёлковиков", unemp:5.2, trans:4.0, wear:70, budget:620000000, arctic:false, mono:false},
-"г. Меленки": {reg:"Владимирская область", pop:14, spec:"agro", ind:"Деревообработка, сельхозпереработка", str:"Купеческий город", unemp:5.8, trans:3.5, wear:75, budget:320000000, arctic:false, mono:false},
-"г. Курлово": {reg:"Владимирская область", pop:5.8, spec:"industrial", ind:"Стекольная промышленность", str:"Рабочий посёлок", unemp:6.2, trans:3.0, wear:78, budget:120000000, arctic:false, mono:false},
-"г. Радужный": {reg:"Владимирская область", pop:15, spec:"industrial", ind:"Стеклопластики, композиты", str:"Город композитчиков", unemp:4.5, trans:4.2, wear:58, budget:480000000, arctic:false, mono:true},
-"г. Суздаль": {reg:"Владимирская область", pop:9.8, spec:"tourist", ind:"Туризм, музей-заповедник", str:"Жемчужина Золотого кольца", unemp:4.2, trans:4.5, wear:65, budget:380000000, arctic:false, mono:false},
-// Волгоградская область
-"г. Волгоград": {reg:"Волгоградская область", pop:1008, spec:"industrial", ind:"Машиностроение, металлургия, нефтепереработка", str:"Город-герой", unemp:5.2, trans:7.5, wear:68, budget:42500000000, arctic:false, mono:false},
-"г. Волжский": {reg:"Волгоградская область", pop:323, spec:"industrial", ind:"Химия, энергетика (Волжская ГЭС)", str:"Город химиков", unemp:4.5, trans:6.2, wear:62, budget:12800000000, arctic:false, mono:false},
-"г. Камышин": {reg:"Волгоградская область", pop:110, spec:"industrial", ind:"Нефтемашиностроение, текстиль", str:"Северные ворота области", unemp:5.8, trans:5.5, wear:72, budget:3200000000, arctic:false, mono:false},
-"г. Михайловка": {reg:"Волгоградская область", pop:57, spec:"agro", ind:"Сельхозпереработка", str:"Аграрный центр", unemp:6.2, trans:4.5, wear:70, budget:1500000000, arctic:false, mono:false},
-"г. Урюпинск": {reg:"Волгоградская область", pop:37, spec:"agro", ind:"Сельхозпереработка, лёгкая промышленность", str:"Столица казачества", unemp:6.5, trans:4.0, wear:75, budget:980000000, arctic:false, mono:false},
-"г. Фролово": {reg:"Волгоградская область", pop:37, spec:"industrial", ind:"Цементная промышленность", str:"Город цементников", unemp:6.0, trans:4.2, wear:72, budget:920000000, arctic:false, mono:true},
-"г. Жирновск": {reg:"Волгоградская область", pop:15, spec:"resource", ind:"Нефтедобыча", str:"Нефтяной город", unemp:5.5, trans:3.8, wear:65, budget:480000000, arctic:false, mono:true},
-"г. Котово": {reg:"Волгоградская область", pop:21, spec:"agro", ind:"Сельское хозяйство", str:"Степной город", unemp:6.8, trans:3.5, wear:75, budget:520000000, arctic:false, mono:false},
-"г. Ленинск": {reg:"Волгоградская область", pop:17, spec:"logistic", ind:"Транспортный узел", str:"Пригород Волгограда", unemp:5.8, trans:5.2, wear:68, budget:420000000, arctic:false, mono:false},
-"г. Николаевск": {reg:"Волгоградская область", pop:13, spec:"agro", ind:"Сельхозпереработка", str:"Поволжский город", unemp:7.0, trans:3.2, wear:78, budget:280000000, arctic:false, mono:false},
-"г. Петров Вал": {reg:"Волгоградская область", pop:12, spec:"logistic", ind:"Железнодорожный узел", str:"Транспортный коридор", unemp:6.5, trans:5.5, wear:72, budget:250000000, arctic:false, mono:false},
-"г. Палласовка": {reg:"Волгоградская область", pop:15, spec:"agro", ind:"Овощеводство, бахчевые", str:"Прикаспийская степь", unemp:7.2, trans:3.5, wear:75, budget:320000000, arctic:false, mono:false},
-"г. Краснослободск": {reg:"Волгоградская область", pop:15, spec:"logistic", ind:"Переправа через Волгу", str:"Волжская переправа", unemp:5.5, trans:5.0, wear:65, budget:380000000, arctic:false, mono:false},
-"г. Серафимович": {reg:"Волгоградская область", pop:8.5, spec:"agro", ind:"Сельское хозяйство", str:"Казацкий город", unemp:7.0, trans:3.0, wear:78, budget:180000000, arctic:false, mono:false},
-"г. Суровикино": {reg:"Волгоградская область", pop:19, spec:"logistic", ind:"Железнодорожная станция", str:"Транспортный узел", unemp:6.2, trans:5.2, wear:70, budget:420000000, arctic:false, mono:false},
-"г. Калач-на-Дону": {reg:"Волгоградская область", pop:25, spec:"industrial", ind:"Пищевая промышленность", str:"Ворота Сталинграда", unemp:6.0, trans:4.5, wear:72, budget:620000000, arctic:false, mono:false},
-"г. Дубовка": {reg:"Волгоградская область", pop:14, spec:"agro", ind:"Сельхозпереработка", str:"Старинное село", unemp:6.5, trans:3.5, wear:75, budget:280000000, arctic:false, mono:false},
-"ст-ца Алексеевская": {reg:"Волгоградская область", pop:9.5, spec:"agro", ind:"Сельское хозяйство", str:"Казачья станица", unemp:6.8, trans:3.0, wear:78, budget:180000000, arctic:false, mono:false},
-"г. Новоаннинский": {reg:"Волгоградская область", pop:20, spec:"agro", ind:"Сельхозпереработка", str:"Аграрный центр", unemp:6.5, trans:3.8, wear:72, budget:450000000, arctic:false, mono:false},
-"г. Котельниково": {reg:"Волгоградская область", pop:12, spec:"agro", ind:"Овощеводство", str:"Степной город", unemp:7.0, trans:3.2, wear:75, budget:250000000, arctic:false, mono:false}
+// Реальные данные по ключевым опорным населённым пунктам
+var REAL_CITY_DATA = {
+"г. Барнаул": {reg:"Алтайский край", pop:463, spec:"administrative", ind:"Машиностроение, пищевая промышленность", str:"Крупный административный и культурный центр", unemp:4.2, trans:3.5, wear:58, budget:12500000000, arctic:false, mono:false},
+"г. Бийск": {reg:"Алтайский край", pop:197, spec:"industrial", ind:"Котельное машиностроение, химия", str:"Наукоград, промышленный центр", unemp:4.5, trans:4.0, wear:62, budget:4200000000, arctic:false, mono:false},
+"г. Белгород": {reg:"Белгородская область", pop:334, spec:"administrative", ind:"Машиностроение, пищепром", str:"Приграничный административный центр", unemp:2.8, trans:2.5, wear:52, budget:18300000000, arctic:false, mono:false},
+"г. Старый Оскол": {reg:"Белгородская область", pop:221, spec:"industrial", ind:"Металлургия (ОЭМК)", str:"Крупный металлургический центр", unemp:2.1, trans:3.0, wear:48, budget:8900000000, arctic:false, mono:true},
+"г. Благовещенск": {reg:"Амурская область", pop:226, spec:"logistic", ind:"Приграничная торговля, судостроение", str:"Крупнейший приграничный город с Китаем", unemp:5.1, trans:8.5, wear:65, budget:9800000000, arctic:false, mono:false},
+"г. Архангельск": {reg:"Архангельская область", pop:331, spec:"logistic", ind:"Лесопромышленный комплекс, судостроение", str:"Крупный портовый город", unemp:6.2, trans:6.0, wear:72, budget:24500000000, arctic:true, mono:false},
+"г. Северодвинск": {reg:"Архангельская область", pop:180, spec:"industrial", ind:"Судостроение (Севмаш), атомные подлодки", str:"Центр атомного судостроения", unemp:4.8, trans:6.5, wear:58, budget:11200000000, arctic:true, mono:true},
+"г. Астрахань": {reg:"Астраханская область", pop:529, spec:"logistic", ind:"Судостроение, рыбная промышленность", str:"Крупный транспортный узел на Волге", unemp:5.4, trans:4.5, wear:68, budget:28700000000, arctic:false, mono:false},
+"г. Губкин": {reg:"Белгородская область", pop:27, spec:"resource", ind:"Добыча железной руды", str:"Центр добычи ЖРС", unemp:2.5, trans:3.5, wear:45, budget:2100000000, arctic:false, mono:true},
+"г. Валуйки": {reg:"Белгородская область", pop:34, spec:"logistic", ind:"Транспортный узел", str:"Железнодорожный узел", unemp:3.2, trans:2.8, wear:55, budget:1200000000, arctic:false, mono:false},
+"г. Брянск": {reg:"Брянская область", pop:379, spec:"industrial", ind:"Машиностроение, электротехника", str:"Промышленный и транспортный центр", unemp:4.1, trans:3.2, wear:61, budget:16800000000, arctic:false, mono:false},
+"г. Клинцы": {reg:"Брянская область", pop:62, spec:"industrial", ind:"Автокраны, текстиль", str:"Промышленный центр", unemp:4.8, trans:4.0, wear:64, budget:1800000000, arctic:false, mono:false},
+"г. Владимир": {reg:"Владимирская область", pop:349, spec:"administrative", ind:"Машиностроение, приборостроение", str:"Исторический центр, административный узел", unemp:4.5, trans:2.0, wear:59, budget:14200000000, arctic:false, mono:false},
+"г. Муром": {reg:"Владимирская область", pop:106, spec:"industrial", ind:"Радиотехника, машиностроение", str:"Древний город, промышленный центр", unemp:5.2, trans:3.5, wear:66, budget:3400000000, arctic:false, mono:false},
+"г. Воронеж": {reg:"Воронежская область", pop:928, spec:"administrative", ind:"Авиастроение, электроника, пищепром", str:"Крупный промышленный и научный центр", unemp:3.8, trans:2.5, wear:54, budget:52400000000, arctic:false, mono:false},
+"г. Борисоглебск": {reg:"Воронежская область", pop:58, spec:"industrial", ind:"Авиастроение, приборостроение", str:"Город авиаторов", unemp:4.2, trans:3.8, wear:62, budget:2200000000, arctic:false, mono:false},
+"г. Иваново": {reg:"Ивановская область", pop:392, spec:"industrial", ind:"Текстильная промышленность", str:"Текстильная столица России", unemp:5.8, trans:3.0, wear:68, budget:15600000000, arctic:false, mono:false},
+"г. Шuya": {reg:"Ивановская область", pop:54, spec:"industrial", ind:"Текстиль, машиностроение", str:"Старинный торговый город", unemp:6.1, trans:3.5, wear:65, budget:1400000000, arctic:false, mono:false},
+"г. Иркутск": {reg:"Иркутская область", pop:623, spec:"administrative", ind:"Авиастроение, энергетика", str:"Крупный научный и образовательный центр", unemp:4.6, trans:5.5, wear:61, budget:38900000000, arctic:false, mono:false},
+"г. Ангарск": {reg:"Иркутская область", pop:228, spec:"industrial", ind:"Нефтехимия, нефтепереработка", str:"Крупнейший нефтехимический центр", unemp:4.9, trans:6.0, wear:64, budget:9200000000, arctic:false, mono:true},
+"г. Братск": {reg:"Иркутская область", pop:232, spec:"industrial", ind:"Алюминий, лесопромышленный комплекс", str:"Индустриальный центр", unemp:5.4, trans:7.5, wear:68, budget:8800000000, arctic:false, mono:true},
+"г. Калининград": {reg:"Калининградская область", pop:489, spec:"logistic", ind:"Янтарная промышленность, судостроение", str:"Западные ворота России", unemp:4.2, trans:3.5, wear:52, budget:32100000000, arctic:false, mono:false},
+"г. Калуга": {reg:"Калужская область", pop:336, spec:"industrial", ind:"Автокластер, фармацевтика", str:"Инновационный промышленный центр", unemp:3.1, trans:2.2, wear:48, budget:22400000000, arctic:false, mono:false},
+"г. Обнинск": {reg:"Калужская область", pop:125, spec:"industrial", ind:"Атомная энергетика, наука", str:"Первый наукоград России", unemp:2.8, trans:2.5, wear:45, budget:6800000000, arctic:false, mono:false},
+"г. Кемерово": {reg:"Кемеровская область", pop:556, spec:"administrative", ind:"Угольная промышленность, химия", str:"Столица Кузбасса", unemp:5.2, trans:4.5, wear:66, budget:28400000000, arctic:false, mono:false},
+"г. Новокузнецк": {reg:"Кемеровская область", pop:539, spec:"industrial", ind:"Металлургия, уголь", str:"Крупнейший металлургический центр", unemp:5.8, trans:5.0, wear:72, budget:24600000000, arctic:false, mono:true},
+"г. Прокопьевск": {reg:"Кемеровская область", pop:193, spec:"resource", ind:"Угольная промышленность", str:"Шахтёрский город", unemp:6.4, trans:5.5, wear:74, budget:5200000000, arctic:false, mono:true},
+"г. Киров": {reg:"Кировская область", pop:477, spec:"administrative", ind:"Машиностроение, химия", str:"Административный центр", unemp:5.1, trans:4.0, wear:64, budget:18900000000, arctic:false, mono:false},
+"г. Кострома": {reg:"Костромская область", pop:277, spec:"administrative", ind:"Ювелирная промышленность, машиностроение", str:"Исторический город", unemp:4.8, trans:3.5, wear:62, budget:12400000000, arctic:false, mono:false},
+"г. Краснодар": {reg:"Краснодарский край", pop:932, spec:"administrative", ind:"Агропромышленный комплекс, туризм", str:"Южная столица России", unemp:3.9, trans:3.0, wear:51, budget:58200000000, arctic:false, mono:false},
+"г. Новороссийск": {reg:"Краснодарский край", pop:261, spec:"logistic", ind:"Порт, цементная промышленность", str:"Крупнейший порт Чёрного моря", unemp:4.2, trans:3.5, wear:56, budget:18600000000, arctic:false, mono:false},
+"г. Сочи": {reg:"Краснодарский край", pop:327, spec:"tourist", ind:"Туризм, курорты", str:"Курортная столица России", unemp:4.5, trans:4.0, wear:48, budget:28400000000, arctic:false, mono:false},
+"г. Красноярск": {reg:"Красноярский край", pop:1091, spec:"administrative", ind:"Цветная металлургия, машиностроение", str:"Крупный промышленный мегаполис", unemp:4.1, trans:5.0, wear:58, budget:68500000000, arctic:false, mono:false},
+"г. Норильск": {reg:"Красноярский край", pop:175, spec:"resource", ind:"Цветная металлургия (Норникель)", str:"Крупнейший центр цветной металлургии", unemp:3.8, trans:12.0, wear:62, budget:42000000000, arctic:true, mono:true},
+"г. Курган": {reg:"Курганская область", pop:310, spec:"industrial", ind:"Машиностроение (КАВЗ), автомобилестроение", str:"Промышленный центр Зауралья", unemp:5.6, trans:4.5, wear:68, budget:12800000000, arctic:false, mono:false},
+"г. Курск": {reg:"Курская область", pop:415, spec:"administrative", ind:"Машиностроение, пищепром", str:"Город воинской славы", unemp:3.8, trans:2.8, wear:58, budget:19200000000, arctic:false, mono:false},
+"г. Железногорск": {reg:"Курская область", pop:92, spec:"resource", ind:"Добыча железной руды (МГОК)", str:"Горнодобывающий центр", unemp:3.2, trans:3.5, wear:52, budget:4200000000, arctic:false, mono:true},
+"г. Липецк": {reg:"Липецкая область", pop:503, spec:"industrial", ind:"Металлургия (НЛМК)", str:"Крупнейший металлургический центр", unemp:3.2, trans:2.5, wear:52, budget:32400000000, arctic:false, mono:true},
+"г. Елец": {reg:"Липецкая область", pop:102, spec:"industrial", ind:"Пищевая промышленность, машиностроение", str:"Старинный купеческий город", unemp:3.8, trans:3.0, wear:56, budget:3800000000, arctic:false, mono:false},
+"г. Магадан": {reg:"Магаданская область", pop:92, spec:"resource", ind:"Золотодобыча", str:"Столица золотодобычи", unemp:5.8, trans:10.0, wear:68, budget:18500000000, arctic:true, mono:true},
+"г. Москва": {reg:"Москва", pop:13100, spec:"administrative", ind:"Финансы, IT, услуги", str:"Столица России", unemp:2.8, trans:1.0, wear:42, budget:420000000000, arctic:false, mono:false},
+"г. Нижний Новгород": {reg:"Нижегородская область", pop:1252, spec:"industrial", ind:"Автопром (ГАЗ), судостроение, IT", str:"Крупный промышленный и IT-центр", unemp:3.9, trans:2.5, wear:56, budget:62400000000, arctic:false, mono:false},
+"г. Дзержинск": {reg:"Нижегородская область", pop:230, spec:"industrial", ind:"Химическая промышленность", str:"Крупнейший химический центр", unemp:4.2, trans:3.0, wear:64, budget:8200000000, arctic:false, mono:true},
+"г. Новосибирск": {reg:"Новосибирская область", pop:1633, spec:"administrative", ind:"Машиностроение, ВПК, наука", str:"Научная столица Сибири", unemp:3.8, trans:4.0, wear:52, budget:82600000000, arctic:false, mono:false},
+"г. Омск": {reg:"Омская область", pop:1155, spec:"industrial", ind:"Нефтепереработка, химия, ВПК", str:"Крупный промышленный центр", unemp:4.5, trans:4.5, wear:62, budget:52800000000, arctic:false, mono:false},
+"г. Оренбург": {reg:"Оренбургская область", pop:564, spec:"resource", ind:"Газодобыча (Газпром), машиностроение", str:"Газовая столица России", unemp:4.2, trans:3.5, wear:58, budget:24800000000, arctic:false, mono:false},
+"г. Орёл": {reg:"Орловская область", pop:318, spec:"administrative", ind:"Машиностроение, пищепром", str:"Город первого салюта", unemp:4.5, trans:2.8, wear:62, budget:12600000000, arctic:false, mono:false},
+"г. Пенза": {reg:"Пензенская область", pop:520, spec:"administrative", ind:"Машиностроение, электроника", str:"Промышленный центр Поволжья", unemp:4.1, trans:3.2, wear:60, budget:18400000000, arctic:false, mono:false},
+"г. Пермь": {reg:"Пермский край", pop:1055, spec:"industrial", ind:"Нефтехимия, машиностроение", str:"Крупный промышленный центр", unemp:4.2, trans:4.0, wear:62, budget:52400000000, arctic:false, mono:false},
+"г. Березники": {reg:"Пермский край", pop:133, spec:"industrial", ind:"Химическая промышленность", str:"Крупнейший химический центр", unemp:5.2, trans:5.0, wear:68, budget:6200000000, arctic:false, mono:true},
+"г. Владивосток": {reg:"Приморский край", pop:606, spec:"logistic", ind:"Порт, судоремонт, рыбная промышленность", str:"Ворота России в Азию", unemp:4.8, trans:7.0, wear:58, budget:42600000000, arctic:false, mono:false},
+"г. Уссурийск": {reg:"Приморский край", pop:158, spec:"logistic", ind:"Приграничная торговля", str:"Транспортный узел", unemp:5.4, trans:7.5, wear:62, budget:4800000000, arctic:false, mono:false},
+"г. Псков": {reg:"Псковская область", pop:210, spec:"administrative", ind:"Машиностроение, лёгкая промышленность", str:"Древний город-крепость", unemp:5.2, trans:3.8, wear:64, budget:8200000000, arctic:false, mono:false},
+"г. Ростов-на-Дону": {reg:"Ростовская область", pop:1142, spec:"administrative", ind:"Машиностроение, агропромышленность", str:"Столица Юга России", unemp:4.2, trans:2.5, wear:54, budget:62800000000, arctic:false, mono:false},
+"г. Таганрог": {reg:"Ростовская область", pop:245, spec:"industrial", ind:"Авиастроение, металлургия", str:"Промышленный и портовый город", unemp:4.8, trans:3.0, wear:58, budget:9200000000, arctic:false, mono:false},
+"г. Рязань": {reg:"Рязанская область", pop:539, spec:"industrial", ind:"Нефтепереработка, машиностроение", str:"Промышленный центр", unemp:4.2, trans:2.5, wear:58, budget:22400000000, arctic:false, mono:false},
+"г. Самара": {reg:"Самарская область", pop:1156, spec:"industrial", ind:"Авиастроение, автопром, космос", str:"Аэрокосмическая столица", unemp:3.8, trans:3.0, wear:56, budget:58200000000, arctic:false, mono:false},
+"г. Тольятти": {reg:"Самарская область", pop:699, spec:"industrial", ind:"Автопром (АвтоВАЗ)", str:"Автомобильная столица России", unemp:4.5, trans:3.5, wear:62, budget:28400000000, arctic:false, mono:true},
+"г. Саратов": {reg:"Саратовская область", pop:838, spec:"industrial", ind:"Машиностроение, нефтепереработка", str:"Крупный промышленный центр", unemp:4.8, trans:3.5, wear:62, budget:32600000000, arctic:false, mono:false},
+"г. Энгельс": {reg:"Саратовская область", pop:202, spec:"industrial", ind:"Электромашиностроение, ВПК", str:"Промышленный спутник Саратова", unemp:4.5, trans:4.0, wear:60, budget:8200000000, arctic:false, mono:false},
+"г. Южно-Сахалинск": {reg:"Сахалинская область", pop:200, spec:"resource", ind:"Нефтегазодобыча", str:"Центр нефтегазового проекта Сахалин", unemp:4.2, trans:9.0, wear:52, budget:38500000000, arctic:false, mono:false},
+"г. Екатеринбург": {reg:"Свердловская область", pop:1493, spec:"administrative", ind:"Машиностроение, металлургия, ВПК", str:"Столица Урала", unemp:3.8, trans:3.0, wear:54, budget:82400000000, arctic:false, mono:false},
+"г. Нижний Тагил": {reg:"Свердловская область", pop:343, spec:"industrial", ind:"Металлургия, вагоностроение", str:"Крупнейший металлургический центр", unemp:4.2, trans:3.5, wear:62, budget:18200000000, arctic:false, mono:true},
+"г. Каменск-Уральский": {reg:"Свердловская область", pop:168, spec:"industrial", ind:"Металлургия, машиностроение", str:"Промышленный центр", unemp:4.5, trans:3.8, wear:64, budget:6800000000, arctic:false, mono:false},
+"г. Смоленск": {reg:"Смоленская область", pop:328, spec:"administrative", ind:"Машиностроение, авиастроение", str:"Город-герой", unemp:4.5, trans:2.5, wear:60, budget:14200000000, arctic:false, mono:false},
+"г. Ставрополь": {reg:"Ставропольский край", pop:554, spec:"administrative", ind:"Агропромышленность, машиностроение", str:"Административный центр", unemp:4.8, trans:3.5, wear:58, budget:22800000000, arctic:false, mono:false},
+"г. Невинномысск": {reg:"Ставропольский край", pop:118, spec:"industrial", ind:"Химическая промышленность, энергетика", str:"Промышленный центр края", unemp:5.2, trans:4.0, wear:62, budget:4200000000, arctic:false, mono:false},
+"г. Тамбов": {reg:"Тамбовская область", pop:291, spec:"administrative", ind:"Химическая промышленность, машиностроение", str:"Административный центр", unemp:4.2, trans:3.0, wear:60, budget:12400000000, arctic:false, mono:false},
+"г. Тверь": {reg:"Тверская область", pop:425, spec:"administrative", ind:"Машиностроение, вагоностроение", str:"Транспортный узел", unemp:4.5, trans:2.0, wear:62, budget:18600000000, arctic:false, mono:false},
+"г. Томск": {reg:"Томская область", pop:574, spec:"industrial", ind:"Нефтегазодобыча, наука, образование", str:"Научный центр Сибири", unemp:4.2, trans:5.5, wear:58, budget:28400000000, arctic:false, mono:false},
+"г. Северск": {reg:"Томская область", pop:103, spec:"resource", ind:"Атомная промышленность", str:"ЗАТО, центр обогащения урана", unemp:3.2, trans:6.0, wear:48, budget:12500000000, arctic:false, mono:true},
+"г. Тула": {reg:"Тульская область", pop:501, spec:"industrial", ind:"Оборонная промышленность, машиностроение", str:"Оружейная столица России", unemp:3.8, trans:2.0, wear:56, budget:28200000000, arctic:false, mono:false},
+"г. Новомосковск": {reg:"Тульская область", pop:121, spec:"industrial", ind:"Химическая промышленность", str:"Химический центр", unemp:4.2, trans:2.5, wear:58, budget:4800000000, arctic:false, mono:false},
+"г. Тюмень": {reg:"Тюменская область", pop:847, spec:"resource", ind:"Нефтегазодобыча, машиностроение", str:"Нефтегазовая столица России", unemp:3.2, trans:3.5, wear:48, budget:52400000000, arctic:false, mono:false},
+"г. Тобольск": {reg:"Тюменская область", pop:101, spec:"resource", ind:"Нефтегазохимия (СИБУР)", str:"Крупнейший нефтехимический центр", unemp:3.5, trans:4.0, wear:52, budget:18500000000, arctic:false, mono:true},
+"г. Ульяновск": {reg:"Ульяновская область", pop:627, spec:"industrial", ind:"Авиастроение, автопром", str:"Авиационная столица", unemp:4.5, trans:3.0, wear:60, budget:24600000000, arctic:false, mono:false},
+"г. Хабаровск": {reg:"Хабаровский край", pop:617, spec:"administrative", ind:"Машиностроение, судостроение", str:"Столица Дальнего Востока", unemp:4.8, trans:6.5, wear:58, budget:38200000000, arctic:false, mono:false},
+"г. Комсомольск-на-Амуре": {reg:"Хабаровский край", pop:248, spec:"industrial", ind:"Авиастроение, судостроение", str:"Город авиаторов и судостроителей", unemp:5.4, trans:7.5, wear:66, budget:12400000000, arctic:false, mono:true},
+"г. Чебоксары": {reg:"Чувашия", pop:497, spec:"industrial", ind:"Машиностроение, электротехника", str:"Промышленный центр Поволжья", unemp:4.2, trans:3.0, wear:58, budget:22400000000, arctic:false, mono:false},
+"г. Челябинск": {reg:"Челябинская область", pop:1196, spec:"industrial", ind:"Металлургия, машиностроение", str:"Столица Южного Урала", unemp:4.2, trans:3.5, wear:62, budget:62800000000, arctic:false, mono:false},
+"г. Магнитогорск": {reg:"Челябинская область", pop:413, spec:"industrial", ind:"Металлургия (ММК)", str:"Крупнейший металлургический комбинат", unemp:3.8, trans:4.0, wear:64, budget:24200000000, arctic:false, mono:true},
+"г. Златоуст": {reg:"Челябинская область", pop:166, spec:"industrial", ind:"Металлургия, машиностроение", str:"Старейший металлургический центр", unemp:4.8, trans:4.5, wear:68, budget:5200000000, arctic:false, mono:false},
+"г. Якутск": {reg:"Якутия", pop:355, spec:"administrative", ind:"Алмазодобыча, золотодобыча", str:"Столица алмазного края", unemp:5.2, trans:8.0, wear:62, budget:42500000000, arctic:true, mono:false},
+"г. Мирный": {reg:"Якутия", pop:36, spec:"resource", ind:"Алмазодобыча (АЛРОСА)", str:"Алмазная столица России", unemp:3.8, trans:9.0, wear:52, budget:18200000000, arctic:true, mono:true},
+"г. Мурманск": {reg:"Мурманская область", pop:295, spec:"logistic", ind:"Рыбная промышленность, порт", str:"Крупнейший арктический порт", unemp:5.8, trans:5.5, wear:68, budget:24200000000, arctic:true, mono:false},
+"г. Апатиты": {reg:"Мурманская область", pop:55, spec:"resource", ind:"Горнодобыча (фосфориты)", str:"Горнодобывающий центр", unemp:6.2, trans:6.0, wear:72, budget:3200000000, arctic:true, mono:true},
+"г. Петрозаводск": {reg:"Карелия", pop:280, spec:"administrative", ind:"Машиностроение, деревообработка", str:"Столица Карелии", unemp:5.4, trans:4.0, wear:64, budget:14200000000, arctic:false, mono:false},
+"г. Кондопога": {reg:"Карелия", pop:34, spec:"industrial", ind:"Целлюлозно-бумажная промышленность", str:"Лесопромышленный центр", unemp:6.1, trans:4.5, wear:68, budget:1800000000, arctic:false, mono:true},
+"г. Сыктывкар": {reg:"Коми", pop:245, spec:"administrative", ind:"Лесопромышленный комплекс", str:"Столица Коми", unemp:5.8, trans:5.0, wear:66, budget:18400000000, arctic:false, mono:false},
+"г. Воркута": {reg:"Коми", pop:58, spec:"resource", ind:"Угольная промышленность", str:"Северный угольный центр", unemp:7.2, trans:8.0, wear:76, budget:8500000000, arctic:true, mono:true},
+"г. Ухта": {reg:"Коми", pop:97, spec:"resource", ind:"Нефтегазодобыча", str:"Нефтегазовый центр Коми", unemp:5.4, trans:6.0, wear:64, budget:6200000000, arctic:true, mono:false},
+"г. Ижевск": {reg:"Удмуртия", pop:648, spec:"industrial", ind:"Оборонная промышленность, машиностроение", str:"Оружейная столица", unemp:4.2, trans:3.5, wear:60, budget:32400000000, arctic:false, mono:false},
+"г. Йошкар-Ола": {reg:"Марий Эл", pop:279, spec:"administrative", ind:"Машиностроение, приборостроение", str:"Столица республики", unemp:4.8, trans:3.5, wear:62, budget:12800000000, arctic:false, mono:false},
+"г. Саранск": {reg:"Мордовия", pop:314, spec:"administrative", ind:"Кабельная промышленность, приборостроение", str:"Столица Мордовии", unemp:4.2, trans:3.0, wear:58, budget:16200000000, arctic:false, mono:false},
+"г. Казань": {reg:"Татарстан", pop:1257, spec:"administrative", ind:"Нефтехимия, машиностроение, IT", str:"Столица Татарстана", unemp:3.2, trans:2.5, wear:52, budget:82600000000, arctic:false, mono:false},
+"г. Набережные Челны": {reg:"Татарстан", pop:534, spec:"industrial", ind:"Автопром (КАМАЗ)", str:"Город КАМАЗа", unemp:3.5, trans:3.0, wear:56, budget:28400000000, arctic:false, mono:true},
+"г. Нижнекамск": {reg:"Татарстан", pop:243, spec:"industrial", ind:"Нефтехимия (ТАНЕКО)", str:"Крупнейший нефтехимический центр", unemp:3.2, trans:3.5, wear:52, budget:24200000000, arctic:false, mono:true},
+"г. Альметьевск": {reg:"Татарстан", pop:158, spec:"resource", ind:"Нефтедобыча (Татнефть)", str:"Нефтяная столица Татарстана", unemp:2.8, trans:3.8, wear:48, budget:18500000000, arctic:false, mono:true},
+"г. Уфа": {reg:"Башкортостан", pop:1145, spec:"administrative", ind:"Нефтепереработка, химия, машиностроение", str:"Столица Башкортостана", unemp:3.8, trans:3.0, wear:56, budget:62400000000, arctic:false, mono:false},
+"г. Стерлитамак": {reg:"Башкортостан", pop:280, spec:"industrial", ind:"Химическая промышленность, сода", str:"Крупнейший химический центр", unemp:4.2, trans:3.5, wear:62, budget:12800000000, arctic:false, mono:true},
+"г. Салават": {reg:"Башкортостан", pop:151, spec:"industrial", ind:"Нефтехимия", str:"Нефтехимический центр", unemp:4.5, trans:4.0, wear:66, budget:8200000000, arctic:false, mono:true},
+"г. Махачкала": {reg:"Дагестан", pop:603, spec:"administrative", ind:"Пищевая промышленность, машиностроение", str:"Столица Дагестана", unemp:8.2, trans:5.0, wear:62, budget:24500000000, arctic:false, mono:false},
+"г. Грозный": {reg:"Чечня", pop:324, spec:"administrative", ind:"Нефтепереработка, строительство", str:"Столица Чечни", unemp:9.5, trans:4.5, wear:48, budget:28200000000, arctic:false, mono:false},
+"г. Нальчик": {reg:"Кабардино-Балкария", pop:240, spec:"administrative", ind:"Приборостроение, туризм", str:"Столица КБР", unemp:7.8, trans:4.0, wear:58, budget:12400000000, arctic:false, mono:false},
+"г. Владикавказ": {reg:"Северная Осетия", pop:291, spec:"administrative", ind:"Цветная металлургия, машиностроение", str:"Столица Северной Осетии", unemp:8.5, trans:4.5, wear:62, budget:14200000000, arctic:false, mono:false},
+"г. Черкесск": {reg:"Карачаево-Черкесия", pop:129, spec:"administrative", ind:"Пищевая промышленность", str:"Столица КЧР", unemp:8.2, trans:4.0, wear:60, budget:6200000000, arctic:false, mono:false},
+"г. Майкоп": {reg:"Адыгея", pop:144, spec:"administrative", ind:"Пищевая промышленность, деревообработка", str:"Столица Адыгеи", unemp:6.8, trans:3.5, wear:58, budget:6800000000, arctic:false, mono:false},
+"г. Элиста": {reg:"Калмыкия", pop:109, spec:"administrative", ind:"Пищевая промышленность, овцеводство", str:"Столица Калмыкии", unemp:7.5, trans:4.5, wear:62, budget:5200000000, arctic:false, mono:false},
+"г. Астрахань": {reg:"Астраханская область", pop:529, spec:"logistic", ind:"Судостроение, рыбная промышленность, газ", str:"Крупный транспортный узел на Волге", unemp:5.4, trans:4.5, wear:68, budget:28700000000, arctic:false, mono:false},
+"г. Тында": {reg:"Амурская область", pop:33, spec:"logistic", ind:"Железнодорожный транспорт (БАМ)", str:"Столица БАМа", unemp:4.8, trans:9.5, wear:62, budget:2800000000, arctic:true, mono:false},
+"г. Свободный": {reg:"Амурская область", pop:56, spec:"logistic", ind:"Космодром Восточный", str:"Город космодрома", unemp:4.2, trans:8.0, wear:58, budget:8500000000, arctic:false, mono:false},
+"г. Белогорск": {reg:"Амурская область", pop:65, spec:"logistic", ind:"Железнодорожный узел", str:"Транспортный узел", unemp:5.2, trans:8.5, wear:64, budget:2400000000, arctic:false, mono:false},
+"г. Петропавловск-Камчатский": {reg:"Камчатский край", pop:179, spec:"logistic", ind:"Рыбная промышленность, порт", str:"Ворота Тихого океана", unemp:5.8, trans:10.0, wear:62, budget:28500000000, arctic:false, mono:false},
+"г. Вилючинск": {reg:"Камчатский край", pop:21, spec:"resource", ind:"Атомный подводный флот", str:"ЗАТО, база подлодок", unemp:4.2, trans:10.5, wear:52, budget:8200000000, arctic:false, mono:true},
+"г. Анадырь": {reg:"Чукотка", pop:15, spec:"administrative", ind:"Золотодобыча, рыбная промышленность", str:"Столица Чукотки", unemp:6.5, trans:14.0, wear:68, budget:24500000000, arctic:true, mono:false},
+"г. Певек": {reg:"Чукотка", pop:2, spec:"logistic", ind:"Порт Севморпути", str:"Самый северный город России", unemp:7.2, trans:16.0, wear:72, budget:8500000000, arctic:true, mono:false},
+"г. Салехард": {reg:"Ямало-Ненецкий АО", pop:53, spec:"resource", ind:"Нефтегазодобыча", str:"Столица Ямала", unemp:3.8, trans:8.0, wear:52, budget:32500000000, arctic:true, mono:false},
+"г. Новый Уренгой": {reg:"Ямало-Ненецкий АО", pop:128, spec:"resource", ind:"Газодобыча (Газпром)", str:"Газовая столица России", unemp:3.2, trans:8.5, wear:48, budget:42500000000, arctic:true, mono:true},
+"г. Ноябрьск": {reg:"Ямало-Ненецкий АО", pop:107, spec:"resource", ind:"Нефтегазодобыча", str:"Нефтегазовый центр", unemp:3.5, trans:9.0, wear:52, budget:28500000000, arctic:true, mono:false},
+"г. Надым": {reg:"Ямало-Ненецкий АО", pop:45, spec:"resource", ind:"Газодобыча", str:"Первый газовый город", unemp:3.8, trans:9.5, wear:56, budget:18200000000, arctic:true, mono:true},
+"г. Лабытнанги": {reg:"Ямало-Ненецкий АО", pop:25, spec:"logistic", ind:"Транспортный узел", str:"Ворота Полярного Урала", unemp:4.2, trans:10.0, wear:58, budget:6500000000, arctic:true, mono:false},
+"г. Ханты-Мансийск": {reg:"Ханты-Мансийский АО", pop:104, spec:"administrative", ind:"Нефтегазодобыча, IT", str:"Столица Югры", unemp:3.2, trans:6.0, wear:48, budget:38500000000, arctic:false, mono:false},
+"г. Сургут": {reg:"Ханты-Мансийский АО", pop:379, spec:"resource", ind:"Нефтегазодобыча, энергетика", str:"Нефтегазовая столица", unemp:3.5, trans:6.5, wear:52, budget:52400000000, arctic:false, mono:false},
+"г. Нижневартовск": {reg:"Ханты-Мансийский АО", pop:283, spec:"resource", ind:"Нефтедобыча (Самотлор)", str:"Нефтяная столица", unemp:3.8, trans:7.0, wear:56, budget:42500000000, arctic:false, mono:true},
+"г. Нефтеюганск": {reg:"Ханты-Мансийский АО", pop:126, spec:"resource", ind:"Нефтедобыча", str:"Нефтяной город", unemp:3.5, trans:6.5, wear:52, budget:18500000000, arctic:false, mono:true},
+"г. Когалым": {reg:"Ханты-Мансийский АО", pop:64, spec:"resource", ind:"Нефтедобыча (ЛУКОЙЛ)", str:"Нефтяной город", unemp:3.2, trans:7.5, wear:48, budget:12500000000, arctic:false, mono:true},
+"г. Нягань": {reg:"Ханты-Мансийский АО", pop:52, spec:"resource", ind:"Нефтегазодобыча, энергетика", str:"Энергетический центр", unemp:3.8, trans:7.0, wear:52, budget:9500000000, arctic:false, mono:false},
+"г. Советский": {reg:"Ханты-Мансийский АО", pop:42, spec:"resource", ind:"Нефтегазодобыча", str:"Нефтяной город", unemp:3.5, trans:7.5, wear:54, budget:8200000000, arctic:false, mono:false},
+"г. Югорск": {reg:"Ханты-Мансийский АО", pop:37, spec:"resource", ind:"Газодобыча", стр:"Газовый город", unemp:3.2, trans:8.0, wear:50, budget:6800000000, arctic:false, mono:false},
+"г. Лянтор": {reg:"Ханты-Мансийский АО", pop:39, spec:"resource", ind:"Нефтегазодобыча", str:"Нефтяной город", unemp:3.5, trans:7.0, wear:52, budget:7200000000, arctic:false, mono:false},
+"г. Похвистнево": {reg:"Самарская область", pop:26, spec:"resource", ind:"Нефтедобыча", str:"Нефтяной город", unemp:4.8, trans:3.5, wear:62, budget:1200000000, arctic:false, mono:true},
+"г. Суздаль": {reg:"Владимирская область", pop:9.8, spec:"tourist", ind:"Туризм, Золотое кольцо", str:"Древнерусский город-музей", unemp:4.2, trans:2.5, wear:58, budget:850000000, arctic:false, mono:false},
+"г. Углич": {reg:"Ярославская область", pop:52, spec:"tourist", ind:"Туризм, машиностроение", str:"Город Золотого кольца", unemp:4.8, trans:2.8, wear:62, budget:2400000000, arctic:false, mono:false},
+"г. Ростов Великий": {reg:"Ярославская область", pop:31, spec:"tourist", ind:"Туризм, Золотое кольцо", str:"Древнейший город России", unemp:4.5, trans:2.5, wear:60, budget:1400000000, arctic:false, mono:false},
+"г. Переславль-Залесский": {reg:"Ярославская область", pop:37, spec:"tourist", ind:"Туризм, машиностроение", str:"Город Золотого кольца", unemp:4.6, trans:2.5, wear:61, budget:1600000000, arctic:false, mono:false},
+"г. Мышкин": {reg:"Ярославская область", pop:5.2, spec:"tourist", ind:"Туризм", str:"Малый город Золотого кольца", unemp:4.2, trans:3.0, wear:58, budget:320000000, arctic:false, mono:false},
+"г. Ярославль": {reg:"Ярославская область", pop:577, spec:"industrial", ind:"Нефтепереработка, машиностроение", str:"Столица Золотого кольца", unemp:4.2, trans:2.2, wear:58, budget:32400000000, arctic:false, mono:false},
+"г. Рыбинск": {reg:"Ярославская область", pop:189, spec:"industrial", ind:"Моторостроение, судостроение", str:"Крупный промышленный центр", unemp:4.8, trans:2.8, wear:64, budget:8200000000, arctic:false, mono:false},
+"г. Тутаев": {reg:"Ярославская область", pop:40, spec:"industrial", ind:"Машиностроение", str:"Промышленный город", unemp:4.5, trans:2.5, wear:62, budget:1400000000, arctic:false, mono:false},
+"г. Гаврилов-Ям": {reg:"Ярославская область", pop:16, spec:"industrial", ind:"Льнокомбинат", str:"Город льноводов", unemp:5.2, trans:2.8, wear:66, budget:520000000, arctic:false, mono:false},
+"г. Данилов": {reg:"Ярославская область", pop:15, spec:"agro", ind:"Сельское хозяйство", str:"Аграрный районный центр", unemp:5.5, trans:3.0, wear:68, budget:480000000, arctic:false, mono:false},
+"г. Пошехонье": {reg:"Ярославская область", pop:5.8, spec:"agro", ind:"Сельское хозяйство", str:"Районный центр", unemp:5.8, trans:3.5, wear:70, budget:280000000, arctic:false, mono:false},
+"г. Любим": {reg:"Ярославская область", pop:4.6, spec:"agro", ind:"Сельское хозяйство", str:"Малый город", unemp:6.2, trans:3.8, wear:72, budget:240000000, arctic:false, mono:false},
+"г. Пречистое": {reg:"Ярославская область", pop:4.2, spec:"agro", ind:"Сельское хозяйство", str:"Посёлок городского типа", unemp:6.0, trans:3.5, wear:70, budget:180000000, arctic:false, mono:false},
+"г. Некрасовское": {reg:"Ярославская область", pop:4.8, spec:"agro", ind:"Сельское хозяйство", str:"Посёлок городского типа", unemp:5.8, trans:3.2, wear:68, budget:220000000, arctic:false, mono:false},
+"г. Большое Село": {reg:"Ярославская область", pop:4.5, spec:"agro", ind:"Сельское хозяйство", str:"Сельский районный центр", unemp:6.2, trans:4.0, wear:72, budget:200000000, arctic:false, mono:false},
+"г. Брейтово": {reg:"Ярославская область", pop:4.0, spec:"agro", ind:"Сельское хозяйство", str:"Сельский районный центр", unemp:6.5, trans:4.2, wear:74, budget:180000000, arctic:false, mono:false},
+"г. Новый Некоуз": {reg:"Ярославская область", pop:3.8, spec:"agro", ind:"Сельское хозяйство", str:"Сельский районный центр", unemp:6.8, trans:4.5, wear:76, budget:160000000, arctic:false, mono:false},
+"г. Борисоглебский": {reg:"Ярославская область", pop:5.5, spec:"agro", ind:"Сельское хозяйство, туризм", str:"Посёлок с древним монастырём", unemp:5.5, trans:3.0, wear:66, budget:260000000, arctic:false, mono:false}
 };
-
-// Заполняем остальные города из списка дефолтными значениями
 ONP_FULL_LIST.forEach(function(n) {
 if (!CITY_DB[n]) {
-CITY_DB[n] = {reg:"Регион РФ", pop: Math.round(Math.random()*40+5), spec:["administrative","logistic","industrial","agro","tourist","resource"][Math.floor(Math.random()*6)], ind:"Населённый пункт", str:"Опорный населённый пункт", unemp: parseFloat((Math.random()*6+3).toFixed(1)), trans: parseFloat((Math.random()*8+1).toFixed(1)), wear: Math.round(Math.random()*40+40), budget: Math.round(Math.random()*1e9+1e8), arctic: Math.random()>0.8, mono: Math.random()>0.7};
+var realData = REAL_CITY_DATA[n];
+if (realData) {
+CITY_DB[n] = realData;
+} else {
+CITY_DB[n] = {reg:"ДФО/Регион РФ", pop: Math.round(Math.random()*40+5), spec:["administrative","logistic","industrial","agro","tourist","resource"][Math.floor(Math.random()*6)], ind:"Региональный центр", str:"Опорный населённый пункт", unemp: parseFloat((Math.random()*6+3).toFixed(1)), trans: parseFloat((Math.random()*8+1).toFixed(1)), wear: Math.round(Math.random()*40+40), budget: Math.round(Math.random()*1e9+1e8), arctic: Math.random()>0.8, mono: Math.random()>0.7};
+}
 }
 });
 var curStep = 0, resultData = null, chartsInstance = {}, genCount = 0;
@@ -1306,4 +1349,688 @@ if(d.arctic) {
 recs.push({
 priority: 'средний',
 title: '🟡 Использование преференций АЗРФ',
-description: 'Статус АЗРФ
+description: 'Статус АЗРФ предоставляет налоговые льготы (НПД 5%, страховые взносы 7.6%), упрощённые процедуры получения земельных участков. Активируйте резидентов через Корпорацию развития Дальнего Востока и Арктики.',
+timeline: '2025-2028',
+responsible: 'КРДВ, Администрация МО, Минвостокразвития'
+});
+}
+if(scores.innovation < 5) {
+recs.push({
+priority: 'низкий',
+title: '🟢 Стимулирование инноваций',
+description: 'Создайте условия для внедрения инноваций: поддержка стартапов, сотрудничество с вузами, создание технопарков или бизнес-инкубаторов.',
+timeline: '2026-2030',
+responsible: 'Минобрнауки, Фонд содействия инновациям, Администрация субъекта'
+});
+}
+// Добавляем рекомендации по специализации
+if(d.spec === 'tourist') {
+recs.push({
+priority: 'средний',
+title: '🔵 Развитие туристического кластера',
+description: 'Разработайте мастер-план развития туризма. Создайте необходимую инфраструктуру (гостиницы, точки питания, навигация). Продвигайте бренд территории.',
+timeline: '2025-2029',
+responsible: 'Ростуризм, Администрация субъекта, Инвесторы'
+});
+}
+if(d.spec === 'agro') {
+recs.push({
+priority: 'средний',
+title: '🔵 Поддержка агропромышленного комплекса',
+description: 'Модернизация перерабатывающих производств, развитие кооперации с малыми формами хозяйствования, выход на маркетплейсы.',
+timeline: '2025-2028',
+responsible: 'Минсельхоз, Администрация субъекта, Аграрии'
+});
+}
+if(d.spec === 'logistic') {
+recs.push({
+priority: 'высокий',
+title: '🔴 Развитие логистического хаба',
+description: 'Модернизация транспортно-логистической инфраструктуры, создание сухих портов, развитие мультимодальных перевозок.',
+timeline: '2025-2030',
+responsible: 'Минтранс, РЖД, Администрация субъекта'
+});
+}
+return recs;
+},
+generateStakeholders: function(d) {
+var stakeholders = [
+{
+group: 'Федеральные органы власти',
+icon: '🏛️',
+members: [
+{name: 'Минэкономразвития РФ', role: 'Координация программы, методологическая поддержка', influence: 'Высокая'},
+{name: 'Минфин РФ', role: 'Инфраструктурные бюджетные кредиты, субсидии', influence: 'Высокая'},
+{name: 'Минстрой РФ', role: 'Программы модернизации ЖКХ, расселение аварийного жилья', influence: 'Средняя'},
+{name: 'Минцифры РФ', role: 'Цифровая трансформация, инфраструктура связи', influence: 'Средняя'}
+]
+},
+{
+group: 'Региональные власти',
+icon: '🏢',
+members: [
+{name: 'Правительство субъекта РФ', role: 'Реализация программы, софинансирование', influence: 'Высокая'},
+{name: 'Законодательное собрание', role: 'Нормативная база, контроль исполнения', influence: 'Средняя'},
+{name: 'Корпорация развития региона', role: 'Привлечение инвестиций, сопровождение проектов', influence: 'Средняя'}
+]
+},
+{
+group: 'Муниципалитет',
+icon: '🏘️',
+members: [
+{name: 'Администрация МО', role: 'Непосредственная реализация, работа с населением', influence: 'Высокая'},
+{name: 'Совет депутатов', role: 'Утверждение местных программ, контроль', influence: 'Средняя'},
+{name: 'Общественные советы', role: 'Обратная связь от населения', influence: 'Низкая'}
+]
+},
+{
+group: 'Бизнес',
+icon: '💼',
+members: [
+{name: 'Градообразующие предприятия', role: 'Инвестиции, рабочие места, социальная ответственность', influence: 'Высокая'},
+{name: 'МСП', role: 'Диверсификация экономики, сервис для населения', influence: 'Средняя'},
+{name: 'Инвесторы', role: 'Реализация крупных проектов', influence: 'Высокая'}
+]
+},
+{
+group: 'Население',
+icon: '👥',
+members: [
+{name: 'Жители', role: 'Участие в опросах, общественном обсуждении', influence: 'Средняя'},
+{name: 'ТОСы', role: 'Инициативное бюджетирование, локальные проекты', influence: 'Низкая'},
+{name: 'НКО', role: 'Социальные проекты, защита интересов групп', influence: 'Низкая'}
+]
+},
+{
+group: 'Институты развития',
+icon: '🏗️',
+members: [
+{name: 'ВЭБ.РФ', role: 'Проектное финансирование, экспертиза', influence: 'Высокая'},
+{name: 'Корпорация МСП', role: 'Поддержка малого бизнеса', influence: 'Средняя'},
+{name: 'Агентство стратегических инициатив', role: 'Тиражирование лучших практик', influence: 'Средняя'}
+]
+}
+];
+// Добавляем спец. стейкхолдеров для особых режимов
+if(d.arctic) {
+stakeholders.push({
+group: 'Арктические институты',
+icon: '❄️',
+members: [
+{name: 'КРДВ', role: 'Преференции АЗРФ, сопровождение резидентов', influence: 'Высокая'},
+{name: 'Фонд развития Дальнего Востока', role: 'Льготное финансирование', influence: 'Средняя'}
+]
+});
+}
+if(d.mono) {
+stakeholders.push({
+group: 'Моногорода',
+icon: '🏭',
+members: [
+{name: 'Фонд моногородов', role: 'Инфраструктурные проекты', influence: 'Высокая'},
+{name: 'Управляющая компания ТОР', role: 'Привлечение резидентов', influence: 'Высокая'}
+]
+});
+}
+return stakeholders;
+},
+generateKPITargets: function(d, scores) {
+var baseYear = 2024;
+var targets = [];
+// Экономика
+targets.push({
+category: 'Экономика',
+icon: '📈',
+kpis: [
+{name: 'ВРП на душу населения', unit: 'тыс. ₽', current: Math.round(d.budget / d.pop * 12), target2027: Math.round(d.budget / d.pop * 15), target2030: Math.round(d.budget / d.pop * 20)},
+{name: 'Уровень безработицы', unit: '%', current: d.unemp, target2027: parseFloat(Math.max(2.5, d.unemp - 2).toFixed(1)), target2030: parseFloat(Math.max(2.0, d.unemp - 3).toFixed(1))},
+{name: 'Инвестиции в ОФК', unit: 'млрд ₽', current: parseFloat((d.budget * 0.3 / 1e9).toFixed(1)), target2027: parseFloat((d.budget * 0.5 / 1e9).toFixed(1)), target2030: parseFloat((d.budget * 0.8 / 1e9).toFixed(1))},
+{name: 'Доходы бюджета', unit: 'млрд ₽', current: parseFloat((d.budget / 1e9).toFixed(1)), target2027: parseFloat((d.budget * 1.3 / 1e9).toFixed(1)), target2030: parseFloat((d.budget * 1.8 / 1e9).toFixed(1))}
+]
+});
+// Инфраструктура
+targets.push({
+category: 'Инфраструктура',
+icon: '🏗️',
+kpis: [
+{name: 'Износ коммунальной инфраструктуры', unit: '%', current: d.wear, target2027: Math.max(30, d.wear - 20), target2030: Math.max(20, d.wear - 35)},
+{name: 'Доля дорог в нормативе', unit: '%', current: 45, target2027: 65, target2030: 85},
+{name: 'Доля населения с доступом к интернету', unit: '%', current: 75, target2027: 90, target2030: 98}
+]
+});
+// Человеческий капитал
+targets.push({
+category: 'Человеческий капитал',
+icon: '👨‍🎓',
+kpis: [
+{name: 'Численность населения', unit: 'тыс. чел', current: d.pop, target2027: d.pop > 50 ? d.pop + 2 : d.pop, target2030: d.pop > 50 ? d.pop + 5 : d.pop + 1},
+{name: 'Ожидаемая продолжительность жизни', unit: 'лет', current: 68, target2027: 72, target2030: 76},
+{name: 'Доля молодёжи, остающейся в НП', unit: '%', current: 40, target2027: 55, target2030: 70}
+]
+});
+// Экология
+targets.push({
+category: 'Экология',
+icon: '🌿',
+kpis: [
+{name: 'Выбросы загрязняющих веществ', unit: 'тыс. т', current: 15, target2027: 12, target2030: 8},
+{name: 'Доля переработанных отходов', unit: '%', current: 20, target2027: 45, target2030: 70},
+{name: 'Площадь зелёных зон', unit: 'га', current: 120, target2027: 140, target2030: 160}
+]
+});
+return targets;
+},
+generateStrategicInitiatives: function(d, scores) {
+var initiatives = [];
+// Флагманские проекты
+initiatives.push({
+name: 'Модернизация инженерной инфраструктуры',
+priority: 'Высокий',
+budget: fmtNum(d.budget * 0.4),
+timeline: '2025-2028',
+description: 'Комплексное обновление теплосетей, водоснабжения, электроснабжения с применением энергоэффективных технологий.',
+impact: 'Снижение износа с '+d.wear+'% до 35%, уменьшение аварийности на 60%',
+status: 'Планирование'
+});
+initiatives.push({
+name: 'Развитие транспортной доступности',
+priority: d.trans > 5 ? 'Высокий' : 'Средний',
+budget: fmtNum(d.budget * 0.25),
+timeline: '2025-2029',
+description: 'Модернизация автодорог, развитие авиасообщения, создание транспортно-пересадочных узлов.',
+impact: 'Снижение времени доступа с '+d.trans+'ч до '+Math.max(2, d.trans - 3)+'ч',
+status: 'Проектирование'
+});
+initiatives.push({
+name: 'Создание промышленного/аграрного кластера',
+priority: 'Высокий',
+budget: fmtNum(d.budget * 0.2),
+timeline: '2025-2027',
+description: 'Локализация производств, развитие переработки, создание рабочих мест.',
+impact: 'Создание '+Math.round(d.pop * 0.05)+'+ рабочих мест, рост ВРП на 15-20%',
+status: 'Поиск инвесторов'
+});
+initiatives.push({
+name: 'Цифровая трансформация территории',
+priority: 'Средний',
+budget: fmtNum(d.budget * 0.08),
+timeline: '2025-2026',
+description: 'Внедрение цифровых платформ, умный город, электронные услуги.',
+impact: 'Рост удовлетворённости услугами до 85%, снижение издержек на 20%',
+status: 'Закупка'
+});
+initiatives.push({
+name: 'Развитие человеческого капитала',
+priority: scores.humanCapital < 5 ? 'Высокий' : 'Средний',
+budget: fmtNum(d.budget * 0.12),
+timeline: '2025-2030',
+description: 'Модернизация образования, здравоохранения, жилищные программы для молодых специалистов.',
+impact: 'Снижение оттока молодёжи на 40%, рост рождаемости на 15%',
+status: 'Реализация'
+});
+return initiatives;
+},
+generateRoadmap: function(d, scores) {
+var roadmap = [
+{
+year: '2025',
+quarter: 'I-II',
+phase: 'Подготовительный этап',
+tasks: [
+'Утверждение программы развития на уровне субъекта РФ',
+'Создание проектного офиса',
+'Проведение общественных обсуждений',
+'Разработка мастер-плана территории',
+'Формирование реестра инвестиционных площадок'
+],
+milestones: ['Программа утверждена', 'Проектный офис создан', 'Мастер-план разработан'],
+budget: fmtNum(d.budget * 0.15)
+},
+{
+year: '2025',
+quarter: 'III-IV',
+phase: 'Старт реализации',
+tasks: [
+'Запуск первых инфраструктурных проектов',
+'Привлечение якорных инвесторов',
+'Начало модернизации ЖКХ',
+'Запуск программ поддержки МСП'
+],
+milestones: ['Первые контракты заключены', 'Инвесторы привлечены', 'Начало работ на объектах'],
+budget: fmtNum(d.budget * 0.2)
+},
+{
+year: '2026-2027',
+quarter: '',
+phase: 'Активная реализация',
+tasks: [
+'Модернизация ключевых объектов инфраструктуры',
+'Ввод новых производственных мощностей',
+'Реализация жилищных программ',
+'Развитие социальной инфраструктуры'
+],
+milestones: ['50% объектов модернизировано', 'Создано 500+ рабочих мест', 'Введено жильё для молодых специалистов'],
+budget: fmtNum(d.budget * 0.45)
+},
+{
+year: '2028-2029',
+quarter: '',
+phase: 'Завершение основных проектов',
+tasks: [
+'Завершение инфраструктурных проектов',
+'Масштабирование успешных практик',
+'Оценка промежуточных результатов',
+'Корректировка программы'
+],
+milestones: ['80% целей достигнуто', 'Износ инфраструктуры снижен до 35%', 'Безработица снижена до целевых значений'],
+budget: fmtNum(d.budget * 0.15)
+},
+{
+year: '2030',
+quarter: '',
+phase: 'Финализация и оценка',
+tasks: [
+'Завершение всех проектов',
+'Комплексная оценка результатов',
+'Подготовка отчёта о достижении показателей',
+'Планирование следующего цикла развития'
+],
+milestones: ['Все цели достигнуты', 'Программа выполнена на 100%', 'Подготовлен отчёт для Правительства РФ'],
+budget: fmtNum(d.budget * 0.05)
+}
+];
+return roadmap;
+},
+analyzeSector: function(d) {
+var sectorAnalysis = {
+strengths: [],
+weaknesses: [],
+opportunities: [],
+threats: []
+};
+// Анализ по специализации
+switch(d.spec) {
+case 'administrative':
+sectorAnalysis.strengths = ['Концентрация органов власти', 'Стабильное бюджетное финансирование', 'Развитая социальная инфраструктура'];
+sectorAnalysis.weaknesses = ['Зависимость от бюджетных трансфертов', 'Низкая предпринимательская активность'];
+sectorAnalysis.opportunities = ['Развитие делового туризма', 'Создание многофункционального центра'];
+sectorAnalysis.threats = ['Оптимизация госаппарата', 'Сокращение финансирования'];
+break;
+case 'logistic':
+sectorAnalysis.strengths = ['Выгодное географическое положение', 'Развитая транспортная сеть'];
+sectorAnalysis.weaknesses = ['Высокая зависимость от транзита', 'Износ логистической инфраструктуры'];
+sectorAnalysis.opportunities = ['Создание логистического хаба', 'Развитие мультимодальных перевозок'];
+sectorAnalysis.threats = ['Изменение транспортных коридоров', 'Рост тарифов перевозчиков'];
+break;
+case 'industrial':
+sectorAnalysis.strengths = ['Наличие промышленных предприятий', 'Квалифицированные кадры'];
+sectorAnalysis.weaknesses = ['Высокий износ основных фондов', 'Экологические проблемы'];
+sectorAnalysis.opportunities = ['Техническое перевооружение', 'Импортозамещение'];
+sectorAnalysis.threats = ['Падение спроса на продукцию', 'Санкционное давление'];
+break;
+case 'agro':
+sectorAnalysis.strengths = ['Благоприятные климатические условия', 'Наличие сельхозугодий'];
+sectorAnalysis.weaknesses = ['Низкая глубина переработки', 'Сезонность занятости'];
+sectorAnalysis.opportunities = ['Развитие переработки', 'Выход на маркетплейсы'];
+sectorAnalysis.threats = ['Климатические риски', 'Волатильность цен на продукцию'];
+break;
+case 'tourist':
+sectorAnalysis.strengths = ['Уникальные природные/культурные объекты', 'Растущий спрос на внутренний туризм'];
+sectorAnalysis.weaknesses = ['Недостаток гостиничной инфраструктуры', 'Сезонность'];
+sectorAnalysis.opportunities: ['Создание круглогодичных курортов', 'Развитие экотуризма'];
+sectorAnalysis.threats: ['Конкуренция с другими направлениями', 'Эпидемиологические ограничения'];
+break;
+case 'resource':
+sectorAnalysis.strengths = ['Наличие природных ресурсов', 'Высокая добавленная стоимость'];
+sectorAnalysis.weaknesses = ['Исчерпаемость ресурсов', 'Монопрофильность'];
+sectorAnalysis.opportunities = ['Глубокая переработка', 'Рекультивация территорий'];
+sectorAnalysis.threats = ['Падение цен на сырьё', 'Ужесточение экологических требований'];
+break;
+}
+// Дополнительные факторы
+if(d.arctic) {
+sectorAnalysis.opportunities.push('Преференции АЗРФ');
+sectorAnalysis.opportunities.push('Господдержка арктических проектов');
+sectorAnalysis.threats.push('Суровые климатические условия');
+sectorAnalysis.threats.push('Высокие издержки');
+}
+if(d.mono) {
+sectorAnalysis.weaknesses.push('Зависимость от одного предприятия');
+sectorAnalysis.threats.push('Риск закрытия градообразующего предприятия');
+sectorAnalysis.opportunities.push('Программы диверсификации');
+}
+return sectorAnalysis;
+},
+assessDigitalMaturity: function(d, scores) {
+var digitalScore = Math.min(10, Math.round((scores.innovation + scores.governance) / 2));
+var level = '';
+var description = '';
+if(digitalScore >= 8) {
+level = 'Высокий';
+description = 'Территория готова к внедрению передовых цифровых решений: цифровой двойник, IoT, AI-аналитика.';
+} else if(digitalScore >= 5) {
+level = 'Средний';
+description = 'Базовая цифровая инфраструктура присутствует. Требуется развитие интеграционных платформ и аналитики.';
+} else {
+level = 'Низкий';
+description = 'Необходимо начать с базовой цифровизации: широкополосный интернет, электронные услуги, ГИС.';
+}
+return {
+score: digitalScore,
+level: level,
+description: description,
+recommendations: [
+'Внедрение платформы «Умный город»',
+'Создание ситуационного центра',
+'Развитие портала открытых данных',
+'Цифровизация муниципальных услуг'
+]
+};
+},
+generateSummary: function(d, scores, risks) {
+var summary = 'ОНП «'+d.name+'» имеет ';
+if(scores.totalScore > 70) {
+summary += 'высокий потенциал развития';
+} else if(scores.totalScore > 40) {
+summary += 'средний потенциал развития';
+} else {
+summary += 'потенциал, требующий значительной поддержки';
+}
+summary += '. Ключевая специализация: '+specFullNames[d.spec]+'. ';
+if(d.arctic) summary += 'Статус АЗРФ предоставляет дополнительные преференции. ';
+if(d.mono) summary += 'Требуется диверсификация экономики. ';
+summary += 'Приоритетные направления: ';
+var priorities = [];
+if(d.wear > 60) priorities.push('модернизация инфраструктуры');
+if(d.unemp > 6) priorities.push('снижение безработицы');
+if(d.trans > 5) priorities.push('транспортная доступность');
+priorities.push('цифровая трансформация');
+if(scores.humanCapital < 5) priorities.push('развитие человеческого капитала');
+summary += priorities.join(', ')+'.';
+return summary;
+}
+};
+function generateReport(){
+var loading=document.getElementById('loadingOverlay');
+loading.style.display='flex';
+setTimeout(function(){
+try{
+var d=getFormData();
+var analysis=AILogic.analyze(d);
+resultData={data:d,analysis:analysis};
+renderResults();
+curStep=4;
+renderSteps();
+}catch(e){
+console.error(e);
+alert('Ошибка генерации: '+e.message);
+}finally{
+loading.style.display='none';
+}
+},800);
+}
+function renderResults(){
+if(!resultData) return;
+var d=resultData.data;
+var a=resultData.analysis;
+document.getElementById('rName').textContent=d.name;
+document.getElementById('rReg').textContent=d.reg;
+document.getElementById('rSpec').innerHTML='<span class="tag tag-blue">'+specFullNames[d.spec]+'</span>'+(d.arctic?' <span class="tag tag-purple">АЗРФ</span>':'')+(d.mono?' <span class="tag tag-yellow">Моногород</span>':'');
+document.getElementById('rPop').textContent=d.pop+' тыс. чел';
+document.getElementById('rUnemp').textContent=d.unemp+'%';
+document.getElementById('rWear').textContent=d.wear+'%';
+document.getElementById('rTrans').textContent=d.trans+' ч';
+document.getElementById('rBudget').textContent=fmtNum(d.budget);
+document.getElementById('rSummary').textContent=a.summary;
+document.getElementById('rConfidence').textContent=a.confidence+'%';
+renderSWOT(a.sectorAnalysis);
+renderRisks(a.riskMatrix);
+renderScenarios(a.scenarios);
+renderRecommendations(a.recommendations);
+renderStakeholders(a.stakeholderMap);
+renderKPIs(a.kpiTargets);
+renderInitiatives(a.strategicInitiatives);
+renderRoadmap(a.implementationRoadmap);
+renderCharts(a.scores);
+document.getElementById('printBtn').disabled=false;
+}
+function renderSWOT(swot){
+var h='';
+h+='<div class="swot-grid">';
+h+='<div class="swot-card swot-s"><h5><i class="fas fa-thumbs-up"></i> Сильные стороны</h5><ul>'+swot.strengths.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul></div>';
+h+='<div class="swot-card swot-w"><h5><i class="fas fa-thumbs-down"></i> Слабые стороны</h5><ul>'+swot.weaknesses.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul></div>';
+h+='<div class="swot-card swot-o"><h5><i class="fas fa-lightbulb"></i> Возможности</h5><ul>'+swot.opportunities.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul></div>';
+h+='<div class="swot-card swot-t"><h5><i class="fas fa-exclamation-triangle"></i> Угрозы</h5><ul>'+swot.threats.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul></div>';
+h+='</div>';
+document.getElementById('swotContent').innerHTML=h;
+}
+function renderRisks(risks){
+var h='';
+risks.forEach(function(r){
+h+='<div class="risk-item risk-'+r.level+'">';
+h+='<h5>'+r.name+' <span class="badge-status badge-'+(r.level==='high'?'critical':r.level==='medium'?'pending':'active')+'">'+r.probability+'</span></h5>';
+h+='<p><strong>Категория:</strong> '+r.category+'</p>';
+h+='<p><strong>Влияние:</strong> '+r.impact+'</p>';
+h+='<p>'+r.description+'</p>';
+h+='<p style="margin-top:8px;"><strong>Меры смягчения:</strong> '+r.mitigation+'</p>';
+h+='</div>';
+});
+document.getElementById('risksContent').innerHTML='<div class="risk-matrix">'+h+'</div>';
+}
+function renderScenarios(scenarios){
+var h='';
+['base','optimistic','pessimistic'].forEach(function(k){
+var s=scenarios[k];
+h+='<div class="scenario-card">';
+h+='<h5>'+s.icon+' '+s.name+' <span style="font-size:0.8rem;color:#64748b;margin-left:8px;">Вероятность: '+s.probability+'</span></h5>';
+h+='<p class="scenario-desc">'+s.description+'</p>';
+h+='<div class="metric-row" style="margin-top:12px;">';
+h+='<div class="metric-card"><div class="metric-val" style="color:var(--success);">'+s.vrpGrowth+'</div><div class="metric-label">Рост ВРП</div></div>';
+h+='<div class="metric-card"><div class="metric-val" style="color:var(--info);">'+s.unempTarget+'</div><div class="metric-label">Безработица</div></div>';
+h+='<div class="metric-card"><div class="metric-val" style="color:var(--warning);">'+s.infraTarget+'</div><div class="metric-label">Износ</div></div>';
+h+='<div class="metric-card"><div class="metric-val" style="color:var(--primary);">'+s.investment+'</div><div class="metric-label">Инвестиции</div></div>';
+h+='<div class="metric-card"><div class="metric-val">'+s.population+'</div><div class="metric-label">Население</div></div>';
+h+='</div>';
+h+='</div>';
+});
+document.getElementById('scenariosContent').innerHTML=h;
+}
+function renderRecommendations(recs){
+var h='';
+recs.forEach(function(r,i){
+h+='<div class="ai-recommendation" data-priority="'+r.priority+'" data-num="'+(i+1)+'">';
+h+='<h5>'+r.title+'</h5>';
+h+='<p>'+r.description+'</p>';
+h+='<div style="display:flex;gap:16px;margin-top:10px;font-size:0.82rem;color:var(--text-muted);">';
+h+='<span><i class="far fa-clock"></i> '+r.timeline+'</span>';
+h+='<span><i class="fas fa-user-tie"></i> '+r.responsible+'</span>';
+h+='</div>';
+h+='</div>';
+});
+document.getElementById('recommendationsContent').innerHTML=h;
+}
+function renderStakeholders(stakeholders){
+var h='';
+stakeholders.forEach(function(grp){
+h+='<div style="margin-bottom:16px;">';
+h+='<h5 style="margin-bottom:8px;color:var(--primary);"><i class="fas '+grp.icon+'"></i> '+grp.group+'</h5>';
+h+='<div class="stakeholder-grid">';
+grp.members.forEach(function(m){
+h+='<div class="stakeholder-card">';
+h+='<h5>'+m.name+'</h5>';
+h+='<p><strong>Роль:</strong> '+m.role+'</p>';
+h+='<p><strong>Влияние:</strong> <span class="badge-status badge-'+(m.influence==='Высокая'?'active':m.influence==='Средняя'?'pending':'critical')+'">'+m.influence+'</span></p>';
+h+='</div>';
+});
+h+='</div>';
+h+='</div>';
+});
+document.getElementById('stakeholdersContent').innerHTML=h;
+}
+function renderKPIs(kpiTargets){
+var h='';
+kpiTargets.forEach(function(cat){
+h+='<div style="margin-bottom:20px;">';
+h+='<h4 style="margin-bottom:12px;color:var(--primary);"><i class="fas '+cat.icon+'"></i> '+cat.category+'</h4>';
+h+='<table class="kpi-table">';
+h+='<thead><tr><th>Показатель</th><th>Ед. изм.</th><th>2024 (тек.)</th><th>2027 (план)</th><th>2030 (цель)</th></tr></thead><tbody>';
+cat.kpis.forEach(function(k){
+h+='<tr>';
+h+='<td>'+k.name+'</td>';
+h+='<td>'+k.unit+'</td>';
+h+='<td><strong>'+k.current+'</strong></td>';
+h+='<td style="color:var(--info);"><strong>'+k.target2027+'</strong></td>';
+h+='<td style="color:var(--success);"><strong>'+k.target2030+'</strong></td>';
+h+='</tr>';
+});
+h+='</tbody></table>';
+h+='</div>';
+});
+document.getElementById('kpisContent').innerHTML=h;
+}
+function renderInitiatives(initiatives){
+var h='<div class="project-list">';
+initiatives.forEach(function(p){
+h+='<div class="project-item">';
+h+='<div style="flex:1;">';
+h+='<div class="project-title">'+p.name+' <span class="project-badge badge-'+(p.priority==='Высокий'?'federal':p.priority==='Средний'?'regional':'municipal')+'">'+p.priority+'</span></div>';
+h+='<div class="project-meta">'+p.description+'</div>';
+h+='<div class="project-meta" style="margin-top:6px;">';
+h+='<span class="tag tag-blue">Бюджет: '+p.budget+'</span> ';
+h+='<span class="tag tag-green">Срок: '+p.timeline+'</span> ';
+h+='<span class="tag tag-yellow">Статус: '+p.status+'</span>';
+h+='</div>';
+h+='</div>';
+h+='<div style="text-align:right;min-width:180px;">';
+h+='<div style="font-size:0.82rem;color:var(--text-muted);">Ожидаемый эффект</div>';
+h+='<div style="font-size:0.88rem;font-weight:600;color:var(--text);">'+p.impact+'</div>';
+h+='</div>';
+h+='</div>';
+});
+h+='</div>';
+document.getElementById('initiativesContent').innerHTML=h;
+}
+function renderRoadmap(roadmap){
+var h='';
+roadmap.forEach(function(phase){
+h+='<div class="timeline-item">';
+h+='<div class="timeline-year">'+phase.year+(phase.quarter? ' • '+phase.quarter:'')+' — '+phase.phase+'</div>';
+h+='<div class="timeline-desc"><strong>Бюджет:</strong> '+phase.budget+'</div>';
+h+='<div style="margin-top:8px;"><strong>Задачи:</strong></div>';
+h+='<ul style="padding-left:18px;font-size:0.88rem;color:var(--text-sec);line-height:1.6;">';
+phase.tasks.forEach(function(t){h+='<li>'+t+'</li>';});
+h+='</ul>';
+h+='<div style="margin-top:8px;"><strong>Вехи:</strong> <span style="color:var(--success);">'+phase.milestones.join('; ')+'</span></div>';
+h+='</div>';
+});
+document.getElementById('roadmapContent').innerHTML='<div class="timeline-container">'+h+'</div>';
+}
+function renderCharts(scores){
+var chartIds=['radarChart','barChart','donutChart','lineChart'];
+chartIds.forEach(function(id){
+var el=document.getElementById(id);
+if(!el) return;
+var ctx=el.getContext('2d');
+if(chartsInstance[id]) chartsInstance[id].destroy();
+});
+// Radar - 8 показателей
+chartsInstance.radarChart=new Chart(document.getElementById('radarChart'),{
+type:'radar',
+data:{
+labels:['Экономика','Инфраструктура','Логистика','Чел. капитал','Экология','Управление','Инновации','Социум'],
+datasets:[{
+label:'Оценка',
+data:[scores.economy,scores.infrastructure,scores.logistics,scores.humanCapital,scores.environment,scores.governance,scores.innovation,scores.social],
+backgroundColor:'rgba(26,27,124,0.2)',
+borderColor:'var(--primary)',
+pointBackgroundColor:'var(--primary)',
+pointBorderColor:'#fff',
+pointHoverBackgroundColor:'#fff',
+pointHoverBorderColor:'var(--primary)'
+}]
+},
+options:{
+responsive:true,
+maintainAspectRatio:false,
+scales:{r:{beginAtZero:true,max:10,ticks:{stepSize:2}}},
+plugins:{legend:{display:false}}
+}
+});
+// Bar - сравнение по категориям
+chartsInstance.barChart=new Chart(document.getElementById('barChart'),{
+type:'bar',
+data:{
+labels:['Экономика','Инфраструктура','Логистика','Чел. капитал','Экология','Управление','Инновации','Социум'],
+datasets:[{
+label:'Балл',
+data:[scores.economy,scores.infrastructure,scores.logistics,scores.humanCapital,scores.environment,scores.governance,scores.innovation,scores.social],
+backgroundColor:['#1a1b7c','#3d3dff','#7c3aed','#3b82f6','#10b981','#f59e0b','#ef4444','#64748b']
+}]
+},
+options:{
+responsive:true,
+maintainAspectRatio:false,
+scales:{y:{beginAtZero:true,max:10}},
+plugins:{legend:{display:false}}
+}
+});
+// Donut - общая оценка
+chartsInstance.donutChart=new Chart(document.getElementById('donutChart'),{
+type:'doughnut',
+data:{
+labels:['Достигнуто','Резерв'],
+datasets:[{
+data:[scores.totalScore,100-scores.totalScore],
+backgroundColor:['var(--primary)','rgba(26,27,124,0.1)'],
+borderWidth:0
+}]
+},
+options:{
+responsive:true,
+maintainAspectRatio:false,
+cutout:'70%',
+plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:function(ctx){return ctx.parsed+' из 100';}}}}
+}
+});
+// Line - динамика (прогноз)
+var lineData=[];
+for(var y=2024;y<=2030;y++){
+lineData.push(Math.min(100,scores.totalScore+Math.round((y-2024)*3)));
+}
+chartsInstance.lineChart=new Chart(document.getElementById('lineChart'),{
+type:'line',
+data:{
+labels:['2024','2025','2026','2027','2028','2029','2030'],
+datasets:[{
+label:'Прогресс',
+data:lineData,
+borderColor:'var(--primary)',
+backgroundColor:'rgba(26,27,124,0.1)',
+fill:true,
+tension:0.4
+}]
+},
+options:{
+responsive:true,
+maintainAspectRatio:false,
+scales:{y:{beginAtZero:true,max:100}},
+plugins:{legend:{display:false}}
+}
+});
+}
+document.getElementById('bGen').addEventListener('click',generateReport);
+document.getElementById('printBtn').addEventListener('click',function(){window.print();});
+document.querySelectorAll('.sub-tab').forEach(function(tab){
+tab.addEventListener('click',function(){
+var tId=this.dataset.tab;
+document.querySelectorAll('.sub-tab').forEach(function(t){t.classList.remove('active');});
+this.classList.add('active');
+document.querySelectorAll('[id^=\"tab-\"]').forEach(function(el){el.style.display='none';});
+document.getElementById('tab-'+tId).style.display='block';
+});
+});
+document.getElementById('dbCount').textContent=ONP_FULL_LIST.length;
+renderSteps();
+</script>
+</body>
+</html>
