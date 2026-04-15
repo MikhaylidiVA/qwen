@@ -1,0 +1,3453 @@
+```html
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Развитие ОНП — Забайкальский край</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5.1.0/index.min.css">
+  <style>
+    /* ═══════════════════════════════════════════
+   ЕДИНАЯ ДИЗАЙН-СИСТЕМА (CSS Variables)
+   ═══════════════════════════════════════════ */
+    :root {
+      /* Цветовая палитра */
+      --c-50: #f0edff;
+      --c-100: #ddd5ff;
+      --c-200: #b8abff;
+      --c-300: #9b8cff;
+      --c-400: #7b6aff;
+      --c-500: #6c5ce7;
+      --c-600: #5a4bd1;
+      --c-700: #4a3fb8;
+      --c-800: #352d8a;
+      --c-900: #1a1552;
+
+      /* Текст */
+      --text-primary: #1e1b4b;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+      --text-white: #ffffff;
+
+      /* Фоны */
+      --bg-page: #f4f2fb;
+      --bg-card: #ffffff;
+      --bg-accent: var(--c-50);
+
+      /* Размеры */
+      --radius-sm: 10px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-xl: 32px;
+
+      /* Тени */
+      --shadow-sm: 0 2px 8px rgba(53, 45, 138, 0.06);
+      --shadow-md: 0 4px 20px rgba(53, 45, 138, 0.1);
+      --shadow-lg: 0 8px 32px rgba(53, 45, 138, 0.14);
+      --shadow-hover: 0 12px 40px rgba(53, 45, 138, 0.18);
+
+      /* Анимации */
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --duration: 0.5s;
+    }
+
+    /* ═══════════════════════════════════════════
+   СБРОС И БАЗОВЫЕ СТИЛИ
+   ═══════════════════════════════════════════ */
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg-page);
+      color: var(--text-primary);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      padding: 40px 20px;
+    }
+
+    /* ═══════════════════════════════════════════
+   KEYFRAME АНИМАЦИИ
+   ═══════════════════════════════════════════ */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-25px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes fadeInRight {
+      from {
+        opacity: 0;
+        transform: translateX(25px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.92);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes shimmer {
+      0% {
+        transform: translateX(-100%) skewX(-15deg);
+      }
+
+      100% {
+        transform: translateX(100%) skewX(-15deg);
+      }
+    }
+
+    @keyframes floatSlow {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-8px);
+      }
+    }
+
+    @keyframes pulseGlow {
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(108, 92, 231, 0.3);
+      }
+
+      50% {
+        box-shadow: 0 0 0 12px rgba(108, 92, 231, 0);
+      }
+    }
+
+    @keyframes slideArrow {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      50% {
+        transform: translateX(8px);
+      }
+    }
+
+    @keyframes gradientShift {
+
+      0%,
+      100% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+    }
+
+    @keyframes borderGlow {
+
+      0%,
+      100% {
+        border-color: var(--c-200);
+      }
+
+      50% {
+        border-color: var(--c-400);
+      }
+    }
+
+    /* ═══════════════════════════════════════════
+   ОБЩИЕ КОМПОНЕНТЫ
+   ═══════════════════════════════════════════ */
+    .opn-page {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .opn-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-md);
+      padding: 36px 40px;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      animation: fadeInUp var(--duration) var(--ease-out) backwards;
+    }
+
+    .opn-page>.opn-card:nth-child(1) {
+      animation-delay: 0.1s;
+    }
+
+    .opn-page>.opn-card:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .opn-page>.opn-card:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+
+    .opn-page>.opn-card:nth-child(4) {
+      animation-delay: 0.4s;
+    }
+
+    .opn-page>.opn-card:nth-child(5) {
+      animation-delay: 0.5s;
+    }
+
+    .opn-page>.opn-card:nth-child(6) {
+      animation-delay: 0.6s;
+    }
+
+    .opn-page>.opn-card:nth-child(7) {
+      animation-delay: 0.7s;
+    }
+
+    .opn-page>.opn-card:nth-child(8) {
+      animation-delay: 0.8s;
+    }
+
+    .opn-page>.opn-card:nth-child(9) {
+      animation-delay: 0.9s;
+    }
+
+    .opn-page>.opn-card:nth-child(10) {
+      animation-delay: 1.0s;
+    }
+
+    .opn-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 6px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--c-700), var(--c-400), transparent);
+      border-radius: 0 var(--radius-xl) var(--radius-xl) 0;
+    }
+
+    .opn-card:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-3px);
+      transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out);
+    }
+
+    /* Заголовок карточки */
+    .opn-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 3px solid var(--c-100);
+      flex-wrap: wrap;
+    }
+
+    .opn-head-title {
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--c-900);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      line-height: 1.2;
+    }
+
+    .opn-head-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, var(--c-500), var(--c-700));
+      color: var(--text-white);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 6px 16px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      flex-shrink: 0;
+    }
+
+    /* Футер карточки */
+    .opn-foot {
+      margin-top: auto;
+      padding-top: 16px;
+      border-top: 3px dashed var(--c-200);
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    /* ═══════════════════════════════════════════
+   БЛОК 1: КОНТЕКСТ ПРОЕКТНОЙ ЗАДАЧИ
+   ═══════════════════════════════════════════ */
+    .opn-hero {
+      padding: 0;
+      background: linear-gradient(135deg, #f8f6ff 0%, #ffffff 50%, #eef2ff 100%);
+      min-height: 600px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .opn-hero::before {
+      display: none;
+    }
+
+    .opn-hero-inner {
+      position: relative;
+      z-index: 2;
+      padding: 32px 40px 28px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      gap: 16px;
+    }
+
+    /* Декоративные круги */
+    .opn-hero-bg-deco {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .opn-hero-bg-deco::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -30px;
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, rgba(108, 92, 231, 0.08) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: floatSlow 8s ease-in-out infinite;
+    }
+
+    .opn-hero-bg-deco::after {
+      content: '';
+      position: absolute;
+      bottom: -40px;
+      left: -20px;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(74, 63, 184, 0.06) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: floatSlow 10s ease-in-out 2s infinite reverse;
+    }
+
+    /* Hero header */
+    .opn-hero-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      animation: fadeInUp 0.6s var(--ease-out) 0.1s both;
+    }
+
+    .opn-hero-title {
+      font-size: 28px;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--c-800), var(--c-500));
+      background-size: 200% 200%;
+      animation: gradientShift 4s ease infinite;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Hero grid */
+    .opn-hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr 1fr;
+      gap: 16px;
+      flex: 1;
+    }
+
+    /* Вызов */
+    .opn-challenge {
+      background: var(--bg-card);
+      border: 2px solid var(--c-200);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      box-shadow: var(--shadow-sm);
+      animation: fadeInLeft 0.7s var(--ease-out) 0.2s both;
+      transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+    }
+
+    .opn-challenge:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .opn-challenge-icon {
+      flex-shrink: 0;
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, var(--c-600), var(--c-400));
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      box-shadow: 0 4px 14px rgba(108, 92, 231, 0.3);
+      animation: floatSlow 4s ease-in-out infinite;
+    }
+
+    .opn-challenge h3 {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--c-900);
+      margin-bottom: 6px;
+    }
+
+    .opn-challenge p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Документы + Регион */
+    .opn-docs-region {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      animation: fadeInUp 0.6s var(--ease-out) 0.3s both;
+    }
+
+    .opn-doc {
+      background: var(--bg-card);
+      border-left: 4px solid var(--c-600);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
+    }
+
+    .opn-doc:hover {
+      transform: translateX(6px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .opn-doc:nth-child(2) {
+      border-left-color: var(--c-500);
+    }
+
+    .opn-doc h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--c-800);
+      margin-bottom: 4px;
+    }
+
+    .opn-doc p {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .opn-region-tasks {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .opn-info-box {
+      background: linear-gradient(135deg, var(--c-700), var(--c-600));
+      color: var(--text-white);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+    }
+
+    .opn-info-box h4 {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      opacity: 0.9;
+    }
+
+    .opn-stats {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+
+    .opn-stat {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      backdrop-filter: blur(4px);
+    }
+
+    .opn-tasks-box {
+      background: var(--c-50);
+      border: 2px solid var(--c-200);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+    }
+
+    .opn-tasks-box h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--c-800);
+      margin-bottom: 8px;
+    }
+
+    .opn-task-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .opn-task-tag {
+      background: var(--bg-card);
+      color: var(--c-700);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      border: 1px solid var(--c-200);
+      transition: all 0.25s var(--ease-out);
+    }
+
+    .opn-task-tag:hover {
+      background: var(--c-700);
+      color: var(--text-white);
+      transform: translateY(-2px);
+    }
+
+    /* Метрики */
+    .opn-metrics {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      animation: fadeInRight 0.7s var(--ease-out) 0.3s both;
+    }
+
+    .opn-metric {
+      background: var(--bg-card);
+      border: 2px solid var(--c-100);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s var(--ease-out);
+    }
+
+    .opn-metric::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--c-700), var(--c-400));
+    }
+
+    .opn-metric:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--c-300);
+    }
+
+    .opn-metric-icon {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--c-100), var(--c-50));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      flex-shrink: 0;
+      animation: floatSlow 3s ease-in-out infinite;
+    }
+
+    .opn-metric-year {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--c-600);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      margin-bottom: 2px;
+    }
+
+    .opn-metric-val {
+      font-size: 48px;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--c-700), var(--c-500));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+    }
+
+    .opn-metric-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-top: 2px;
+    }
+
+    /* Hero footer */
+    .opn-hero-foot {
+      margin-top: 12px;
+      background: linear-gradient(90deg, var(--c-800), var(--c-600));
+      color: var(--text-white);
+      border-radius: var(--radius-md);
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 6px 20px rgba(53, 45, 138, 0.25);
+      animation: fadeInUp 0.6s var(--ease-out) 0.5s both;
+      flex-shrink: 0;
+    }
+
+    .opn-foot-item {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .opn-foot-label {
+      font-size: 10px;
+      opacity: 0.75;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      font-weight: 600;
+    }
+
+    .opn-foot-val {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .opn-foot-val span {
+      display: block;
+      font-size: 12px;
+      opacity: 0.8;
+      font-weight: 500;
+      margin-top: 1px;
+    }
+
+    .opn-foot-divider {
+      width: 1px;
+      height: 36px;
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* ═══════════════════════════════════════════
+   БЛОК 2: УРБАНИЗАЦИЯ
+   ═══════════════════════════════════════════ */
+    .opn-urban {
+      min-height: 520px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .opn-urban-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 0;
+      align-items: stretch;
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 3px solid var(--c-100);
+      flex: 1;
+    }
+
+    .opn-map-wrap {
+      position: relative;
+      background: #e8e6f0;
+      overflow: hidden;
+    }
+
+    .opn-map-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      transition: transform 0.5s var(--ease-out);
+    }
+
+    .opn-map-wrap:hover .opn-map-img {
+      transform: scale(1.03);
+    }
+
+    .opn-pop-badge {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 10px 16px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 8px 20px rgba(53, 45, 138, 0.15);
+      backdrop-filter: blur(4px);
+      animation: scaleIn 0.5s var(--ease-out) 0.3s both;
+    }
+
+    .opn-pop-num {
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--c-800);
+    }
+
+    .opn-pop-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .opn-text-panel {
+      padding: 28px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      justify-content: center;
+      background: var(--bg-card);
+    }
+
+    .opn-city-title {
+      font-size: 22px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .opn-city-title.red {
+      color: #dc2626;
+    }
+
+    .opn-city-title.blue {
+      color: #2563eb;
+    }
+
+    .opn-city-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .opn-city-list li {
+      font-size: 15px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      padding-left: 18px;
+      position: relative;
+    }
+
+    .opn-city-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 7px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .opn-city-list.red li::before {
+      background: #dc2626;
+    }
+
+    .opn-city-list.blue li::before {
+      background: #2563eb;
+    }
+
+    .opn-migration {
+      background: #f4f3ff;
+      border: 3px dashed #c5c0ea;
+      border-radius: 20px;
+      padding: 16px;
+      text-align: center;
+      animation: pulseGlow 3s ease-in-out infinite;
+    }
+
+    .opn-migration-title {
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--c-700);
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .opn-migration-arrows {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      animation: slideArrow 2s ease-in-out infinite;
+    }
+
+    .opn-migration-sub {
+      font-size: 14px;
+      color: var(--c-600);
+      font-weight: 600;
+    }
+
+    /* ═══════════════════════════════════════════
+   БЛОК 3: ДОРОЖНАЯ КАРТА
+   ═══════════════════════════════════════════ */
+    .opn-roadmap {
+      min-height: 600px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .opn-rm-timeline {
+      display: flex;
+      gap: 12px;
+      position: relative;
+      padding: 12px 8px 18px;
+      flex-shrink: 0;
+    }
+
+    .opn-rm-timeline::before {
+      content: '';
+      position: absolute;
+      top: 44px;
+      left: 40px;
+      right: 40px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--c-700), var(--c-500), var(--c-400), var(--c-300), var(--c-200));
+      border-radius: 2px;
+      z-index: 0;
+    }
+
+    .opn-rm-step {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .opn-rm-node {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-white);
+      box-shadow: 0 4px 16px rgba(108, 92, 231, 0.2);
+      position: relative;
+      z-index: 2;
+      border: 4px solid var(--bg-card);
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    .opn-rm-step:nth-child(1) .opn-rm-node {
+      background: linear-gradient(145deg, var(--c-700), var(--c-500));
+    }
+
+    .opn-rm-step:nth-child(2) .opn-rm-node {
+      background: linear-gradient(145deg, var(--c-600), var(--c-400));
+    }
+
+    .opn-rm-step:nth-child(3) .opn-rm-node {
+      background: linear-gradient(145deg, var(--c-500), var(--c-300));
+    }
+
+    .opn-rm-step:nth-child(4) .opn-rm-node {
+      background: linear-gradient(145deg, var(--c-400), var(--c-200));
+    }
+
+    .opn-rm-step:nth-child(5) .opn-rm-node {
+      background: linear-gradient(145deg, var(--c-800), var(--c-600));
+    }
+
+    .opn-rm-label {
+      margin-top: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      text-align: center;
+      color: var(--c-800);
+      line-height: 1.2;
+      max-width: 110px;
+    }
+
+    .opn-rm-details {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .opn-rm-detail {
+      background: var(--bg-card);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      border: 2px solid var(--c-100);
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      animation: fadeInUp 0.5s var(--ease-out) backwards;
+    }
+
+    .opn-rm-step:nth-child(1) .opn-rm-detail {
+      animation-delay: 0.5s;
+    }
+
+    .opn-rm-step:nth-child(2) .opn-rm-detail {
+      animation-delay: 0.6s;
+    }
+
+    .opn-rm-step:nth-child(3) .opn-rm-detail {
+      animation-delay: 0.7s;
+    }
+
+    .opn-rm-step:nth-child(4) .opn-rm-detail {
+      animation-delay: 0.8s;
+    }
+
+    .opn-rm-step:nth-child(5) .opn-rm-detail {
+      animation-delay: 0.9s;
+    }
+
+    .opn-rm-detail:hover {
+      border-color: var(--c-300);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+      transition: all 0.3s var(--ease-out);
+    }
+
+    .opn-rm-bar {
+      height: 4px;
+      flex-shrink: 0;
+    }
+
+    .opn-rm-step:nth-child(1) .opn-rm-bar {
+      background: linear-gradient(90deg, var(--c-700), var(--c-500));
+    }
+
+    .opn-rm-step:nth-child(2) .opn-rm-bar {
+      background: linear-gradient(90deg, var(--c-600), var(--c-400));
+    }
+
+    .opn-rm-step:nth-child(3) .opn-rm-bar {
+      background: linear-gradient(90deg, var(--c-500), var(--c-300));
+    }
+
+    .opn-rm-step:nth-child(4) .opn-rm-bar {
+      background: linear-gradient(90deg, var(--c-400), var(--c-200));
+    }
+
+    .opn-rm-step:nth-child(5) .opn-rm-bar {
+      background: linear-gradient(90deg, var(--c-800), var(--c-600));
+    }
+
+    .opn-rm-hdr {
+      padding: 12px 14px 8px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .opn-rm-step:nth-child(1) .opn-rm-hdr {
+      color: var(--c-700);
+    }
+
+    .opn-rm-step:nth-child(2) .opn-rm-hdr {
+      color: var(--c-600);
+    }
+
+    .opn-rm-step:nth-child(3) .opn-rm-hdr {
+      color: var(--c-500);
+    }
+
+    .opn-rm-step:nth-child(4) .opn-rm-hdr {
+      color: var(--c-400);
+    }
+
+    .opn-rm-step:nth-child(5) .opn-rm-hdr {
+      color: var(--c-800);
+    }
+
+    .opn-rm-hdr-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+      background: var(--c-100);
+    }
+
+    .opn-rm-body {
+      padding: 0 14px 12px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .opn-rm-body ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .opn-rm-body li {
+      padding: 5px 0;
+      border-bottom: 2px dashed var(--c-100);
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-weight: 500;
+    }
+
+    .opn-rm-body li:last-child {
+      border-bottom: none;
+    }
+
+    .opn-rm-dot {
+      flex-shrink: 0;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      margin-top: 4px;
+      background: var(--c-700);
+    }
+
+    .opn-rm-step:nth-child(2) .opn-rm-dot {
+      background: var(--c-600);
+    }
+
+    .opn-rm-step:nth-child(3) .opn-rm-dot {
+      background: var(--c-500);
+    }
+
+    .opn-rm-step:nth-child(4) .opn-rm-dot {
+      background: var(--c-400);
+    }
+
+    .opn-rm-step:nth-child(5) .opn-rm-dot {
+      background: var(--c-800);
+    }
+
+    .opn-rm-footer {
+      padding: 8px 14px;
+      background: var(--c-50);
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 700;
+      text-align: center;
+      border-top: 2px dashed var(--c-200);
+      flex-shrink: 0;
+    }
+
+    /* ═══════════════════════════════════════════
+   БЛОК 4: БЕНЧМАРКИ
+   ═══════════════════════════════════════════ */
+    .opn-bench-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .opn-bench-col {
+      background: var(--bg-card);
+      border: 2px solid var(--c-100);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: all 0.3s var(--ease-out);
+      opacity: 0;
+      animation: fadeInUp 0.5s var(--ease-out) backwards;
+    }
+
+    .opn-bench-col:nth-child(1) {
+      animation-delay: 0.4s;
+    }
+
+    .opn-bench-col:nth-child(2) {
+      animation-delay: 0.5s;
+    }
+
+    .opn-bench-col:nth-child(3) {
+      animation-delay: 0.6s;
+    }
+
+    .opn-bench-col:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--c-300);
+    }
+
+    .opn-bench-hdr {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-bottom: 8px;
+      border-bottom: 2px dashed var(--c-100);
+    }
+
+    .opn-bench-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--c-50);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .opn-bench-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--c-800);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .opn-bench-sub {
+      font-size: 11px;
+      color: var(--c-600);
+      font-weight: 600;
+    }
+
+    .opn-bench-region {
+      background: var(--c-50);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      border-left: 3px solid var(--c-400);
+    }
+
+    .opn-bench-region-name {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--c-700);
+      margin-bottom: 3px;
+    }
+
+    .opn-bench-region-desc {
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    /* Зарубежные практики */
+    .opn-intl-label {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--c-800);
+      text-align: center;
+      margin-bottom: 14px;
+    }
+
+    .opn-intl-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .opn-intl-card {
+      background: linear-gradient(135deg, #f8f6ff 0%, var(--bg-card) 100%);
+      border: 2px solid var(--c-100);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 8px;
+      opacity: 0;
+      animation: scaleIn 0.5s var(--ease-out) backwards;
+      transition: all 0.3s var(--ease-out);
+    }
+
+    .opn-intl-card:nth-child(1) {
+      animation-delay: 0.5s;
+    }
+
+    .opn-intl-card:nth-child(2) {
+      animation-delay: 0.55s;
+    }
+
+    .opn-intl-card:nth-child(3) {
+      animation-delay: 0.6s;
+    }
+
+    .opn-intl-card:nth-child(4) {
+      animation-delay: 0.65s;
+    }
+
+    .opn-intl-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--c-400);
+      box-shadow: var(--shadow-md);
+    }
+
+    .opn-intl-flag {
+      font-size: 28px;
+    }
+
+    .opn-intl-name {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--c-800);
+      text-transform: uppercase;
+    }
+
+    .opn-intl-text {
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    /* ═══════════════════════════════════════════
+   БЛОК 5: ПРОБЛЕМЫ ПРОЦЕССА
+   ═══════════════════════════════════════════ */
+    .opn-problems-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 12px;
+    }
+
+    .opn-problem {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: linear-gradient(135deg, var(--c-50) 0%, #e8e4ff 100%);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      border: 2px solid var(--c-200);
+      border-left: 6px solid var(--c-700);
+      font-size: 16px;
+      color: var(--c-800);
+      font-weight: 600;
+      opacity: 0;
+      animation: fadeInLeft 0.5s var(--ease-out) backwards;
+      transition: all 0.3s var(--ease-out);
+    }
+
+    .opn-problem:nth-child(1) {
+      animation-delay: 0.4s;
+    }
+
+    .opn-problem:nth-child(2) {
+      animation-delay: 0.45s;
+    }
+
+    .opn-problem:nth-child(3) {
+      animation-delay: 0.5s;
+    }
+
+    .opn-problem:nth-child(4) {
+      animation-delay: 0.55s;
+    }
+
+    .opn-problem:nth-child(5) {
+      animation-delay: 0.6s;
+    }
+
+    .opn-problem:nth-child(6) {
+      animation-delay: 0.65s;
+    }
+
+    .opn-problem:nth-child(7) {
+      animation-delay: 0.7s;
+    }
+
+    .opn-problem:hover {
+      transform: translateX(6px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--c-400);
+    }
+
+    .opn-problem-icon {
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    /* ═══════════════════════════════════════════
+   БЛОК 6: ПЕРЕХОД МОДЕЛЕЙ
+   ═══════════════════════════════════════════ */
+    .opn-models-grid {
+      display: grid;
+      grid-template-columns: 1fr 120px 1fr;
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .opn-model-card {
+      background: var(--bg-card);
+      border: 2px solid var(--c-100);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      opacity: 0;
+      animation: fadeInLeft 0.5s var(--ease-out) 0.4s both;
+    }
+
+    .opn-model-card:last-child {
+      animation-name: fadeInRight;
+      background: var(--c-50);
+      border-color: var(--c-200);
+    }
+
+    .opn-model-hdr {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-bottom: 10px;
+      border-bottom: 3px dashed var(--c-100);
+      flex-shrink: 0;
+    }
+
+    .opn-model-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--c-800);
+      line-height: 1.2;
+    }
+
+    .opn-model-sub {
+      font-size: 11px;
+      opacity: 0.6;
+      font-weight: 600;
+      display: block;
+      margin-top: 2px;
+    }
+
+    /* Уровни */
+    .opn-levels {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .opn-level {
+      background: var(--c-50);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      border-left: 4px solid var(--c-400);
+    }
+
+    .opn-level-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--c-700);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .opn-level-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .opn-level-list li {
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+      padding-left: 12px;
+      position: relative;
+      margin-bottom: 2px;
+    }
+
+    .opn-level-list li::before {
+      content: '›';
+      position: absolute;
+      left: 0;
+      color: var(--c-500);
+      font-weight: 700;
+    }
+
+    .opn-level-list li.warn {
+      color: #dc2626;
+      font-weight: 600;
+    }
+
+    /* Переход */
+    .opn-transition {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .opn-arrow {
+      font-size: 40px;
+      color: var(--c-600);
+      animation: slideArrow 2s ease-in-out infinite;
+    }
+
+    .opn-trans-box {
+      background: linear-gradient(135deg, var(--c-700), var(--c-500));
+      color: var(--text-white);
+      border-radius: 14px;
+      padding: 14px 10px;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(74, 63, 184, 0.25);
+      width: 100%;
+      animation: pulseGlow 3s ease-in-out infinite;
+    }
+
+    .opn-trans-box strong {
+      display: block;
+      font-size: 13px;
+      font-weight: 900;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .opn-trans-box span {
+      font-size: 10.5px;
+      line-height: 1.3;
+      opacity: 0.9;
+      display: block;
+      font-weight: 600;
+    }
+
+    /* Изменения */
+    .opn-changes {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .opn-change {
+      background: linear-gradient(135deg, #f8f6ff 0%, var(--bg-card) 100%);
+      border: 2px solid var(--c-200);
+      border-left: 4px solid var(--c-700);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      transition: all 0.25s var(--ease-out);
+    }
+
+    .opn-change:hover {
+      transform: translateX(4px);
+      border-color: var(--c-500);
+    }
+
+    .opn-change-hdr {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 3px;
+    }
+
+    .opn-change-icon {
+      width: 28px;
+      height: 28px;
+      background: var(--c-100);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .opn-change-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--c-800);
+    }
+
+    .opn-change-desc {
+      font-size: 11px;
+      color: var(--text-secondary);
+      line-height: 1.35;
+    }
+
+    /* Баннер */
+    .opn-banner {
+      margin-top: 16px;
+      background: linear-gradient(90deg, var(--c-700), var(--c-500));
+      color: var(--text-white);
+      border-radius: var(--radius-md);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-shrink: 0;
+    }
+
+    .opn-banner-icon {
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    .opn-banner-text {
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.35;
+    }
+
+    .opn-banner-text strong {
+      font-weight: 800;
+    }
+
+    /* ═══════════════════════════════════════════
+   БЛОК 7: АССИСТЕНТ 2030
+   ═══════════════════════════════════════════ */
+    .opn-asst-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto auto auto auto;
+      gap: 12px;
+    }
+
+    .opn-asst-phase {
+      background: rgba(255, 255, 255, 0.98);
+      border: 2px solid var(--c-200);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: row;
+      gap: 12px;
+      align-items: flex-start;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      animation: fadeInUp 0.5s var(--ease-out) backwards;
+      transition: all 0.3s var(--ease-out);
+    }
+
+    .opn-asst-phase:nth-child(1) {
+      grid-column: 1;
+      grid-row: 1;
+      animation-delay: 0.4s;
+    }
+
+    .opn-asst-phase:nth-child(2) {
+      grid-column: 2;
+      grid-row: 1;
+      animation-delay: 0.45s;
+    }
+
+    .opn-asst-phase:nth-child(3) {
+      grid-column: 3;
+      grid-row: 1;
+      animation-delay: 0.5s;
+    }
+
+    .opn-asst-phase:nth-child(4) {
+      grid-column: 1;
+      grid-row: 2;
+      animation-delay: 0.55s;
+    }
+
+    .opn-asst-phase:nth-child(5) {
+      grid-column: 2 / -1;
+      grid-row: 2;
+      animation-delay: 0.6s;
+    }
+
+    .opn-asst-phase:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--c-400);
+    }
+
+    .opn-asst-phase::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 4px;
+      border-radius: var(--radius-md) 0 0 var(--radius-md);
+    }
+
+    .opn-asst-phase:nth-child(1)::before {
+      background: #3b82f6;
+    }
+
+    .opn-asst-phase:nth-child(2)::before {
+      background: #8b5cf6;
+    }
+
+    .opn-asst-phase:nth-child(3)::before {
+      background: #10b981;
+    }
+
+    .opn-asst-phase:nth-child(4)::before {
+      background: #f59e0b;
+    }
+
+    .opn-asst-phase:nth-child(5)::before {
+      background: #ef4444;
+    }
+
+    .opn-asst-num {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text-white);
+      flex-shrink: 0;
+      transition: transform 0.3s var(--ease-out);
+    }
+
+    .opn-asst-phase:hover .opn-asst-num {
+      transform: rotate(8deg) scale(1.1);
+    }
+
+    .opn-asst-phase:nth-child(1) .opn-asst-num {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+    }
+
+    .opn-asst-phase:nth-child(2) .opn-asst-num {
+      background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    }
+
+    .opn-asst-phase:nth-child(3) .opn-asst-num {
+      background: linear-gradient(135deg, #10b981, #059669);
+    }
+
+    .opn-asst-phase:nth-child(4) .opn-asst-num {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+    }
+
+    .opn-asst-phase:nth-child(5) .opn-asst-num {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+    }
+
+    .opn-asst-wrap {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .opn-asst-head {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      margin-bottom: 4px;
+      flex-wrap: wrap;
+    }
+
+    .opn-asst-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--c-800);
+      text-transform: uppercase;
+    }
+
+    .opn-asst-sub {
+      font-size: 10px;
+      color: var(--c-600);
+      font-weight: 600;
+    }
+
+    .opn-asst-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px 10px;
+    }
+
+    .opn-asst-list li {
+      font-size: 10.5px;
+      color: var(--c-700);
+      line-height: 1.3;
+      display: flex;
+      align-items: flex-start;
+      gap: 3px;
+      font-weight: 500;
+      transition: transform 0.2s var(--ease-out);
+    }
+
+    .opn-asst-list li:hover {
+      transform: translateX(3px);
+      color: var(--c-900);
+    }
+
+    .opn-asst-list li::before {
+      content: '›';
+      color: var(--c-500);
+      font-weight: 800;
+      flex-shrink: 0;
+      font-size: 12px;
+    }
+
+    .opn-asst-timeline {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 5px;
+    }
+
+    .opn-asst-timeline span {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--c-600);
+      background: var(--c-50);
+      padding: 2px 7px;
+      border-radius: 4px;
+      border: 1px solid var(--c-200);
+    }
+
+    /* Решение и Итог */
+    .opn-asst-decision,
+    .opn-asst-final {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 18px;
+      border-radius: var(--radius-md);
+      border: 2px solid var(--c-200);
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      animation: fadeInUp 0.5s var(--ease-out) backwards;
+    }
+
+    .opn-asst-decision {
+      grid-column: 1 / -1;
+      grid-row: 3;
+      background: linear-gradient(135deg, #f8f6ff 0%, #eee8ff 100%);
+      animation-delay: 0.7s;
+    }
+
+    .opn-asst-decision::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--c-400), var(--c-200));
+    }
+
+    .opn-asst-final {
+      grid-column: 1 / -1;
+      grid-row: 4;
+      background: linear-gradient(135deg, #f0f8ff 0%, #e0f0ff 100%);
+      animation-delay: 0.8s;
+    }
+
+    .opn-asst-final::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--c-500), var(--c-300));
+    }
+
+    .opn-asst-dec-icon,
+    .opn-asst-fin-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: var(--text-white);
+      flex-shrink: 0;
+      transition: transform 0.3s var(--ease-out);
+    }
+
+    .opn-asst-decision:hover .opn-asst-dec-icon,
+    .opn-asst-final:hover .opn-asst-fin-icon {
+      transform: rotate(12deg);
+    }
+
+    .opn-asst-dec-icon {
+      background: linear-gradient(135deg, var(--c-700), var(--c-500));
+    }
+
+    .opn-asst-fin-icon {
+      background: linear-gradient(135deg, var(--c-500), var(--c-300));
+    }
+
+    .opn-asst-dec-text,
+    .opn-asst-fin-text {
+      font-size: 13px;
+      line-height: 1.3;
+      color: var(--c-800);
+      font-weight: 600;
+    }
+
+    .opn-asst-dec-text strong {
+      color: var(--c-700);
+    }
+
+    .opn-asst-fin-text strong {
+      color: var(--c-600);
+    }
+
+    /* ═══════════════════════════════════════════
+   БЛОК 8: СЦЕНАРИИ ПЛАНИРОВАНИЯ
+   ═══════════════════════════════════════════ */
+    .opn-scenarios {
+      min-height: 580px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .opn-sc-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      flex: 1;
+    }
+
+    .opn-sc-col {
+      background: var(--c-50);
+      border-radius: var(--radius-md);
+      border: 2px solid var(--c-100);
+      padding: 8px 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .opn-sc-hdr {
+      font-size: 12px;
+      font-weight: 800;
+      border-bottom: 2px dashed var(--c-200);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding-bottom: 4px;
+      margin-bottom: 6px;
+      flex-shrink: 0;
+    }
+
+    .opn-sc-r {
+      color: var(--c-700);
+    }
+
+    .opn-sc-a {
+      color: var(--c-600);
+    }
+
+    .opn-sc-e {
+      color: var(--c-500);
+    }
+
+    .opn-sc-flow {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      justify-content: space-evenly;
+      padding-bottom: 4px;
+    }
+
+    .opn-sc-node {
+      background: var(--bg-card);
+      border: 1px solid var(--c-200);
+      border-radius: 6px;
+      padding: 4px 6px;
+      font-size: 10.5px;
+      text-align: center;
+      width: 100%;
+      max-width: 150px;
+      line-height: 1.15;
+      font-weight: 500;
+    }
+
+    .opn-sc-node.h {
+      background: linear-gradient(135deg, var(--c-800), var(--c-600));
+      color: var(--text-white);
+      border: none;
+      font-weight: 700;
+    }
+
+    .opn-sc-node.b {
+      background: var(--c-50);
+      border-color: var(--c-200);
+      color: var(--c-700);
+    }
+
+    .opn-sc-node.g {
+      background: #e8f4ff;
+      border-color: #a3d4ff;
+      color: #0066cc;
+    }
+
+    .opn-sc-node.y {
+      background: #fff8e6;
+      border-color: #ffd4a3;
+      color: #cc6600;
+    }
+
+    .opn-sc-node.r {
+      background: #ffe8e8;
+      border-color: #ffa3a3;
+      color: #cc0000;
+    }
+
+    .opn-sc-node.p {
+      background: #f0e8ff;
+      border-color: #c8a3ff;
+      color: #6600cc;
+    }
+
+    .opn-sc-node.hl {
+      background: linear-gradient(135deg, var(--c-700), var(--c-500));
+      color: var(--text-white);
+      border: none;
+      font-weight: 700;
+    }
+
+    .opn-sc-row {
+      display: flex;
+      gap: 2px;
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .opn-sc-row .opn-sc-node {
+      max-width: 65px;
+      flex: 1;
+    }
+
+    .opn-sc-lvl {
+      margin: 2px 0;
+      padding: 1px 8px;
+      font-size: 7.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      border-radius: 10px;
+      background: var(--c-100);
+      color: var(--c-700);
+      display: block;
+      text-align: center;
+    }
+
+    .opn-sc-arr {
+      margin: 0;
+      font-size: 8px;
+      color: var(--c-400);
+      font-weight: bold;
+      line-height: 1;
+      height: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ═══════════════════════════════════════════
+   БЛОК 9: ЦЕНТР УПРАВЛЕНИЯ
+   ═══════════════════════════════════════════ */
+    .opn-center-grid {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    .opn-fn-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .opn-fn-card {
+      background: var(--bg-card);
+      border: 2px solid var(--c-100);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      opacity: 0;
+      animation: fadeInUp 0.5s var(--ease-out) backwards;
+      transition: all 0.3s var(--ease-out);
+    }
+
+    .opn-fn-card:nth-child(1) {
+      animation-delay: 0.4s;
+    }
+
+    .opn-fn-card:nth-child(2) {
+      animation-delay: 0.45s;
+    }
+
+    .opn-fn-card:nth-child(3) {
+      animation-delay: 0.5s;
+    }
+
+    .opn-fn-card:nth-child(4) {
+      animation-delay: 0.55s;
+    }
+
+    .opn-fn-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--c-300);
+    }
+
+    .opn-fn-hdr {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .opn-fn-ic {
+      width: 32px;
+      height: 32px;
+      background: var(--c-100);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .opn-fn-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--c-800);
+    }
+
+    .opn-fn-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .opn-fn-list li {
+      font-size: 12px;
+      color: var(--text-secondary);
+      padding-left: 12px;
+      position: relative;
+      line-height: 1.35;
+    }
+
+    .opn-fn-list li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--c-500);
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    /* Дашборды */
+    .opn-dashboard-card {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      border: 2px solid var(--c-400) !important;
+      position: relative;
+      overflow: hidden;
+      padding: 18px !important;
+      animation: fadeInUp 0.6s var(--ease-out) 0.6s both;
+    }
+
+    .opn-dashboard-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--c-700), var(--c-500), var(--c-400));
+    }
+
+    .opn-dashboard-card .opn-fn-ic {
+      background: linear-gradient(135deg, var(--c-700), var(--c-500));
+      animation: floatSlow 2s ease-in-out infinite;
+      box-shadow: 0 4px 12px rgba(74, 63, 184, 0.3);
+    }
+
+    .opn-proposal-text {
+      font-size: 13px;
+      color: var(--c-800);
+      margin: 8px 0 10px;
+      line-height: 1.4;
+    }
+
+    .opn-proposal-text strong {
+      color: var(--c-700);
+    }
+
+    .opn-proposal-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 8px;
+    }
+
+    .opn-proposal-list li {
+      font-size: 12px;
+      color: var(--text-secondary);
+      padding: 8px 12px;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 6px;
+      border-left: 3px solid var(--c-600);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s var(--ease-out);
+    }
+
+    .opn-proposal-list li::before {
+      content: '✓';
+      color: var(--c-700);
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .opn-proposal-list li:hover {
+      background: var(--bg-card);
+      transform: translateX(4px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Штатное расписание */
+    .opn-staff {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .opn-staff-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--c-700);
+      text-transform: uppercase;
+    }
+
+    .opn-staff-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--c-50);
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--c-100);
+      transition: all 0.2s var(--ease-out);
+    }
+
+    .opn-staff-row:hover {
+      transform: translateX(4px);
+      border-color: var(--c-300);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .opn-staff-role {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--c-800);
+    }
+
+    .opn-staff-count {
+      background: linear-gradient(135deg, var(--c-700), var(--c-500));
+      color: var(--text-white);
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .opn-staff-sub {
+      margin-top: auto;
+      padding-top: 12px;
+      border-top: 3px dashed var(--c-100);
+      font-size: 14px;
+      color: var(--text-secondary);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .opn-staff-sub span {
+      color: var(--c-700);
+      font-weight: 800;
+    }
+
+    /* ═══════════════════════════════════════════
+   БЛОК 10: АПРОБАЦИЯ
+   ═══════════════════════════════════════════ */
+    .opn-appr-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .opn-appr-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid rgba(108, 92, 231, 0.08);
+      opacity: 0;
+      animation: fadeInUp 0.5s var(--ease-out) backwards;
+      transition: all 0.3s var(--ease-out);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .opn-appr-card:nth-child(1) {
+      animation-delay: 0.4s;
+    }
+
+    .opn-appr-card:nth-child(2) {
+      animation-delay: 0.5s;
+    }
+
+    .opn-appr-card:nth-child(3) {
+      animation-delay: 0.6s;
+    }
+
+    .opn-appr-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--c-700), transparent);
+    }
+
+    .opn-appr-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .opn-appr-hdr {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding-bottom: 12px;
+      border-bottom: 2px dashed var(--c-100);
+    }
+
+    .opn-appr-name {
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--c-900);
+      line-height: 1.2;
+    }
+
+    .opn-appr-tag {
+      align-self: flex-start;
+      background: var(--c-50);
+      color: var(--c-700);
+      padding: 5px 12px;
+      border-radius: 16px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border: 1px solid rgba(108, 92, 231, 0.1);
+    }
+
+    .opn-appr-block {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .opn-appr-label {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--text-muted);
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    .opn-appr-participants {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .opn-appr-participants span {
+      font-size: 13px;
+      color: var(--c-800);
+      font-weight: 600;
+    }
+
+    .opn-appr-bullets {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .opn-appr-bullets li {
+      font-size: 13px;
+      color: var(--text-secondary);
+      padding-left: 14px;
+      position: relative;
+      line-height: 1.35;
+      font-weight: 500;
+    }
+
+    .opn-appr-bullets li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 6px;
+      width: 5px;
+      height: 5px;
+      background: var(--c-700);
+      border-radius: 50%;
+    }
+
+    .opn-appr-result {
+      background: var(--c-50);
+      border-radius: 10px;
+      padding: 12px;
+      margin-top: auto;
+      border-left: 4px solid var(--c-700);
+    }
+
+    .opn-appr-result p {
+      font-size: 13px;
+      color: var(--c-800);
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    /* ═══════════════════════════════════════════
+   АДАПТИВНОСТЬ
+   ═══════════════════════════════════════════ */
+    @media (max-width: 1200px) {
+      .opn-hero-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .opn-urban-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .opn-map-wrap {
+        height: 300px;
+      }
+
+      .opn-bench-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .opn-intl-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .opn-models-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .opn-transition {
+        flex-direction: row;
+        padding: 0 20px;
+      }
+
+      .opn-arrow {
+        transform: rotate(90deg);
+      }
+
+      .opn-sc-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .opn-center-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .opn-fn-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .opn-appr-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .opn-hero-foot {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+      }
+
+      .opn-foot-divider {
+        display: none;
+      }
+
+      .opn-rm-details {
+        grid-template-columns: 1fr;
+      }
+
+      .opn-rm-timeline {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .opn-rm-timeline::before {
+        display: none;
+      }
+
+      .opn-rm-step {
+        flex-direction: row;
+        gap: 10px;
+        align-items: flex-start;
+      }
+
+      .opn-rm-label {
+        margin-top: 0;
+        text-align: left;
+      }
+
+      .opn-asst-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .opn-asst-phase {
+        grid-column: auto !important;
+        grid-row: auto !important;
+      }
+
+      .opn-asst-decision,
+      .opn-asst-final {
+        grid-column: auto !important;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .opn-card {
+        padding: 20px;
+      }
+
+      .opn-hero-inner {
+        padding: 20px;
+      }
+
+      .opn-head {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .opn-head-title {
+        font-size: 18px;
+      }
+
+      .opn-intl-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .opn-problems-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .opn-region-tasks {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="opn-page">
+
+    <!-- ════════════ БЛОК 1: КОНТЕКСТ ════════════ -->
+    <div class="opn-card opn-hero">
+      <div class="opn-hero-bg-deco"></div>
+      <div class="opn-hero-inner">
+        <div class="opn-hero-head">
+          <h2 class="opn-hero-title">КОНТЕКСТ ПРОЕКТНОЙ ЗАДАЧИ</h2>
+          <span class="opn-head-badge">📋 Вводные данные</span>
+        </div>
+
+        <div class="opn-hero-grid">
+          <!-- Вызов -->
+          <div class="opn-challenge">
+            <div class="opn-challenge-icon">🏙️</div>
+            <div>
+              <h3>Вызов: тренд на урбанизацию</h3>
+              <p>Глобальный переток населения в крупные агломерации создает риски депопуляции опорных населенных
+                пунктов. Требуется сбалансированное развитие функционального каркаса и закрепление населения в малых
+                городах.</p>
+            </div>
+          </div>
+
+          <!-- Документы + Регион -->
+          <div class="opn-docs-region">
+            <div class="opn-doc">
+              <h4>📄 Указ Президента РФ № 309</h4>
+              <p>Развитие ОНП — <strong>национальная цель</strong></p>
+            </div>
+            <div class="opn-doc">
+              <h4>🗺️ Стратегия пространственного развития</h4>
+              <p>Статус «опорный» для <strong>прекращения оттока населения</strong></p>
+            </div>
+            <div class="opn-region-tasks">
+              <div class="opn-info-box">
+                <h4>📍 Забайкальский край</h4>
+                <div class="opn-stats">
+                  <span class="opn-stat">🏙️ 10 городов</span>
+                  <span class="opn-stat">🏘️ 12 пгт</span>
+                  <span class="opn-stat">🌾 12 сёл</span>
+                </div>
+              </div>
+              <div class="opn-tasks-box">
+                <h4>🎯 Задачи</h4>
+                <div class="opn-task-tags">
+                  <span class="opn-task-tag">Координация</span>
+                  <span class="opn-task-tag">Методики</span>
+                  <span class="opn-task-tag">Финансирование</span>
+                  <span class="opn-task-tag">ГП</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Метрики -->
+          <div class="opn-metrics">
+            <div class="opn-metric">
+              <div class="opn-metric-icon">🎯</div>
+              <div>
+                <div class="opn-metric-year">Цель 2030</div>
+                <div class="opn-metric-val">30%</div>
+                <div class="opn-metric-label">Улучшение качества среды</div>
+              </div>
+            </div>
+            <div class="opn-metric">
+              <div class="opn-metric-icon">🚀</div>
+              <div>
+                <div class="opn-metric-year">Перспектива 2036</div>
+                <div class="opn-metric-val">60%</div>
+                <div class="opn-metric-label">Улучшение качества среды</div>
+              </div>
+            </div>
+            <div class="opn-doc" style="flex:1; margin:0; border-left-color: var(--c-500);">
+              <h4>🎓 Тема проекта</h4>
+              <p>«Развитие ОНП ДФО на примере Забайкальского края»<br><strong>Апробация → Тиражирование</strong></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Футер -->
+        <div class="opn-hero-foot">
+          <div class="opn-foot-item">
+            <div class="opn-foot-label">👤 Заказчик</div>
+            <div class="opn-foot-val">Б.Б. Батомункуев<span>Первый зампред Правительства Забайкальского края</span>
+            </div>
+          </div>
+          <div class="opn-foot-divider"></div>
+          <div class="opn-foot-item">
+            <div class="opn-foot-label">🎯 Результат</div>
+            <div class="opn-foot-val">Комплексная система развития ОНП<span>От стратегии к реализации</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════ БЛОК 2: УРБАНИЗАЦИЯ ════════════ -->
+    <div class="opn-card opn-urban">
+      <div class="opn-head">
+        <h2 class="opn-head-title">УРБАНИЗАЦИЯ: РАССЕЛЕНЧЕСКИЙ КАРКАС</h2>
+        <span class="opn-head-badge">Дисбаланс территорий</span>
+      </div>
+      <div class="opn-urban-grid">
+        <div class="opn-map-wrap">
+          <img
+            src="https://optim.tildacdn.com/tild3762-3633-4435-b638-653531313665/-/format/webp/4802e178-c5b9-431e-b.png.webp"
+            alt="Карта расселения Дальнего Востока" class="opn-map-img">
+          <div class="opn-pop-badge">
+            <div class="opn-pop-icon">👥</div>
+            <div class="opn-pop-num">7 866</div>
+            <div class="opn-pop-label">тыс. чел.</div>
+          </div>
+        </div>
+        <div class="opn-text-panel">
+          <div>
+            <div class="opn-city-title red"><span>🏘️</span> Малый город / ОНП</div>
+            <ul class="opn-city-list red">
+              <li>Отток населения (депопуляция)</li>
+              <li>Упадок экономики</li>
+              <li>Снижение качества жизни</li>
+            </ul>
+          </div>
+          <div class="opn-migration">
+            <div class="opn-migration-title">
+              <div class="opn-migration-arrows">⬅</div>
+              МИГРАЦИОННЫЙ ПОТОК
+              <div class="opn-migration-arrows">➡</div>
+            </div>
+            <p class="opn-migration-sub">Переток ресурсов и кадров в агломерации</p>
+          </div>
+          <div>
+            <div class="opn-city-title blue"><span>🏙️</span> Крупный город</div>
+            <ul class="opn-city-list blue">
+              <li>Угроза безопасности границам</li>
+              <li>Перегрузка инфраструктуры</li>
+              <li>Снижение доверия к власти</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════ БЛОК 3: ДОРОЖНАЯ КАРТА ════════════ -->
+    <div class="opn-card opn-roadmap">
+      <div class="opn-head">
+        <h2 class="opn-head-title">ДОРОЖНАЯ КАРТА ИССЛЕДОВАНИЯ</h2>
+        <span class="opn-head-badge">Методология и этапы</span>
+      </div>
+      <div class="opn-rm-timeline">
+        <div class="opn-rm-step">
+          <div class="opn-rm-node">1</div>
+          <div class="opn-rm-label">Сбор данных</div>
+        </div>
+        <div class="opn-rm-step">
+          <div class="opn-rm-node">2</div>
+          <div class="opn-rm-label">Анализ и SWOT</div>
+        </div>
+        <div class="opn-rm-step">
+          <div class="opn-rm-node">3</div>
+          <div class="opn-rm-label">Типология</div>
+        </div>
+        <div class="opn-rm-step">
+          <div class="opn-rm-node">4</div>
+          <div class="opn-rm-label">Сценарии</div>
+        </div>
+        <div class="opn-rm-step">
+          <div class="opn-rm-node">5</div>
+          <div class="opn-rm-label">Алгоритм</div>
+        </div>
+      </div>
+      <div class="opn-rm-details">
+        <div class="opn-rm-detail">
+          <div class="opn-rm-bar"></div>
+          <div class="opn-rm-hdr">
+            <div class="opn-rm-hdr-icon">📋</div>Этап 1: Сбор данных
+          </div>
+          <div class="opn-rm-body">
+            <ul>
+              <li><span class="opn-rm-dot"></span>Нормативно-правовая база</li>
+              <li><span class="opn-rm-dot"></span>Данные АИС «СВОДЫ» по 34 ОНП</li>
+              <li><span class="opn-rm-dot"></span>Реестры предприятий</li>
+              <li><span class="opn-rm-dot"></span>Транспортная доступность</li>
+              <li><span class="opn-rm-dot"></span>Генеральные планы МО</li>
+            </ul>
+          </div>
+          <div class="opn-rm-footer">4 недели</div>
+        </div>
+        <div class="opn-rm-detail">
+          <div class="opn-rm-bar"></div>
+          <div class="opn-rm-hdr">
+            <div class="opn-rm-hdr-icon">📊</div>Этап 2: Анализ и SWOT
+          </div>
+          <div class="opn-rm-body">
+            <ul>
+              <li><span class="opn-rm-dot"></span>Территориальный анализ</li>
+              <li><span class="opn-rm-dot"></span>Позиционный анализ</li>
+              <li><span class="opn-rm-dot"></span>Ретроспектива расселения</li>
+              <li><span class="opn-rm-dot"></span>Финансовый анализ</li>
+              <li><span class="opn-rm-dot"></span>SWOT-анализ всех 34 ОНП</li>
+            </ul>
+          </div>
+          <div class="opn-rm-footer">10 недель</div>
+        </div>
+        <div class="opn-rm-detail">
+          <div class="opn-rm-bar"></div>
+          <div class="opn-rm-hdr">
+            <div class="opn-rm-hdr-icon">🎯</div>Этап 3: Типология ОНП
+          </div>
+          <div class="opn-rm-body">
+            <ul>
+              <li><span class="opn-rm-dot"></span>Подходы к типологии</li>
+              <li><span class="opn-rm-dot"></span>Ядра агломераций</li>
+              <li><span class="opn-rm-dot"></span>Точки роста</li>
+              <li><span class="opn-rm-dot"></span>Стратегические НП</li>
+              <li><span class="opn-rm-dot"></span>Центы социальных услуг</li>
+            </ul>
+          </div>
+          <div class="opn-rm-footer">4 недели</div>
+        </div>
+        <div class="opn-rm-detail">
+          <div class="opn-rm-bar"></div>
+          <div class="opn-rm-hdr">
+            <div class="opn-rm-hdr-icon">🔄</div>Этап 4: Сценарии
+          </div>
+          <div class="opn-rm-body">
+            <ul>
+              <li><span class="opn-rm-dot"></span>Лучшие практики субъектов РФ</li>
+              <li><span class="opn-rm-dot"></span>Зарубежный опыт</li>
+              <li><span class="opn-rm-dot"></span>Интервью с ОИВ, Корпорацией</li>
+              <li><span class="opn-rm-dot"></span>Подходы к сценариям</li>
+            </ul>
+          </div>
+          <div class="opn-rm-footer">8 недель</div>
+        </div>
+        <div class="opn-rm-detail">
+          <div class="opn-rm-bar"></div>
+          <div class="opn-rm-hdr">
+            <div class="opn-rm-hdr-icon">✅</div>Этап 5: Алгоритм
+          </div>
+          <div class="opn-rm-body">
+            <ul>
+              <li><span class="opn-rm-dot"></span>Алгоритм программы ОНП</li>
+              <li><span class="opn-rm-dot"></span>Инструменты софинансирования</li>
+              <li><span class="opn-rm-dot"></span>Механизмы координации</li>
+              <li><span class="opn-rm-dot"></span>Внебюджетные средства</li>
+              <li><span class="opn-rm-dot"></span>Итоговые рекомендации</li>
+            </ul>
+          </div>
+          <div class="opn-rm-footer">18 недель</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════ БЛОК 4: БЕНЧМАРКИ ════════════ -->
+    <div class="opn-card">
+      <div class="opn-head">
+        <h2 class="opn-head-title">БЕНЧМАРКИ РАЗВИТИЯ ОНП</h2>
+        <span class="opn-head-badge">Российские и зарубежные практики</span>
+      </div>
+
+      <div class="opn-bench-grid">
+        <div class="opn-bench-col">
+          <div class="opn-bench-hdr">
+            <div class="opn-bench-icon">🔗</div>
+            <div>
+              <div class="opn-bench-title">Комплексный подход</div>
+              <div class="opn-bench-sub">Стратегия — Госпрограмма — Координация</div>
+            </div>
+          </div>
+          <div class="opn-bench-region">
+            <div class="opn-bench-region-name">Липецкая область</div>
+            <div class="opn-bench-region-desc">Сочетание стратегии, госпрограммы и координации для достижения показателя
+              «Улучшение качества жизни в ОНП».</div>
+          </div>
+          <div class="opn-bench-region">
+            <div class="opn-bench-region-name">Ростовская область</div>
+            <div class="opn-bench-region-desc">Совет по градостроительству, ставка на узловые пункты и транспортные
+              развязки.</div>
+          </div>
+          <div class="opn-bench-region">
+            <div class="opn-bench-region-name">Псковская область</div>
+            <div class="opn-bench-region-desc">Приоритизация ОНП в стратегии, координация через рабочую группу; акцент
+              на потребности сельхозпроизводителей.</div>
+          </div>
+        </div>
+
+        <div class="opn-bench-col">
+          <div class="opn-bench-hdr">
+            <div class="opn-bench-icon">⚖️</div>
+            <div>
+              <div class="opn-bench-title">Общий подход</div>
+              <div class="opn-bench-sub">Выборочное сочетание компонентов</div>
+            </div>
+          </div>
+          <div class="opn-bench-region">
+            <div class="opn-bench-region-name">Ярославская область</div>
+            <div class="opn-bench-region-desc">Госпрограмма содержит мероприятия по ОНП, стратегия приоритетов не
+              задаёт.</div>
+          </div>
+          <div class="opn-bench-region">
+            <div class="opn-bench-region-name">Хабаровский край</div>
+            <div class="opn-bench-region-desc">Приоритетное развитие ОНП в стратегии, утверждён порядок работы за
+              «Качество среды».</div>
+          </div>
+          <div class="opn-bench-region">
+            <div class="opn-bench-region-name">Республика Саха (Якутия)</div>
+            <div class="opn-bench-region-desc">Приоритет создания сети ОНП в стратегии, госпрограммы без приоритезации.
+            </div>
+          </div>
+          <div class="opn-bench-region">
+            <div class="opn-bench-region-name">Нижегородская обл., Бурятия, Смоленская обл.</div>
+            <div class="opn-bench-region-desc">Координация через региональный штаб, фокус на ИС «СВОДЫ».</div>
+          </div>
+        </div>
+
+        <div class="opn-bench-col">
+          <div class="opn-bench-hdr">
+            <div class="opn-bench-icon">⚙️</div>
+            <div>
+              <div class="opn-bench-title">Операционный подход</div>
+              <div class="opn-bench-sub">Наличие одного из ключевых компонентов</div>
+            </div>
+          </div>
+          <div class="opn-bench-region">
+            <div class="opn-bench-region-desc">Утверждён порядок взаимодействия РОИВ и ОМСУ</div>
+          </div>
+          <div class="opn-bench-region">
+            <div class="opn-bench-region-desc">Функции разработки программ переданы региональному штабу</div>
+          </div>
+          <div class="opn-bench-region">
+            <div class="opn-bench-region-desc">На уровне муниципалитетов назначены ответственные за компоненты
+              показателя</div>
+          </div>
+          <div class="opn-bench-region">
+            <div class="opn-bench-region-desc">Обязанность внесения данных в ИС «СВОДЫ» при отсутствии координирующего
+              РОИВ</div>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="opn-intl-label">🌍 Зарубежные практики</h3>
+      <div class="opn-intl-grid">
+        <div class="opn-intl-card">
+          <div class="opn-intl-flag">🇺🇸</div>
+          <div class="opn-intl-name">США</div>
+          <p class="opn-intl-text">Модель «Город-поле»: сеть малых городов вокруг центра, выравнивание инфраструктуры,
+            принцип «15-минутного города».</p>
+        </div>
+        <div class="opn-intl-card">
+          <div class="opn-intl-flag">🇬🇧</div>
+          <div class="opn-intl-name">Великобритания</div>
+          <p class="opn-intl-text">Многоуровневый подход: налоговые льготы, зоны предпринимательства, фонд
+            восстановления городов.</p>
+        </div>
+        <div class="opn-intl-card">
+          <div class="opn-intl-flag">🇯🇵</div>
+          <div class="opn-intl-name">Япония</div>
+          <p class="opn-intl-text">Малые города как центры новой промышленности. Налоговые/кредитные льготы и
+            долгосрочное планирование.</p>
+        </div>
+        <div class="opn-intl-card">
+          <div class="opn-intl-flag">🇨🇦</div>
+          <div class="opn-intl-name">Канада</div>
+          <p class="opn-intl-text">Комплексное проектирование малых городов: диверсификация экономики и
+            многофункциональные центры.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════ БЛОК 5: ПРОБЛЕМЫ ════════════ -->
+    <div class="opn-card">
+      <div class="opn-head">
+        <h2 class="opn-head-title">ВЫЯВЛЕННЫЕ ПРОБЛЕМЫ ПРОЦЕССА</h2>
+        <span class="opn-head-badge">Точки роста</span>
+      </div>
+      <div class="opn-problems-grid">
+        <div class="opn-problem"><span class="opn-problem-icon">🔗</span>Отсутствие единого звена планирования</div>
+        <div class="opn-problem"><span class="opn-problem-icon">📄</span>Индивидуальные планы без приоритета</div>
+        <div class="opn-problem"><span class="opn-problem-icon">✋</span>Ручное управление при реализации</div>
+        <div class="opn-problem"><span class="opn-problem-icon">🧭</span>Отсутствие единого понимания вектора</div>
+        <div class="opn-problem"><span class="opn-problem-icon">🚪</span>Множество входов в процесс</div>
+        <div class="opn-problem"><span class="opn-problem-icon">🤝</span>Отсутствие взаимодействия между ОНП</div>
+        <div class="opn-problem"><span class="opn-problem-icon">📊</span>Стратегии не коррелируются с программой
+          субъекта</div>
+      </div>
+      <div class="opn-foot">• требуют решения в рамках КГП</div>
+    </div>
+
+    <!-- ════════════ БЛОК 6: ПЕРЕХОД МОДЕЛЕЙ ════════════ -->
+    <div class="opn-card">
+      <div class="opn-head">
+        <h2 class="opn-head-title">ПЕРЕХОД ОТ МОДЕЛИ К МОДЕЛИ</h2>
+        <span class="opn-head-badge">Эволюция управления</span>
+      </div>
+      <div class="opn-models-grid">
+        <div class="opn-model-card">
+          <div class="opn-model-hdr">
+            <div class="opn-model-title">Текущая модель<span class="opn-model-sub">Статус ОНП формально придан</span>
+            </div>
+          </div>
+          <div class="opn-levels">
+            <div class="opn-level">
+              <div class="opn-level-title">🏛️ Федеральный уровень</div>
+              <ul class="opn-level-list">
+                <li>Минстрой, Минэк РФ</li>
+                <li>Стратегия пространственного развития до 2030 г.</li>
+                <li>ФП «Развитие инфраструктуры»</li>
+              </ul>
+            </div>
+            <div class="opn-level">
+              <div class="opn-level-title">📍 Уровень субъекта РФ</div>
+              <ul class="opn-level-list">
+                <li>Стратегия СЭР Забайкальского края</li>
+                <li>РП «Развитие инфраструктуры ЗК»</li>
+                <li>Планы по развитию ОНП</li>
+                <li>Госпрограммы ЗК</li>
+              </ul>
+            </div>
+            <div class="opn-level">
+              <div class="opn-level-title">🏘️ Муниципальный уровень</div>
+              <ul class="opn-level-list">
+                <li>ОНП (статус есть)</li>
+                <li>Мероприятия в РП включаются аналитически</li>
+                <li>Муниципальные программы</li>
+                <li class="warn">⚠️ Нет инструментов и компетенций</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="opn-transition">
+          <div class="opn-arrow">➜</div>
+          <div class="opn-trans-box">
+            <strong>ПЕРЕХОД</strong>
+            <span>Создание специализированной инфраструктуры управления</span>
+          </div>
+        </div>
+
+        <div class="opn-model-card">
+          <div class="opn-model-hdr">
+            <div class="opn-model-title">Изменения в модели<span class="opn-model-sub">Полноценная реализация
+                статуса</span></div>
+          </div>
+          <div class="opn-changes">
+            <div class="opn-change">
+              <div class="opn-change-hdr">
+                <div class="opn-change-icon">🏢</div>
+                <div class="opn-change-title">Центр развития ОНП</div>
+              </div>
+              <div class="opn-change-desc">Создание специализированной структуры в Правительстве ЗК для координации
+              </div>
+            </div>
+            <div class="opn-change">
+              <div class="opn-change-hdr">
+                <div class="opn-change-icon">📋</div>
+                <div class="opn-change-title">Комплексная госпрограмма</div>
+              </div>
+              <div class="opn-change-desc">Интеграция всех мероприятий в единую программу</div>
+            </div>
+            <div class="opn-change">
+              <div class="opn-change-hdr">
+                <div class="opn-change-icon">🎓</div>
+                <div class="opn-change-title">Алгоритм и Компетенции</div>
+              </div>
+              <div class="opn-change-desc">Внедрение четкого алгоритма действий, стажировки и обучение кадров</div>
+            </div>
+            <div class="opn-change">
+              <div class="opn-change-hdr">
+                <div class="opn-change-icon">🚀</div>
+                <div class="opn-change-title">Программы развития ОНП</div>
+              </div>
+              <div class="opn-change-desc">Переход к полноценным программам развития с механизмами финансирования</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="opn-banner">
+        <div class="opn-banner-icon">💡</div>
+        <div class="opn-banner-text">
+          <strong>Результат перехода:</strong> Система управления переходит от формального статуса к реальному механизму
+          развития территорий через Центр, Программу и Компетенции
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════ БЛОК 7: АССИСТЕНТ 2030 ════════════ -->
+    <div class="opn-card">
+      <div class="opn-head">
+        <h2 class="opn-head-title">ЛОГИКА РАБОТЫ АССИСТЕНТА 2030</h2>
+        <span class="opn-head-badge">Алгоритм разработки</span>
+      </div>
+      <div class="opn-asst-grid">
+        <div class="opn-asst-phase">
+          <div class="opn-asst-num">1</div>
+          <div class="opn-asst-wrap">
+            <div class="opn-asst-head">
+              <div class="opn-asst-title">Анализ территории</div>
+              <div class="opn-asst-sub">Сбор данных</div>
+            </div>
+            <ul class="opn-asst-list">
+              <li>Статданные о соц-эк</li>
+              <li>Предприятия и отрасли</li>
+              <li>Демография, занятость</li>
+              <li>Транспортные маршруты</li>
+              <li>Товарные потоки</li>
+              <li>Кооперация с соседями</li>
+            </ul>
+            <div class="opn-asst-timeline"><span>2–3 мес.</span></div>
+          </div>
+        </div>
+        <div class="opn-asst-phase">
+          <div class="opn-asst-num">2</div>
+          <div class="opn-asst-wrap">
+            <div class="opn-asst-head">
+              <div class="opn-asst-title">Стратегическая ставка</div>
+              <div class="opn-asst-sub">Выбор приоритетов</div>
+            </div>
+            <ul class="opn-asst-list">
+              <li>Отрасли-основы</li>
+              <li>Диверсификация экономики</li>
+              <li>Инвестпроекты</li>
+              <li>Главная функция ОНП</li>
+              <li>1–2 направления</li>
+              <li>Целевые показатели</li>
+            </ul>
+          </div>
+        </div>
+        <div class="opn-asst-phase">
+          <div class="opn-asst-num">3</div>
+          <div class="opn-asst-wrap">
+            <div class="opn-asst-head">
+              <div class="opn-asst-title">Планирование</div>
+              <div class="opn-asst-sub">Проекты и финансирование</div>
+            </div>
+            <ul class="opn-asst-list">
+              <li>Мероприятия и проекты</li>
+              <li>Сроки и исполнители</li>
+              <li>Мониторинг КПЭ</li>
+              <li>Верификация в программах</li>
+              <li>Ключевые проекты</li>
+              <li>Бюджетный навигатор</li>
+            </ul>
+            <div class="opn-asst-timeline"><span>6 мес.</span></div>
+          </div>
+        </div>
+        <div class="opn-asst-phase">
+          <div class="opn-asst-num">4</div>
+          <div class="opn-asst-wrap">
+            <div class="opn-asst-head">
+              <div class="opn-asst-title">Стратегия ОНП</div>
+              <div class="opn-asst-sub">Итоговый документ</div>
+            </div>
+            <ul class="opn-asst-list">
+              <li>На основе плана</li>
+              <li>Экономика + инфраструктура</li>
+              <li>Источники финансирования</li>
+              <li>Публичные слушания</li>
+              <li>Утверждение</li>
+              <li>Интеграция в программы</li>
+            </ul>
+            <div class="opn-asst-timeline"><span>2–3 мес.</span></div>
+          </div>
+        </div>
+        <div class="opn-asst-phase">
+          <div class="opn-asst-num">5</div>
+          <div class="opn-asst-wrap">
+            <div class="opn-asst-head">
+              <div class="opn-asst-title">Реализация и Контроль</div>
+              <div class="opn-asst-sub">2027–2030</div>
+            </div>
+            <ul class="opn-asst-list">
+              <li>Запуск проектов и отслеживание</li>
+              <li>2027: Базовые KPI</li>
+              <li>2028: 50% проектов, +10% jobs</li>
+              <li>2029: 80% проектов, +20% среды</li>
+              <li>2030: Итоговый +30% качества</li>
+              <li>Корректировка плана</li>
+              <li>Разработка стратегии 2031–2035</li>
+              <li>Тиражирование практик</li>
+            </ul>
+          </div>
+        </div>
+        <div class="opn-asst-decision">
+          <div class="opn-asst-dec-icon">💡</div>
+          <div class="opn-asst-dec-text"><strong>Ключевое решение:</strong> При невыполнении KPI система автоматически
+            инициирует возврат к Этапу 2 для корректировки.</div>
+        </div>
+        <div class="opn-asst-final">
+          <div class="opn-asst-fin-icon">✅</div>
+          <div class="opn-asst-fin-text"><strong>Итоговый результат:</strong> Утверждённая стратегия развития ОНП с
+            целевыми показателями и механизмами мониторинга до 2030 года.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════ БЛОК 8: СЦЕНАРИИ ════════════ -->
+    <div class="opn-card opn-scenarios">
+      <div class="opn-head">
+        <h2 class="opn-head-title">ПЛАНИРОВАНИЕ РАЗВИТИЯ ОНП</h2>
+        <span class="opn-head-badge">Комплексная госпрограмма</span>
+      </div>
+      <div class="opn-sc-grid">
+        <!-- Существующий процесс -->
+        <div class="opn-sc-col">
+          <div class="opn-sc-hdr opn-sc-r"><span
+              style="width:6px;height:6px;border-radius:50%;background:var(--c-700);display:inline-block"></span>Существующий
+            процесс</div>
+          <div class="opn-sc-flow">
+            <span class="opn-sc-lvl">Федеральный уровень</span>
+            <div class="opn-sc-node h">Стратегия пространственного развития РФ</div>
+            <div class="opn-sc-arr">▼</div>
+            <div class="opn-sc-row">
+              <div class="opn-sc-node b">Госпрограмма РФ №1</div>
+              <div class="opn-sc-node b">Госпрограмма РФ №2</div>
+              <div class="opn-sc-node b">Госпрограмма РФ №3</div>
+            </div>
+            <div class="opn-sc-arr">▼</div>
+            <span class="opn-sc-lvl">Субъект РФ</span>
+            <div class="opn-sc-node g">Стратегия развития Забайкальского края</div>
+            <div class="opn-sc-arr">▼</div>
+            <div class="opn-sc-row">
+              <div class="opn-sc-node b">Госпрограмма ЗК №1</div>
+              <div class="opn-sc-node b">Госпрограмма ЗК №2</div>
+              <div class="opn-sc-node b">Госпрограмма ЗК №3</div>
+            </div>
+            <div class="opn-sc-arr">▼</div>
+            <span class="opn-sc-lvl">Муниципальный уровень</span>
+            <div class="opn-sc-node y">Стратегия развития МО</div>
+            <div class="opn-sc-arr">▼</div>
+            <div class="opn-sc-row">
+              <div class="opn-sc-node b">Мун.программа 1</div>
+              <div class="opn-sc-node b">Мун.программа 2</div>
+              <div class="opn-sc-node b">Мун.программа 3</div>
+            </div>
+            <div class="opn-sc-arr">▼</div>
+            <div class="opn-sc-node hl">🏛️ Муниципальное образование</div>
+          </div>
+        </div>
+
+        <!-- Базовый сценарий -->
+        <div class="opn-sc-col">
+          <div class="opn-sc-hdr opn-sc-a"><span
+              style="width:6px;height:6px;border-radius:50%;background:var(--c-600);display:inline-block"></span>Базовый
+            сценарий</div>
+          <div class="opn-sc-flow">
+            <span class="opn-sc-lvl">Федеральный уровень</span>
+            <div class="opn-sc-node h">Стратегия пространственного развития РФ</div>
+            <div class="opn-sc-arr">▼</div>
+            <div class="opn-sc-row">
+              <div class="opn-sc-node b">Госпрограмма РФ №1</div>
+              <div class="opn-sc-node b">Госпрограмма РФ №2</div>
+              <div class="opn-sc-node b">Госпрограмма РФ №3</div>
+            </div>
+            <div class="opn-sc-arr">▼</div>
+            <span class="opn-sc-lvl">Субъект РФ</span>
+            <div class="opn-sc-node g">🎯 Стратегия развития ОНП Забайкальского края</div>
+            <div class="opn-sc-arr">▼</div>
+            <div class="opn-sc-node y">🏷️ Маркировка «Реализуется в ОНП»</div>
+            <div class="opn-sc-arr">▼</div>
+            <div class="opn-sc-node b">🖥️ Модуль в ГИИС «Электронный бюджет»</div>
+            <div class="opn-sc-arr">▼</div>
+            <span class="opn-sc-lvl">Муниципальный уровень</span>
+            <div class="opn-sc-node p">📐 Планирование в разрезе конкретных ОНП</div>
+            <div class="opn-sc-arr">▼</div>
+            <div class="opn-sc-row">
+              <div class="opn-sc-node b">Мун.программа 1</div>
+              <div class="opn-sc-node b">Мун.программа 2</div>
+              <div class="opn-sc-node b">Мун.программа 3</div>
+            </div>
+            <div class="opn-sc-arr">▼</div>
+            <div class="opn-sc-node hl">🏛️ Муниципальное образование</div>
+          </div>
+        </div>
+
+        <!-- Перспективный сценарий -->
+        <div class="opn-sc-col">
+          <div class="opn-sc-hdr opn-sc-e"><span
+              style="width:6px;height:6px;border-radius:50%;background:var(--c-500);display:inline-block"></span>Перспективный
+            сценарий</div>
+          <div class="opn-sc-flow">
+            <span class="opn-sc-lvl">Федеральный уровень</span>
+            <div class="opn-sc-node h">Стратегия пространственного развития РФ</div>
+            <div class="opn-sc-arr">▼</div>
+            <div class="opn-sc-row">
+              <div class="opn-sc-node b">Госпрограмма РФ №1</div>
+              <div class="opn-sc-node b">Госпрограмма РФ №2</div>
+              <div class="opn-sc-node b">Госпрограмма РФ №3</div>
+            </div>
+            <div class="opn-sc-arr">▼</div>
+            <span class="opn-sc-lvl">Субъект РФ</span>
+            <div class="opn-sc-node g">🎯 Стратегия развития ОНП Забайкальского края</div>
+            <div class="opn-sc-arr">▼</div>
+            <div class="opn-sc-node r">🔄 Перераспределение финансирования</div>
+            <div class="opn-sc-arr">▼</div>
+            <div class="opn-sc-node y">✅ Интеграция мероприятий «Реализуется в ОНП»</div>
+            <div class="opn-sc-arr">▼</div>
+            <div class="opn-sc-node b">🖥️ Модуль в ГИИС «Электронный бюджет»</div>
+            <div class="opn-sc-arr">▼</div>
+            <span class="opn-sc-lvl">Муниципальный уровень</span>
+            <div class="opn-sc-node p">🚪 Единый вход в процесс для МО</div>
+            <div class="opn-sc-arr">▼</div>
+            <div class="opn-sc-row">
+              <div class="opn-sc-node b">Мун.программа 1</div>
+              <div class="opn-sc-node b">Мун.программа 2</div>
+              <div class="opn-sc-node b">Мун.программа 3</div>
+            </div>
+            <div class="opn-sc-arr">▼</div>
+            <div class="opn-sc-node hl">🏛️ Муниципальное образование</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════ БЛОК 9: ЦЕНТР УПРАВЛЕНИЯ ════════════ -->
+    <div class="opn-card">
+      <div class="opn-head">
+        <h2 class="opn-head-title">«ЦЕНТР УПРАВЛЕНИЯ» РАЗВИТИЕМ РЕГИОНА</h2>
+        <span class="opn-head-badge">Забайкальский край</span>
+      </div>
+      <div class="opn-center-grid">
+        <div class="opn-fn-grid">
+          <div class="opn-fn-card">
+            <div class="opn-fn-hdr">
+              <div class="opn-fn-ic">📊</div>
+              <div class="opn-fn-title">Аналитическая</div>
+            </div>
+            <ul class="opn-fn-list">
+              <li>Маркетинг территорий, анализ потенциала</li>
+              <li>Синхронизация программ</li>
+              <li>Прогнозирование и сценарии</li>
+              <li>Рейтинги и аналитические доклады</li>
+            </ul>
+          </div>
+          <div class="opn-fn-card">
+            <div class="opn-fn-hdr">
+              <div class="opn-fn-ic">🔄</div>
+              <div class="opn-fn-title">Координационная</div>
+            </div>
+            <ul class="opn-fn-list">
+              <li>Управление программами ОНП</li>
+              <li>Мониторинг показателей</li>
+              <li>Контроль мастер-планов</li>
+              <li>Выявление рисков</li>
+            </ul>
+          </div>
+          <div class="opn-fn-card">
+            <div class="opn-fn-hdr">
+              <div class="opn-fn-ic">💡</div>
+              <div class="opn-fn-title">Консультационная</div>
+            </div>
+            <ul class="opn-fn-list">
+              <li>Экспертное сопровождение ОМСУ</li>
+              <li>Помощь в стратегировании</li>
+              <li>Согласование документов</li>
+              <li>Информационная работа</li>
+            </ul>
+          </div>
+          <div class="opn-fn-card">
+            <div class="opn-fn-hdr">
+              <div class="opn-fn-ic">🎓</div>
+              <div class="opn-fn-title">Образовательная</div>
+            </div>
+            <ul class="opn-fn-list">
+              <li>Повышение квалификации глав</li>
+              <li>Стратегические сессии</li>
+              <li>Обучение инструментам</li>
+              <li>Библиотека практик</li>
+            </ul>
+          </div>
+          <div class="opn-fn-card opn-dashboard-card">
+            <div class="opn-fn-hdr">
+              <div class="opn-fn-ic">📊</div>
+              <div class="opn-fn-title">Цифровые дашборды эффективности</div>
+            </div>
+            <div>
+              <p class="opn-proposal-text"><strong>Инструмент мотивации и общественного контроля:</strong></p>
+              <ul class="opn-proposal-list">
+                <li>Публичный рейтинг глав МО по реализации программ ОНП</li>
+                <li>Интерактивные карты достижения целевых показателей</li>
+                <li>Автоматический мониторинг выполнения мероприятий</li>
+                <li>Прозрачность использования бюджетных средств</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="opn-staff">
+          <div class="opn-staff-title">Штатное расписание</div>
+          <div class="opn-staff-row">
+            <span class="opn-staff-role">Начальник управления</span>
+            <span class="opn-staff-count">1</span>
+          </div>
+          <div class="opn-staff-row">
+            <span class="opn-staff-role">Зам. начальника</span>
+            <span class="opn-staff-count">1</span>
+          </div>
+          <div class="opn-staff-row">
+            <span class="opn-staff-role">Аналитик</span>
+            <span class="opn-staff-count">1–2</span>
+          </div>
+          <div class="opn-staff-row">
+            <span class="opn-staff-role">Консультант</span>
+            <span class="opn-staff-count">2–4</span>
+          </div>
+          <div class="opn-staff-sub">
+            <span>⬆</span> Подчинение: 1-й зам. Председателя Правительства Забайкальского края
+          </div>
+        </div>
+      </div>
+      <div class="opn-foot">• создание Управления закреплено постановлением Правительства Забайкальского края</div>
+    </div>
+
+    <!-- ════════════ БЛОК 10: АПРОБАЦИЯ ════════════ -->
+    <div class="opn-card">
+      <div class="opn-head">
+        <h2 class="opn-head-title">АПРОБАЦИЯ ПРОДУКТОВ В ОНП</h2>
+        <span class="opn-head-badge">Практическая проверка</span>
+      </div>
+      <div class="opn-appr-grid">
+        <div class="opn-appr-card">
+          <div class="opn-appr-hdr">
+            <div class="opn-appr-name">пгт. Агинское</div>
+            <span class="opn-appr-tag">Функционально-сетевой подход</span>
+          </div>
+          <div class="opn-appr-block">
+            <span class="opn-appr-label">Участники:</span>
+            <div class="opn-appr-participants">
+              <span>Глава Дашин А.С.</span>
+              <span>Зам. Главы Жамсаранова Б.А.</span>
+            </div>
+          </div>
+          <div class="opn-appr-block">
+            <span class="opn-appr-label">Предложено:</span>
+            <ul class="opn-appr-bullets">
+              <li>Стратегическая ставка и модель</li>
+              <li>5 перспективных направлений</li>
+              <li>Комплекс мероприятий</li>
+            </ul>
+          </div>
+          <div class="opn-appr-result">
+            <span class="opn-appr-label">Результат:</span>
+            <p>Предложения приняты. Алгоритм признан применимым.</p>
+          </div>
+        </div>
+
+        <div class="opn-appr-card">
+          <div class="opn-appr-hdr">
+            <div class="opn-appr-name">с. Газимурский Завод</div>
+            <span class="opn-appr-tag">Функционально-сетевой подход</span>
+          </div>
+          <div class="opn-appr-block">
+            <span class="opn-appr-label">Участники:</span>
+            <div class="opn-appr-participants">
+              <span>Зам. Главы Макушева Н.Б.</span>
+            </div>
+          </div>
+          <div class="opn-appr-block">
+            <span class="opn-appr-label">Предложено:</span>
+            <ul class="opn-appr-bullets">
+              <li>Модель развития территории</li>
+              <li>Направления: сервис, кадры, инфраструктура</li>
+              <li>Пошаговый алгоритм</li>
+            </ul>
+          </div>
+          <div class="opn-appr-result">
+            <span class="opn-appr-label">Результат:</span>
+            <p>Алгоритм признан реализуемым. Применяется частично.</p>
+          </div>
+        </div>
+
+        <div class="opn-appr-card">
+          <div class="opn-appr-hdr">
+            <div class="opn-appr-name">с. Тупик</div>
+            <span class="opn-appr-tag">Инфраструктурное развитие</span>
+          </div>
+          <div class="opn-appr-block">
+            <span class="opn-appr-label">Участники:</span>
+            <div class="opn-appr-participants">
+              <span>Глава Селезнев О.И.</span>
+              <span>Зам. Главы Помелова О.В.</span>
+            </div>
+          </div>
+          <div class="opn-appr-block">
+            <span class="opn-appr-label">Предложено:</span>
+            <ul class="opn-appr-bullets">
+              <li>Стратегическая ставка</li>
+              <li>Комплекс мероприятий</li>
+            </ul>
+          </div>
+          <div class="opn-appr-result">
+            <span class="opn-appr-label">Результат:</span>
+            <p>Предложения приняты. Алгоритм признан применимым.</p>
+          </div>
+        </div>
+      </div>
+      <div class="opn-foot">• апробация подтвердила практическую ценность методологии</div>
+    </div>
+
+  </div>
+
+</body>
+
+</html>
