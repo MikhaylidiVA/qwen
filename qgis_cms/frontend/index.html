@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QGIS CMS Pro - Web GIS Platform</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #3b82f6; --primary-dark: #2563eb; --success: #10b981; --danger: #ef4444; --warning: #f59e0b;
+            --bg: #f8fafc; --surface: #ffffff; --text: #1e293b; --text-light: #64748b; --border: #e2e8f0;
+            --shadow: 0 1px 3px rgba(0,0,0,0.1); --radius: 8px;
+        }
+        [data-theme="dark"] {
+            --bg: #0f172a; --surface: #1e293b; --text: #f1f5f9; --text-light: #94a3b8; --border: #334155;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; }
+        
+        /* Layout */
+        .app-container { display: flex; height: 100vh; }
+        .sidebar { width: 320px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; transition: transform 0.3s; z-index: 1000; }
+        .sidebar.collapsed { transform: translateX(-320px); position: absolute; height: 100%; }
+        .main-content { flex: 1; position: relative; display: flex; flex-direction: column; }
+        
+        /* Header */
+        .header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 1rem; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow); }
+        .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; }
+        .user-menu { display: flex; align-items: center; gap: 1rem; }
+        .btn { padding: 0.5rem 1rem; border: none; border-radius: var(--radius); cursor: pointer; font-weight: 500; transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.5rem; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-sm { padding: 0.25rem 0.5rem; font-size: 0.875rem; }
+        
+        /* Sidebar Content */
+        .sidebar-header { padding: 1rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .nav-tabs { display: flex; border-bottom: 1px solid var(--border); }
+        .nav-tab { flex: 1; padding: 0.75rem; text-align: center; cursor: pointer; border-bottom: 2px solid transparent; color: var(--text-light); }
+        .nav-tab.active { border-bottom-color: var(--primary); color: var(--primary); font-weight: 600; }
+        .sidebar-content { flex: 1; overflow-y: auto; padding: 1rem; }
+        
+        /* Panels */
+        .panel { display: none; }
+        .panel.active { display: block; }
+        .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; margin-bottom: 1rem; box-shadow: var(--shadow); }
+        .card-title { font-weight: 600; margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center; }
+        
+        /* Forms */
+        .form-group { margin-bottom: 1rem; }
+        .form-label { display: block; margin-bottom: 0.25rem; font-size: 0.875rem; color: var(--text-light); }
+        .form-input, .form-select, .form-textarea { width: 100%; padding: 0.5rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); color: var(--text); font-size: 0.875rem; }
+        .form-input:focus { outline: none; border-color: var(--primary); ring: 2px solid var(--primary); }
+        
+        /* Map */
+        #map { flex: 1; width: 100%; }
+        .map-controls { position: absolute; top: 1rem; right: 1rem; z-index: 1000; display: flex; flex-direction: column; gap: 0.5rem; }
+        .map-control-btn { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.5rem; cursor: pointer; box-shadow: var(--shadow); }
+        
+        /* Tables */
+        .table-container { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+        th, td { padding: 0.75rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { font-weight: 600; color: var(--text-light); background: var(--bg); }
+        tr:hover { background: var(--bg); }
+        
+        /* Stats Grid */
+        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1rem; }
+        .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; text-align: center; }
+        .stat-value { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
+        .stat-label { font-size: 0.75rem; color: var(--text-light); margin-top: 0.25rem; }
+        
+        /* Toast Notifications */
+        .toast-container { position: fixed; top: 1rem; right: 1rem; z-index: 9999; display: flex; flex-direction: column; gap: 0.5rem; }
+        .toast { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 0.5rem; min-width: 300px; animation: slideIn 0.3s; }
+        .toast.success { border-left: 4px solid var(--success); }
+        .toast.error { border-left: 4px solid var(--danger); }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        
+        /* Modal */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 2000; display: none; justify-content: center; align-items: center; }
+        .modal-overlay.active { display: flex; }
+        .modal { background: var(--surface); border-radius: var(--radius); padding: 1.5rem; width: 90%; max-width: 500px; max-height: 90vh; overflow-y: auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .modal-title { font-size: 1.25rem; font-weight: 600; }
+        .close-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-light); }
+        
+        /* Auth Screen */
+        .auth-container { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--bg); z-index: 3000; display: flex; justify-content: center; align-items: center; }
+        .auth-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; width: 100%; max-width: 400px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .auth-title { text-align: center; margin-bottom: 1.5rem; color: var(--primary); }
+        
+        /* Layer List */
+        .layer-item { padding: 0.75rem; border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 0.5rem; cursor: pointer; transition: all 0.2s; }
+        .layer-item:hover { background: var(--bg); border-color: var(--primary); }
+        .layer-item.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .layer-meta { font-size: 0.75rem; color: var(--text-light); margin-top: 0.25rem; }
+        .layer-item.active .layer-meta { color: rgba(255,255,255,0.8); }
+        
+        /* Badge */
+        .badge { padding: 0.25rem 0.5rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
+        .badge-admin { background: #fee2e2; color: #dc2626; }
+        .badge-editor { background: #dbeafe; color: #2563eb; }
+        .badge-viewer { background: #d1fae5; color: #059669; }
+        
+        /* Toggle Switch */
+        .toggle { position: relative; width: 44px; height: 24px; background: var(--border); border-radius: 12px; cursor: pointer; transition: 0.3s; }
+        .toggle.active { background: var(--primary); }
+        .toggle-knob { position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; background: white; border-radius: 50%; transition: 0.3s; }
+        .toggle.active .toggle-knob { left: 22px; }
+        
+        /* Loading */
+        .loading { display: flex; justify-content: center; align-items: center; padding: 2rem; }
+        .spinner { width: 24px; height: 24px; border: 3px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar { position: absolute; transform: translateX(-320px); }
+            .sidebar.mobile-open { transform: translateX(0); }
+            .stats-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Auth Screen -->
+    <div id="authScreen" class="auth-container">
+        <div class="auth-box">
+            <h1 class="auth-title">🗺️ QGIS CMS Pro</h1>
+            <div id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <input type="text" id="loginUsername" class="form-input" placeholder="Enter username">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" id="loginPassword" class="form-input" placeholder="Enter password">
+                </div>
+                <button class="btn btn-primary" style="width: 100%" onclick="login()">Login</button>
+                <p style="text-align: center; margin-top: 1rem; font-size: 0.875rem;">
+                    No account? <a href="#" onclick="showRegister()" style="color: var(--primary)">Register</a>
+                </p>
+            </div>
+            <div id="registerForm" style="display: none;">
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <input type="text" id="regUsername" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" id="regEmail" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" id="regPassword" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Role</label>
+                    <select id="regRole" class="form-select">
+                        <option value="viewer">Viewer</option>
+                        <option value="editor">Editor</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" style="width: 100%" onclick="register()">Register</button>
+                <p style="text-align: center; margin-top: 1rem; font-size: 0.875rem;">
+                    Have account? <a href="#" onclick="showLogin()" style="color: var(--primary)">Login</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="appContainer" class="app-container" style="display: none;">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">🗺️ QGIS CMS</div>
+                <button class="btn btn-sm btn-outline" onclick="toggleSidebar()">✕</button>
+            </div>
+            <div class="nav-tabs">
+                <div class="nav-tab active" onclick="switchTab('layers')">Layers</div>
+                <div class="nav-tab" onclick="switchTab('dashboard')">Dashboard</div>
+                <div class="nav-tab" onclick="switchTab('settings')">Settings</div>
+            </div>
+            <div class="sidebar-content">
+                <!-- Layers Panel -->
+                <div id="layersPanel" class="panel active">
+                    <button class="btn btn-primary btn-sm" style="width: 100%; margin-bottom: 1rem;" onclick="openModal('layerModal')">+ New Layer</button>
+                    <div id="layerList"><div class="loading"><div class="spinner"></div></div></div>
+                </div>
+                <!-- Dashboard Panel -->
+                <div id="dashboardPanel" class="panel">
+                    <div class="stats-grid">
+                        <div class="stat-card"><div class="stat-value" id="statUsers">-</div><div class="stat-label">Users</div></div>
+                        <div class="stat-card"><div class="stat-value" id="statLayers">-</div><div class="stat-label">Layers</div></div>
+                        <div class="stat-card"><div class="stat-value" id="statFeatures">-</div><div class="stat-label">Features</div></div>
+                        <div class="stat-card"><div class="stat-value" id="statActivity">-</div><div class="stat-label">7-day Activity</div></div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Recent Activity</div>
+                        <div class="table-container"><table id="auditTable"><thead><tr><th>User</th><th>Action</th><th>Time</th></tr></thead><tbody></tbody></table></div>
+                    </div>
+                </div>
+                <!-- Settings Panel -->
+                <div id="settingsPanel" class="panel">
+                    <div class="card">
+                        <div class="card-title">Profile</div>
+                        <div id="userInfo"></div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Preferences</div>
+                        <div class="form-group">
+                            <label class="form-label">Theme</label>
+                            <select id="themeSelect" class="form-select" onchange="setTheme(this.value)">
+                                <option value="light">Light</option>
+                                <option value="dark">Dark</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Default Latitude</label>
+                            <input type="number" id="defaultLat" class="form-input" step="0.01" value="55.75">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Default Longitude</label>
+                            <input type="number" id="defaultLon" class="form-input" step="0.01" value="37.61">
+                        </div>
+                        <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
+                    </div>
+                    <button class="btn btn-danger" style="width: 100%" onclick="logout()">Logout</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <button class="btn btn-outline" onclick="toggleSidebar()">☰</button>
+                    <div class="logo" style="font-size: 1.25rem;">QGIS CMS Pro</div>
+                </div>
+                <div class="user-menu">
+                    <span id="userDisplay"></span>
+                    <span id="roleBadge" class="badge"></span>
+                </div>
+            </header>
+            
+            <div id="map"></div>
+            
+            <div class="map-controls">
+                <button class="map-control-btn" onclick="addPointMode()" title="Add Point">📍</button>
+                <button class="map-control-btn" onclick="exportCurrentLayer()" title="Export CSV">📥</button>
+                <button class="map-control-btn" onclick="openModal('importModal')" title="Import GeoJSON">📤</button>
+                <button class="map-control-btn" onclick="runBufferAnalysis()" title="Buffer Analysis">⭕</button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="layerModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">Create Layer</div>
+                <button class="close-btn" onclick="closeModal('layerModal')">&times;</button>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Name</label>
+                <input type="text" id="layerName" class="form-input">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Description</label>
+                <textarea id="layerDesc" class="form-textarea" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Geometry Type</label>
+                <select id="layerGeomType" class="form-select">
+                    <option value="GEOMETRY">Any</option>
+                    <option value="POINT">Point</option>
+                    <option value="LINESTRING">Line</option>
+                    <option value="POLYGON">Polygon</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label" style="display: flex; align-items: center; gap: 0.5rem;">
+                    <div class="toggle" id="publicToggle" onclick="this.classList.toggle('active')"></div>
+                    Public Layer
+                </label>
+            </div>
+            <button class="btn btn-primary" onclick="createLayer()">Create</button>
+        </div>
+    </div>
+
+    <div id="featureModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">Feature Properties</div>
+                <button class="close-btn" onclick="closeModal('featureModal'); cancelAddPoint()">&times;</button>
+            </div>
+            <div id="featurePropertiesForm"></div>
+            <button class="btn btn-primary" onclick="confirmAddPoint()">Save Feature</button>
+        </div>
+    </div>
+
+    <div id="importModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">Import GeoJSON</div>
+                <button class="close-btn" onclick="closeModal('importModal')">&times;</button>
+            </div>
+            <input type="file" id="geojsonFile" accept=".json,.geojson" class="form-input">
+            <button class="btn btn-primary" style="margin-top: 1rem;" onclick="importGeoJSON()">Import</button>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        // Config
+        const API_URL = window.location.hostname === 'localhost' ? 'http://localhost:8000' : '';
+        
+        // State
+        let token = localStorage.getItem('token');
+        let user = null;
+        let map = null;
+        let layersData = [];
+        let currentLayerId = null;
+        let featuresLayer = null;
+        let addPointMode = false;
+        let pendingPoint = null;
+        let pendingProperties = {};
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            if (token) checkAuth();
+            else showAuth();
+        });
+
+        // Auth
+        async function checkAuth() {
+            try {
+                const res = await fetch(`${API_URL}/users/me`, { headers: { Authorization: `Bearer ${token}` } });
+                if (!res.ok) throw new Error();
+                user = await res.json();
+                showApp();
+            } catch { logout(); }
+        }
+
+        async function login() {
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            const formData = new URLSearchParams({ username, password });
+            
+            try {
+                const res = await fetch(`${API_URL}/token`, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: formData });
+                if (!res.ok) { const err = await res.json(); throw new Error(err.detail); }
+                const data = await res.json();
+                token = data.access_token;
+                localStorage.setItem('token', token);
+                checkAuth();
+            } catch (e) { showToast(e.message, 'error'); }
+        }
+
+        async function register() {
+            const username = document.getElementById('regUsername').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const role = document.getElementById('regRole').value;
+            
+            try {
+                const res = await fetch(`${API_URL}/register`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, email, password, role }) });
+                if (!res.ok) { const err = await res.json(); throw new Error(err.detail); }
+                showToast('Registration successful! Please login.', 'success');
+                showLogin();
+            } catch (e) { showToast(e.message, 'error'); }
+        }
+
+        function logout() {
+            token = null;
+            user = null;
+            localStorage.removeItem('token');
+            showAuth();
+        }
+
+        // UI Functions
+        function showAuth() {
+            document.getElementById('authScreen').style.display = 'flex';
+            document.getElementById('appContainer').style.display = 'none';
+        }
+
+        function showApp() {
+            document.getElementById('authScreen').style.display = 'none';
+            document.getElementById('appContainer').style.display = 'flex';
+            document.getElementById('userDisplay').textContent = user.username;
+            const badge = document.getElementById('roleBadge');
+            badge.textContent = user.role;
+            badge.className = `badge badge-${user.role}`;
+            
+            initMap();
+            loadLayers();
+            if (user.role === 'admin') loadDashboard();
+            loadSettings();
+        }
+
+        function showLogin() {
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('registerForm').style.display = 'none';
+        }
+
+        function showRegister() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'block';
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('collapsed');
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById(`${tab}Panel`).classList.add('active');
+            if (tab === 'dashboard' && user.role === 'admin') loadDashboard();
+        }
+
+        function openModal(id) { document.getElementById(id).classList.add('active'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+        function showToast(msg, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `<span>${type === 'success' ? '✓' : '✕'}</span><span>${msg}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // Map
+        function initMap() {
+            const settings = user.settings || {};
+            const lat = settings.default_lat || 55.75;
+            const lon = settings.default_lon || 37.61;
+            const zoom = settings.zoom || 10;
+            
+            map = L.map('map').setView([lat, lon], zoom);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+            
+            featuresLayer = L.layerGroup().addTo(map);
+            
+            map.on('click', handleMapClick);
+        }
+
+        function handleMapClick(e) {
+            if (!addPointMode || !currentLayerId) return;
+            pendingPoint = e.latlng;
+            openModal('featureModal');
+            renderPropertiesForm({});
+        }
+
+        function addPointMode() {
+            if (!currentLayerId) { showToast('Select a layer first', 'error'); return; }
+            addPointMode = true;
+            map.getContainer().style.cursor = 'crosshair';
+            showToast('Click on map to add point', 'success');
+        }
+
+        function cancelAddPoint() {
+            addPointMode = false;
+            pendingPoint = null;
+            map.getContainer().style.cursor = '';
+        }
+
+        function confirmAddPoint() {
+            if (!pendingPoint) return;
+            const props = collectProperties();
+            createFeature({ type: 'Point', coordinates: [pendingPoint.lng, pendingPoint.lat] }, props);
+            closeModal('featureModal');
+            cancelAddPoint();
+        }
+
+        function renderPropertiesForm(properties) {
+            const container = document.getElementById('featurePropertiesForm');
+            container.innerHTML = '';
+            const knownKeys = ['name', 'description', 'type', 'category'];
+            knownKeys.forEach(key => {
+                container.innerHTML += `
+                    <div class="form-group">
+                        <label class="form-label">${key.charAt(0).toUpperCase() + key.slice(1)}</label>
+                        <input type="text" class="form-input prop-input" data-key="${key}" value="${properties[key] || ''}">
+                    </div>
+                `;
+            });
+            container.innerHTML += '<div class="form-group"><label class="form-label">Additional JSON</label><textarea id="extraProps" class="form-textarea" rows="3">{}</textarea></div>';
+        }
+
+        function collectProperties() {
+            const props = {};
+            document.querySelectorAll('.prop-input').forEach(input => {
+                if (input.value) props[input.dataset.key] = input.value;
+            });
+            try {
+                const extra = JSON.parse(document.getElementById('extraProps').value || '{}');
+                Object.assign(props, extra);
+            } catch {}
+            return props;
+        }
+
+        // Layers
+        async function loadLayers() {
+            try {
+                const res = await fetch(`${API_URL}/layers`, { headers: { Authorization: `Bearer ${token}` } });
+                if (!res.ok) throw new Error();
+                layersData = await res.json();
+                renderLayerList();
+                if (layersData.length > 0) selectLayer(layersData[0].id);
+            } catch { showToast('Failed to load layers', 'error'); }
+        }
+
+        function renderLayerList() {
+            const container = document.getElementById('layerList');
+            container.innerHTML = layersData.map(l => `
+                <div class="layer-item ${l.id === currentLayerId ? 'active' : ''}" onclick="selectLayer(${l.id})">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <strong>${l.name}</strong>
+                        ${l.is_public ? '<span style="font-size: 0.75rem">🌍</span>' : ''}
+                    </div>
+                    <div class="layer-meta">${l.geometry_type} • ${l.description || 'No description'}</div>
+                </div>
+            `).join('');
+        }
+
+        function selectLayer(id) {
+            currentLayerId = id;
+            renderLayerList();
+            loadFeatures();
+        }
+
+        async function createLayer() {
+            const name = document.getElementById('layerName').value;
+            const description = document.getElementById('layerDesc').value;
+            const geometry_type = document.getElementById('layerGeomType').value;
+            const is_public = document.getElementById('publicToggle').classList.contains('active');
+            
+            try {
+                const res = await fetch(`${API_URL}/layers`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+                    body: JSON.stringify({ name, description, geometry_type, is_public })
+                });
+                if (!res.ok) throw new Error();
+                closeModal('layerModal');
+                loadLayers();
+                showToast('Layer created', 'success');
+            } catch (e) { showToast('Failed to create layer', 'error'); }
+        }
+
+        // Features
+        async function loadFeatures() {
+            if (!currentLayerId) return;
+            try {
+                const res = await fetch(`${API_URL}/layers/${currentLayerId}/features`, { headers: { Authorization: `Bearer ${token}` } });
+                if (!res.ok) throw new Error();
+                const data = await res.json();
+                renderFeatures(data.features);
+            } catch { showToast('Failed to load features', 'error'); }
+        }
+
+        function renderFeatures(features) {
+            featuresLayer.clearLayers();
+            features.forEach(f => {
+                const layer = L.geoJSON(f, {
+                    onEachFeature: (feature, layer) => {
+                        if (feature.properties && Object.keys(feature.properties).length) {
+                            layer.bindPopup(`<pre>${JSON.stringify(feature.properties, null, 2)}</pre>`);
+                        }
+                    },
+                    style: { color: '#3b82f6', weight: 2, fillOpacity: 0.3 }
+                });
+                featuresLayer.addLayer(layer);
+            });
+        }
+
+        async function createFeature(geometry, properties) {
+            try {
+                const res = await fetch(`${API_URL}/layers/${currentLayerId}/features`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+                    body: JSON.stringify({ geometry, properties })
+                });
+                if (!res.ok) throw new Error();
+                loadFeatures();
+                showToast('Feature added', 'success');
+            } catch (e) { showToast('Failed to add feature', 'error'); }
+        }
+
+        // Import/Export
+        async function importGeoJSON() {
+            const file = document.getElementById('geojsonFile').files[0];
+            if (!file || !currentLayerId) return;
+            
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            try {
+                const res = await fetch(`${API_URL}/import/geojson/${currentLayerId}`, {
+                    method: 'POST',
+                    headers: { Authorization: `Bearer ${token}` },
+                    body: formData
+                });
+                if (!res.ok) throw new Error();
+                closeModal('importModal');
+                loadFeatures();
+                showToast('Import successful', 'success');
+            } catch (e) { showToast('Import failed', 'error'); }
+        }
+
+        function exportCurrentLayer() {
+            if (!currentLayerId) return;
+            window.open(`${API_URL}/export/csv/${currentLayerId}`, '_blank');
+        }
+
+        // Analysis
+        async function runBufferAnalysis() {
+            if (!currentLayerId) { showToast('Select a layer first', 'error'); return; }
+            const distance = prompt('Buffer distance in meters:', '100');
+            if (!distance) return;
+            
+            try {
+                const res = await fetch(`${API_URL}/analysis/buffer/${currentLayerId}?distance=${distance}`, {
+                    method: 'POST',
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                if (!res.ok) throw new Error();
+                const data = await res.json();
+                L.geoJSON(data, { style: { color: '#f59e0b', weight: 2, fillOpacity: 0.2, dashArray: '5, 10' } }).addTo(map);
+                showToast('Buffer analysis complete', 'success');
+            } catch (e) { showToast('Analysis failed', 'error'); }
+        }
+
+        // Dashboard
+        async function loadDashboard() {
+            try {
+                const res = await fetch(`${API_URL}/dashboard/stats`, { headers: { Authorization: `Bearer ${token}` } });
+                if (!res.ok) return;
+                const stats = await res.json();
+                document.getElementById('statUsers').textContent = stats.total_users;
+                document.getElementById('statLayers').textContent = stats.total_layers;
+                document.getElementById('statFeatures').textContent = stats.total_features;
+                document.getElementById('statActivity').textContent = stats.recent_activity_count;
+                
+                const logsRes = await fetch(`${API_URL}/audit/logs`, { headers: { Authorization: `Bearer ${token}` } });
+                if (logsRes.ok) {
+                    const logs = await logsRes.json();
+                    document.querySelector('#auditTable tbody').innerHTML = logs.slice(0, 10).map(l => `
+                        <tr><td>${l.username}</td><td>${l.action}</td><td>${new Date(l.timestamp).toLocaleString()}</td></tr>
+                    `).join('');
+                }
+            } catch {}
+        }
+
+        // Settings
+        function loadSettings() {
+            const settings = user.settings || {};
+            document.getElementById('themeSelect').value = settings.theme || 'light';
+            document.getElementById('defaultLat').value = settings.default_lat || 55.75;
+            document.getElementById('defaultLon').value = settings.default_lon || 37.61;
+            setTheme(settings.theme || 'light');
+            
+            document.getElementById('userInfo').innerHTML = `
+                <p><strong>Username:</strong> ${user.username}</p>
+                <p><strong>Email:</strong> ${user.email}</p>
+                <p><strong>Role:</strong> ${user.role}</p>
+                <p><strong>Member since:</strong> ${new Date(user.created_at).toLocaleDateString()}</p>
+            `;
+        }
+
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+        }
+
+        async function saveSettings() {
+            const settings = {
+                theme: document.getElementById('themeSelect').value,
+                default_lat: parseFloat(document.getElementById('defaultLat').value),
+                default_lon: parseFloat(document.getElementById('defaultLon').value),
+                zoom: 10
+            };
+            
+            try {
+                const res = await fetch(`${API_URL}/users/me/settings`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+                    body: JSON.stringify(settings)
+                });
+                if (!res.ok) throw new Error();
+                user.settings = settings;
+                showToast('Settings saved', 'success');
+                initMap();
+            } catch (e) { showToast('Failed to save', 'error'); }
+        }
+    </script>
+</body>
+</html>
